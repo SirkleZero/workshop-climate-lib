@@ -61,6 +61,8 @@ namespace Configuration {
     }
     
     configuration->SampleFrequency = root["SampleFrequency"];
+    configuration->MinimumHumidity = root["MinimumHumidity"];
+    configuration->MaximumHumidity = root["MaximumHumidity"];
 
     // Close the file (File's destructor doesn't close the file)
     file.close();

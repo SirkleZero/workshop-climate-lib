@@ -7,10 +7,14 @@ namespace Configuration {
 
             public:
                 unsigned long SampleFrequency;
+                byte MinimumHumidity;
+                byte MaximumHumidity;
 
                 void PrintDebug(){
                     Serial.println("---------------------------------------");
                     Serial.print("Sample Frequency = "); Serial.println(this->SampleFrequency);
+                    Serial.print("Minimum Humidity = "); Serial.println(this->MinimumHumidity);
+                    Serial.print("Maximum Humidity = "); Serial.println(this->MaximumHumidity);
                     Serial.println("---------------------------------------");
                     Serial.println();
                 }
