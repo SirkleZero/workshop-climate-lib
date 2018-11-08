@@ -1,3 +1,5 @@
+#include "Sensors\SensorData.h"
+
 #ifndef SensorTransmissionResult_h
     #define SensorTransmissionResult_h
 
