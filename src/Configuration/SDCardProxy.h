@@ -1,3 +1,4 @@
+#include "ControllerConfiguration.h"
 #include "Secrets.h"
 
 namespace Configuration {
@@ -9,6 +10,8 @@ namespace Configuration {
                 SDCardProxy();
                 void Initialize();
                 void LoadSecrets(Secrets *secrets);
+                void LoadConfiguration(ControllerConfiguration *configuration);
+
                 void PrintDebug();
             private:
                 Secrets secrets;
