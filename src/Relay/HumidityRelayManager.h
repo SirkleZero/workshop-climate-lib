@@ -1,19 +1,22 @@
-#include "..\Sensors\SensorData.h"
-
 namespace Relay {
     #ifndef HumidityRelayManager_h
         #define HumidityRelayManager_h
 
-        // library interface description
+        #include "..\Sensors\SensorData.h"
+
         class HumidityRelayManager {
             public:
                 HumidityRelayManager();
 
                 void Initialize();
                 void SetRelayState(SensorData *data);
-
-            // library-accessible "private" interface
+                
             private:
+                const int ledPin =  LED_BUILTIN; // use the built-in led
+                const int relayControlPin = 5;
+                const int switchPin = 9;
+
+                int relayState = LOW;
         };
 
     #endif
