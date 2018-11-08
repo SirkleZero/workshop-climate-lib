@@ -1,4 +1,4 @@
-#include "SensorData.h"
+#include "..\Sensors\SensorData.h"
 #include "TXResult.h"
 
 namespace TX {

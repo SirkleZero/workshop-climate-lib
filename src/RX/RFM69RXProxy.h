@@ -1,5 +1,5 @@
-#include "SensorData.h"
-#include "SensorTransmissionResult.h"
+#include "..\Sensors\SensorData.h"
+#include "..\SensorTransmissionResult.h"
 
 namespace RX {
     #ifndef RFM69RXProxy_h

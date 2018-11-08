@@ -1,4 +1,4 @@
-#include "SensorData.h"
+#include "..\Sensors\SensorData.h"
 
 namespace Relay {
     #ifndef HumidityRelayManager_h

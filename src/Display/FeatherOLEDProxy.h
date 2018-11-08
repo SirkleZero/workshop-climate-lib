@@ -1,5 +1,5 @@
-#include "SensorData.h"
-#include "TXResult.h"
+#include "..\Sensors\SensorData.h"
+#include "..\TX\TXResult.h"
 
 namespace Display {
     #ifndef FeatherOLEDProxy_h

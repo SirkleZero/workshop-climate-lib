@@ -1,5 +1,5 @@
-#include "SensorData.h"
-#include "Rectangle.h"
+#include "..\Sensors\SensorData.h"
+#include "..\Rectangle.h"
 
 namespace Display {
     #ifndef RXTFTFeatherwingProxy_h

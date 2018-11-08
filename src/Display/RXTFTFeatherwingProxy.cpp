@@ -1,6 +1,6 @@
 #include "RXTFTFeatherwingProxy.h"
-#include "SensorData.h"
-#include "Rectangle.h"
+#include "..\Sensors\SensorData.h"
+#include "..\Rectangle.h"
 
 #include <SPI.h>
 #include <Adafruit_GFX.h>

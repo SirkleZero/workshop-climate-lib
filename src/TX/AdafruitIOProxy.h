@@ -2,9 +2,9 @@
 https://io.adafruit.com/api/docs/
 
 */
-#include "SensorData.h"
+#include "..\Sensors\SensorData.h"
 #include "AdafruitIO_WiFi.h"
-#include "Configuration/Secrets.h"
+#include "..\Configuration\Secrets.h"
 
 using namespace Configuration;
 

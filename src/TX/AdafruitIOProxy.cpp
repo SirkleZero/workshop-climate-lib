@@ -1,7 +1,7 @@
 #include "AdafruitIO_WiFi.h"
 #include "AdafruitIOProxy.h"
 #include <Wire.h>
-#include "Configuration/Secrets.h"
+#include "..\Configuration\Secrets.h"
 
 using namespace Configuration;
 

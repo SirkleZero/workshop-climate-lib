@@ -3,8 +3,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "FeatherOLEDProxy.h"
-#include "SensorData.h"
-#include "TXResult.h"
+#include "..\Sensors\SensorData.h"
+#include "..\TX\TXResult.h"
 
 namespace Display {
     Adafruit_SSD1306 display = Adafruit_SSD1306();

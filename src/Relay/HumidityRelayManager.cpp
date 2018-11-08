@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "HumidityRelayManager.h"
+#include "..\Sensors\SensorData.h"
 
 namespace Relay {
     const int ledPin =  LED_BUILTIN;// the number of the LED pin
