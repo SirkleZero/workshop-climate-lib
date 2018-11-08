@@ -18,6 +18,9 @@ namespace RX {
     //#define LED           13
 
     // Singleton instance of the radio driver
+    // TODO: What happens if we pass the RFM69_IRQN value rather than the RFM69_IRQ value to the below function?
+    // would this mean we wouldn't have to re-initialize and/or shut down the wifi every time we hit our loop in
+    // the sketch?!
     RH_RF69 rf69(RFM69_CS, RFM69_IRQ);
 
     // Class to manage message delivery and receipt, using the driver declared above
