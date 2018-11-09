@@ -1,7 +1,7 @@
-#include <Arduino.h>
-
 #ifndef ParticleData_h
     #define ParticleData_h
+
+    #include <Arduino.h>
 
     struct ParticleData {
         uint16_t pm10_standard;
