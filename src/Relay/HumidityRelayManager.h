@@ -1,8 +1,10 @@
 #ifndef HumidityRelayManager_h
     #define HumidityRelayManager_h
 
+    #include "..\Configuration\ControllerConfiguration.h"
     #include "..\Sensors\SensorData.h"
-
+    
+    using namespace Configuration;
     using namespace Sensors;
 
     namespace Relay {
@@ -10,15 +12,19 @@
             public:
                 HumidityRelayManager();
 
-                void Initialize();
+                void Initialize(ControllerConfiguration *configuration);
                 void SetRelayState(SensorData *data);
+                void KeepAlive();
                 
             private:
-                const int ledPin =  LED_BUILTIN; // use the built-in led
-                const int relayControlPin = 5;
-                const int switchPin = 9;
+                ControllerConfiguration *configuration;
 
-                int relayState = LOW;
+                const int humidificationModeLedPin = LED_BUILTIN;
+                const int dehumidificationModeLedPin = LED_BUILTIN;
+                const int humidifierControlPin = 5;
+                const int dehumidifierControlPin = 3;
+
+                byte relayState = LOW;
         };
     }
 
