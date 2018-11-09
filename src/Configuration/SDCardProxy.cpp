@@ -41,7 +41,7 @@ namespace Configuration {
 
   void SDCardProxy::LoadConfiguration(ControllerConfiguration *configuration) {
         // Open file for reading
-    File file = SD.open(secretsFileName);
+    File file = SD.open(controllerConfigurationFileName);
 
     // Allocate the memory pool on the stack.
     // Don't forget to change the capacity to match your JSON document.
@@ -67,7 +67,7 @@ namespace Configuration {
   // Prints the content of a file to the Serial
   void SDCardProxy::PrintDebug() {
     // Open file for reading
-    File file = SD.open(secretsFileName);
+    File file = SD.open(controllerConfigurationFileName);
     if (!file) {
       Serial.println(F("Failed to read file"));
       return;
