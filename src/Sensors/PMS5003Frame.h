@@ -1,7 +1,7 @@
-#include <Wire.h>
-
 #ifndef PMS5003Frame_h
     #define PMS5003Frame_h
+
+    #include <Wire.h>
 
     struct PMS5003Frame {
         uint8_t  frameHeader[2];
