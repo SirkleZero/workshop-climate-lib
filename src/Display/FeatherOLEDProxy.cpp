@@ -48,8 +48,7 @@ namespace Display {
         #error("Height incorrect, please fix Adafruit_SSD1306.h!");
     #endif
 
-    FeatherOLEDProxy::ButtonMode displayMode = FeatherOLEDProxy::Default;
-    SensorData previousData;
+    // global variable (display namespace) to allow for a pointer for the button interrupt.
     FeatherOLEDProxy* interruptThis;
 
     FeatherOLEDProxy::FeatherOLEDProxy() { }

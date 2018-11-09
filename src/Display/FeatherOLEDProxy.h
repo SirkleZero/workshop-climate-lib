@@ -30,6 +30,9 @@
                 void ButtonC();
                 
             private:
+                FeatherOLEDProxy::ButtonMode displayMode = FeatherOLEDProxy::Default;
+                SensorData previousData;
+
                 void PrintTemperature(SensorData *data, uint16_t color);
                 void PrintHumidity(SensorData *data, uint16_t color);
                 void PrintPressure(SensorData *data, uint16_t color);

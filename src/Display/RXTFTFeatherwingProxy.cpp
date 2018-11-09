@@ -59,23 +59,9 @@ using namespace Sensors;
    #define SD_CS    5
 #endif
 
-#define readingsTextColor       0x5DDF
-#define layouttextColor         ILI9341_WHITE
-#define layoutlineColor         ILI9341_WHITE
-#define backgroundColor         ILI9341_BLACK
-#define aqiGood                 ILI9341_GREEN
-#define aqiModerate             ILI9341_YELLOW
-#define aqiUnhealthySensitive   ILI9341_ORANGE
-#define aqiUnhealthy            ILI9341_RED
-#define aqiVeryUnhealthy        0xB800
-#define aqiHazardous            0x8000
-
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-
-#define ROTATION_HORIZONTAL 1 
-
 namespace Display {
     RXTFTFeatherwingProxy::RXTFTFeatherwingProxy() : 
+        tft(TFT_CS, TFT_DC),
         humidityArea(0, 0, 150, 106),
         temperatureArea(0, 106, 150, 106),
         particulateArea(150, 28, 170, 184),

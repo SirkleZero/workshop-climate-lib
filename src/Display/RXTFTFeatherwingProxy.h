@@ -1,6 +1,7 @@
 #ifndef RXTFTFeatherwingProxy_h
     #define RXTFTFeatherwingProxy_h
 
+    #include <Adafruit_ILI9341.h>
     #include "..\Sensors\SensorData.h"
     #include "..\Rectangle.h"
 
@@ -15,6 +16,21 @@
                 void DrawLayout();
                 void Clear();
             private:
+                // colors
+                const uint16_t readingsTextColor = 0x5DDF;
+                const uint16_t layouttextColor = ILI9341_WHITE;
+                const uint16_t layoutlineColor = ILI9341_WHITE;
+                const uint16_t backgroundColor = ILI9341_BLACK;
+                const uint16_t aqiGood = ILI9341_GREEN;
+                const uint16_t aqiModerate = ILI9341_YELLOW;
+                const uint16_t aqiUnhealthySensitive = ILI9341_ORANGE;
+                const uint16_t aqiUnhealthy = ILI9341_RED;
+                const uint16_t aqiVeryUnhealthy = 0xB800;
+                const uint16_t aqiHazardous = 0x8000;
+
+                const uint8_t ROTATION_HORIZONTAL = 1; 
+
+                Adafruit_ILI9341 tft;
                 uint16_t height;
                 uint16_t width;
                 SensorData previousData;
