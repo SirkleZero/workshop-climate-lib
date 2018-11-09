@@ -1,8 +1,8 @@
-#include "ClimateData.h"
-#include "ParticleData.h"
-
 #ifndef SensorData_h
     #define SensorData_h
+
+    #include "ClimateData.h"
+    #include "ParticleData.h"
 
     struct SensorData {
         ClimateData climate;
