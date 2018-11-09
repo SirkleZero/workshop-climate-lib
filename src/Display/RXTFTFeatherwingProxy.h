@@ -1,10 +1,12 @@
-#include "..\Sensors\SensorData.h"
-#include "..\Rectangle.h"
+#ifndef RXTFTFeatherwingProxy_h
+    #define RXTFTFeatherwingProxy_h
 
-namespace Display {
-    #ifndef RXTFTFeatherwingProxy_h
-        #define RXTFTFeatherwingProxy_h
+    #include "..\Sensors\SensorData.h"
+    #include "..\Rectangle.h"
 
+    using namespace Sensors;
+
+    namespace Display {
         class RXTFTFeatherwingProxy {
             public:
                 RXTFTFeatherwingProxy();
@@ -38,6 +40,6 @@ namespace Display {
                 int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
                 void DrawAirQualityIndicator(SensorData *data, bool overwritting);
         };
+    }
 
-    #endif
-}
+#endif

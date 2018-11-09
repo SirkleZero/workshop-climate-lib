@@ -3,6 +3,7 @@
 #include <Wire.h>
 #include "..\Configuration\Secrets.h"
 
+using namespace Sensors;
 using namespace Configuration;
 
 namespace TX {

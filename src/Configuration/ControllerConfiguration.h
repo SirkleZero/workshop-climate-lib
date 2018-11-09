@@ -1,14 +1,14 @@
-namespace Configuration {
-    #ifndef ControllerConfiguration_h
-        #define ControllerConfiguration_h
+#ifndef ControllerConfiguration_h
+    #define ControllerConfiguration_h
 
+    namespace Configuration {
         class ControllerConfiguration {
             private:
 
             public:
                 unsigned long SampleFrequency;
-                byte MinimumHumidity;
-                byte MaximumHumidity;
+                float MinimumHumidity;
+                float MaximumHumidity;
                 float HumidityOffset;
 
                 void PrintDebug(){
@@ -21,6 +21,5 @@ namespace Configuration {
                     Serial.println();
                 }
         };
-
-    #endif
-}
+    }
+#endif

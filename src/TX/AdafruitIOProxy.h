@@ -2,16 +2,17 @@
 https://io.adafruit.com/api/docs/
 
 */
-#include "..\Sensors\SensorData.h"
-#include "AdafruitIO_WiFi.h"
-#include "..\Configuration\Secrets.h"
+#ifndef AdafruitIOProxy_h
+    #define AdafruitIOProxy_h
 
-using namespace Configuration;
+    #include "AdafruitIO_WiFi.h"
+    #include "..\Sensors\SensorData.h"
+    #include "..\Configuration\Secrets.h"
 
-namespace TX {
-    #ifndef AdafruitIOProxy_h
-        #define AdafruitIOProxy_h
+    using namespace Sensors;
+    using namespace Configuration;
 
+    namespace TX {
         class AdafruitIOProxy {
             public:
                 AdafruitIOProxy();
@@ -42,6 +43,5 @@ namespace TX {
                 void printWiFiStatus();
                 void Disconnect();
         };
-
-    #endif
-}
+    }
+#endif

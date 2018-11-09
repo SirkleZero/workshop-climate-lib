@@ -1,7 +1,9 @@
 #include "HumidityRelayManager.h"
 #include "..\Sensors\SensorData.h"
 
-namespace Relay {
+using namespace Sensors;
+
+namespace Relay {    
     HumidityRelayManager::HumidityRelayManager() { }
 
     void HumidityRelayManager::Initialize(){

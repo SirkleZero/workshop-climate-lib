@@ -1,13 +1,15 @@
-namespace RX {
-    #ifndef RFM69RXProxy_h
-        #define RFM69RXProxy_h
+#ifndef RFM69RXProxy_h
+    #define RFM69RXProxy_h
 
-        #include <SPI.h>
-        #include <RH_RF69.h>
-        #include <RHReliableDatagram.h>
-        #include "..\Sensors\SensorData.h"
-        #include "..\SensorTransmissionResult.h"
-        
+    #include <SPI.h>
+    #include <RH_RF69.h>
+    #include <RHReliableDatagram.h>
+    #include "..\Sensors\SensorData.h"
+    #include "..\SensorTransmissionResult.h"
+
+    using namespace Sensors;
+
+    namespace RX {        
         class RFM69RXProxy {
             public:
                 RFM69RXProxy();
@@ -27,6 +29,5 @@ namespace RX {
 
                 uint8_t messageBuffer[RH_RF69_MAX_MESSAGE_LEN];
         };
-
-    #endif
-}
+    }
+#endif

@@ -1,10 +1,11 @@
-#include "ControllerConfiguration.h"
-#include "Secrets.h"
 
-namespace Configuration {
-    #ifndef SDCardProxy_h
-        #define SDCardProxy_h
+#ifndef SDCardProxy_h
+    #define SDCardProxy_h
 
+    #include "ControllerConfiguration.h"
+    #include "Secrets.h"
+
+    namespace Configuration {
         class SDCardProxy {
             public:
                 SDCardProxy();
@@ -14,8 +15,9 @@ namespace Configuration {
 
                 void PrintDebug();
             private:
+                const char *secretsFileName = "/SECRET~1.JSO";  // <- SD library uses 8.3 filenames
+                const char *controllerConfigurationFileName = "CONTRO~1.JSO";
                 Secrets secrets;
         };
-
-    #endif
-}
+    }
+#endif

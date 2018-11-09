@@ -5,14 +5,9 @@
 #include "Secrets.h"
 
 namespace Configuration {
-
-  const char *secretsFileName = "/SECRET~1.JSO";  // <- SD library uses 8.3 filenames
-  const char *controllerConfigurationFileName = "CONTRO~1.JSO";
-
   SDCardProxy::SDCardProxy() { }
 
   void SDCardProxy::Initialize() {
-    // Initialize SD library
     while (!SD.begin(5)) {
       Serial.println(F("Failed to initialize SD library"));
       delay(1000);
@@ -63,6 +58,7 @@ namespace Configuration {
     configuration->SampleFrequency = root["SampleFrequency"];
     configuration->MinimumHumidity = root["MinimumHumidity"];
     configuration->MaximumHumidity = root["MaximumHumidity"];
+    configuration->HumidityOffset = root["HumidityOffset"];
 
     // Close the file (File's destructor doesn't close the file)
     file.close();

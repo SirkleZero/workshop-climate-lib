@@ -1,24 +1,21 @@
-#include "SensorData.h"
+#ifndef PMS5003Proxy_h
+    #define PMS5003Proxy_h
 
-namespace Sensors {
-namespace PMS5003 {
-    #ifndef PMS5003Proxy_h
-        #define PMS5003Proxy_h
+    #include "SensorData.h"
 
-        // library interface description
-        class PMS5003Proxy {
-            public:
-                PMS5003Proxy();
+    namespace Sensors {
+        namespace PMS5003 {        
+            class PMS5003Proxy {
+                public:
+                    PMS5003Proxy();
 
-                void Initialize();
-                bool ReadSensor(SensorData *data);
-                void PrintDebug();
-
-            // library-accessible "private" interface
-            private:
-                void ConfigurePMS5003();
-        };
-
-    #endif
-}
-}
+                    void Initialize();
+                    bool ReadSensor(SensorData *data);
+                    void PrintDebug();
+                    
+                private:
+                    void ConfigurePMS5003();
+            };
+        }
+    }
+#endif

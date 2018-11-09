@@ -1,11 +1,12 @@
-#include "..\Sensors\SensorData.h"
-#include "TXResult.h"
+#ifndef RFM69TXProxy_h
+    #define RFM69TXProxy_h
 
-namespace TX {
-    #ifndef RFM69TXProxy_h
-        #define RFM69TXProxy_h
+    #include "..\Sensors\SensorData.h"
+    #include "TXResult.h"
 
-        // library interface description
+    using namespace Sensors;
+
+    namespace TX {
         class RFM69TXProxy {
             public:
                 RFM69TXProxy();
@@ -13,11 +14,9 @@ namespace TX {
                 void Initialize();
                 TXResult Transmit(SensorData data);
                 void PrintDebug();
-
-            // library-accessible "private" interface
+                
             private:
                 void Blink(byte PIN, byte DELAY_MS, byte loops);
         };
-
-    #endif
-}
+    }
+#endif

@@ -6,6 +6,9 @@
 #include "..\Sensors\SensorData.h"
 #include "..\TX\TXResult.h"
 
+using namespace Sensors;
+using namespace TX;
+
 namespace Display {
     Adafruit_SSD1306 display = Adafruit_SSD1306();
 

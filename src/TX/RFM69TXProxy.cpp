@@ -3,6 +3,8 @@
 #include "RFM69TXProxy.h"
 #include "TXResult.h"
 
+using namespace Sensors;
+
 namespace TX {
     /************ Radio Setup ***************/
 

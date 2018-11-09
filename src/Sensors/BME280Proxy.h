@@ -1,31 +1,30 @@
-namespace Sensors {
-namespace BME280 {
-    #ifndef BME280Proxy_h
-        #define BME280Proxy_h
+#ifndef BME280Proxy_h
+    #define BME280Proxy_h
 
-        #include "SensorData.h"
-        
-        class BME280Proxy {
-            public:
-                const float SeaLevelPressure_hPa = 1013.25;
-                const float humidityOffset = 0;
+    #include "SensorData.h"
 
-                enum TemperatureUnit {
-                    C = 0x00,
-                    F = 0x01
-                };
+    namespace Sensors {
+        namespace BME280 {        
+            class BME280Proxy {
+                public:
+                    const float SeaLevelPressure_hPa = 1013.25;
+                    const float humidityOffset = 0;
 
-                BME280Proxy(BME280Proxy::TemperatureUnit units = C);
+                    enum TemperatureUnit {
+                        C = 0x00,
+                        F = 0x01
+                    };
 
-                void Initialize();
-                bool ReadSensor(SensorData *data);
-                void PrintDebug();
-                
-            private:
-                Adafruit_BME280 bme; 
-                TemperatureUnit units;
-        };
+                    BME280Proxy(BME280Proxy::TemperatureUnit units = C);
 
-    #endif
-}
-}
+                    void Initialize();
+                    bool ReadSensor(SensorData *data);
+                    void PrintDebug();
+                    
+                private:
+                    Adafruit_BME280 bme; 
+                    TemperatureUnit units;
+            };
+        }
+    }
+#endif

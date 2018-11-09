@@ -1,7 +1,9 @@
-#include "Sensors\SensorData.h"
-
 #ifndef SensorTransmissionResult_h
     #define SensorTransmissionResult_h
+
+    #include "Sensors\SensorData.h"
+
+    using namespace Sensors;
 
     struct SensorTransmissionResult {
         SensorData Data;

@@ -12,6 +12,8 @@
 #include <Fonts/FreeSansBold9pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
 
+using namespace Sensors;
+
 #ifdef ESP8266
    #define STMPE_CS 16
    #define TFT_CS   0

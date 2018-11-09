@@ -1,11 +1,13 @@
-#include "..\Sensors\SensorData.h"
-#include "..\TX\TXResult.h"
+#ifndef FeatherOLEDProxy_h
+    #define FeatherOLEDProxy_h
 
-namespace Display {
-    #ifndef FeatherOLEDProxy_h
-        #define FeatherOLEDProxy_h
+    #include "..\Sensors\SensorData.h"
+    #include "..\TX\TXResult.h"
 
-        // library interface description
+    using namespace Sensors;
+    using namespace TX;
+
+    namespace Display {
         class FeatherOLEDProxy {
             public:
                 enum ButtonMode {
@@ -26,14 +28,13 @@ namespace Display {
                 void ButtonA();
                 void ButtonB();
                 void ButtonC();
-
-            // library-accessible "private" interface
+                
             private:
                 void PrintTemperature(SensorData *data, uint16_t color);
                 void PrintHumidity(SensorData *data, uint16_t color);
                 void PrintPressure(SensorData *data, uint16_t color);
                 void PrintParticulates(SensorData *data, uint16_t color);
         };
+    }
 
-    #endif
-}
+#endif

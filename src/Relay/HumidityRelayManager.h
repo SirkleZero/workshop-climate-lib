@@ -1,9 +1,11 @@
-namespace Relay {
-    #ifndef HumidityRelayManager_h
-        #define HumidityRelayManager_h
+#ifndef HumidityRelayManager_h
+    #define HumidityRelayManager_h
 
-        #include "..\Sensors\SensorData.h"
+    #include "..\Sensors\SensorData.h"
 
+    using namespace Sensors;
+
+    namespace Relay {
         class HumidityRelayManager {
             public:
                 HumidityRelayManager();
@@ -18,6 +20,6 @@ namespace Relay {
 
                 int relayState = LOW;
         };
+    }
 
-    #endif
-}
+#endif

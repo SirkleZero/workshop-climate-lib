@@ -3,6 +3,8 @@
 #include <RHReliableDatagram.h>
 #include "RFM69RXProxy.h"
 
+using namespace Sensors;
+
 namespace RX {
     // TODO: What happens if we pass the RFM69_IRQN value rather than the RFM69_IRQ value to the below function?
     // would this mean we wouldn't have to re-initialize and/or shut down the wifi every time we hit our loop in
