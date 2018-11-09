@@ -3,31 +3,18 @@
 
 namespace Sensors {
 namespace BME280 {
-    #define WIRE Wire
-    #define SEALEVELPRESSURE_HPA (1013.25)
-
-    const float humidityOffset = 0;
-
-    Adafruit_BME280 bme; // I2C
-    BME280Proxy::TemperatureUnit units;
-
-    // Constructor
     BME280Proxy::BME280Proxy(BME280Proxy::TemperatureUnit units) {
         this->units = units;
     }
 
     void BME280Proxy::Initialize(){
-        // initialize the BME280 sensor               
+        // initialize the BME280 sensor          
         if (!bme.begin(&Wire)) {
             Serial.println("Could not find a valid BME280 sensor, check wiring!");
             while (1);
         }
 
         // configure the BME280 sensor
-        ConfigureBME280();
-    }
-
-    void BME280Proxy::ConfigureBME280(){
         bme.setSampling(Adafruit_BME280::MODE_FORCED,
                     Adafruit_BME280::SAMPLING_X1,   // temperature
                     Adafruit_BME280::SAMPLING_X1, // pressure
