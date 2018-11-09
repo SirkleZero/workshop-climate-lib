@@ -55,7 +55,7 @@ namespace Configuration {
       Serial.println(F("Failed to read file"));
     }
     
-    configuration->SampleFrequency = root["SampleFrequency"];
+    configuration->RunawayTimeLimit = root["RunawayTimeLimit"];
     configuration->MinimumHumidity = root["MinimumHumidity"];
     configuration->MaximumHumidity = root["MaximumHumidity"];
     configuration->HumidityOffset = root["HumidityOffset"];

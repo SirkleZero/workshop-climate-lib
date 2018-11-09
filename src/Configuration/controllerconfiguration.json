@@ -1,5 +1,5 @@
 {
-    "SampleFrequency": 60000,
+    "RunawayTimeLimit": 300000,
     "MinimumHumidity": 43.5,
     "MaximumHumidity": 48.5,
     "HumidityOffset": 0.0

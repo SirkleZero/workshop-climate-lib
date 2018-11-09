@@ -8,14 +8,14 @@
             private:
 
             public:
-                unsigned long SampleFrequency;
+                unsigned long RunawayTimeLimit;
                 float MinimumHumidity;
                 float MaximumHumidity;
                 float HumidityOffset;
 
                 void PrintDebug(){
                     Serial.println("---------------------------------------");
-                    Serial.print("Sample Frequency = "); Serial.println(this->SampleFrequency);
+                    Serial.print("Runaway Time Limit = "); Serial.println(this->RunawayTimeLimit);
                     Serial.print("Minimum Humidity = "); Serial.println(this->MinimumHumidity);
                     Serial.print("Maximum Humidity = "); Serial.println(this->MaximumHumidity);
                     Serial.print("Humidity Offset = "); Serial.println(this->HumidityOffset);
