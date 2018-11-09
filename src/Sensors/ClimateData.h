@@ -1,8 +1,8 @@
-#include <Arduino.h>
-#include <avr/dtostrf.h>
-
 #ifndef ClimateData_h
     #define ClimateData_h
+
+    #include <Arduino.h>
+    #include <avr/dtostrf.h>
 
     struct ClimateData {
         float Temperature;   // [deg C]
