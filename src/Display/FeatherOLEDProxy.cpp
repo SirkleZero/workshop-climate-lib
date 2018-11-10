@@ -130,14 +130,14 @@ namespace Display {
 
         switch(displayMode){
             case A:
-                // print out the temperature
-                this->PrintTemperature(&previousData, BLACK);
-                this->PrintTemperature(&data, WHITE);
-
                 //print out the humidity
                 this->PrintHumidity(&previousData, BLACK);
                 this->PrintHumidity(&data, WHITE);
 
+                // print out the temperature
+                this->PrintTemperature(&previousData, BLACK);
+                this->PrintTemperature(&data, WHITE);
+                
                 //print out the pressure
                 this->PrintPressure(&previousData, BLACK);
                 this->PrintPressure(&data, WHITE);
@@ -161,22 +161,22 @@ namespace Display {
         previousData = data;
     }
 
-    void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
+    void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color) {
         display.setCursor(0,0);
+        display.setTextColor(color);
+        display.print(F("Humidity: "));
+        display.print(data->climate.Humidity);
+        display.print(F("% RH"));
+    }
+    
+    void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
+        display.setCursor(0,8);
         display.setTextColor(color);
         display.print(F("Temperature: "));
         display.print(data->climate.Temperature);
         display.print(F(" "));
         display.print((char)247); // this is the ascii degrees character as displayed by the feather oled display
         display.print(F("F"));
-    }
-
-    void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color) {
-        display.setCursor(0,8);
-        display.setTextColor(color);
-        display.print(F("Humidity: "));
-        display.print(data->climate.Humidity);
-        display.print(F("% RH"));
     }
 
     void FeatherOLEDProxy::PrintPressure(SensorData *data, uint16_t color) {
