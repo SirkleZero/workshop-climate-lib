@@ -18,11 +18,9 @@ namespace Relay {
         if(data->climate.Humidity > 48.0 || data->climate.Humidity < 43){
             // turn on the relay!
             this->relayState = HIGH;
-            Serial.println("relay on");
         }else{
             // turn off the relay
             this->relayState = LOW;
-            Serial.println("relay off");
         }
 
         digitalWrite(this->ledPin, this->relayState);

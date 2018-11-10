@@ -26,15 +26,14 @@ namespace RX {
         delay(10);
         
         if (!this->manager.init()) {
-            Serial.println("RFM69 radio init failed");
+            Serial.println(F("RFM69 radio init failed"));
             while (1);
         }
-
-        Serial.println("RFM69 radio init OK!");
+        
         // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
         // No encryption
         if (!this->rf69.setFrequency(this->RF69_FREQ)) {
-            Serial.println("setFrequency failed");
+            Serial.println(F("setFrequency failed"));
         }
 
         // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
@@ -48,7 +47,7 @@ namespace RX {
         
         //pinMode(LED, OUTPUT);
 
-        Serial.print("RFM69 radio @");  Serial.print((int)this->RF69_FREQ);  Serial.println(" MHz");
+        Serial.print(F("RFM69 radio @"));  Serial.print((int)this->RF69_FREQ);  Serial.println(F(" MHz"));
     }
 
     // NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class.
@@ -80,7 +79,7 @@ namespace RX {
 
                 // Send a reply back to the originator client
                 if (!this->manager.sendtoWait(acknowledgeData, sizeof(acknowledgeData), from)) {
-                    Serial.println("Sending failed (no ack)");
+                    Serial.println(F("Sending failed (no ack)"));
                 }
             }
         }

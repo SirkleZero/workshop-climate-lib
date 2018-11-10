@@ -45,7 +45,7 @@ namespace Display {
     #endif
 
     #if (SSD1306_LCDHEIGHT != 32)
-        #error("Height incorrect, please fix Adafruit_SSD1306.h!");
+        #error(F("Height incorrect, please fix Adafruit_SSD1306.h!"));
     #endif
 
     // global variable (display namespace) to allow for a pointer for the button interrupt.
@@ -90,12 +90,12 @@ namespace Display {
     }
 
     void FeatherOLEDProxy::Initialize(){
-        Serial.println("OLED FeatherWing test");
+        Serial.println(F("OLED FeatherWing test"));
         // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
         display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
 
         // init done
-        Serial.println("OLED begun");
+        Serial.println(F("OLED begun"));
 
         // display the adafruit splash screen
         display.display();
@@ -121,7 +121,7 @@ namespace Display {
         display.setTextColor(WHITE);
         display.setCursor(0,0);
 
-        display.println("waiting on sensors...");
+        display.println(F("waiting on sensors..."));
         display.display();
     }
 
@@ -164,54 +164,54 @@ namespace Display {
     void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
         display.setCursor(0,0);
         display.setTextColor(color);
-        display.print("Temperature: ");
+        display.print(F("Temperature: "));
         display.print(data->climate.Temperature);
-        display.print(" ");
+        display.print(F(" "));
         display.print((char)247); // this is the ascii degrees character as displayed by the feather oled display
-        display.print("F");
+        display.print(F("F"));
     }
 
     void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color) {
         display.setCursor(0,8);
         display.setTextColor(color);
-        display.print("Humidity: ");
+        display.print(F("Humidity: "));
         display.print(data->climate.Humidity);
-        display.print("% RH");
+        display.print(F("% RH"));
     }
 
     void FeatherOLEDProxy::PrintPressure(SensorData *data, uint16_t color) {
         display.setCursor(0,16);
         display.setTextColor(color);
-        display.print("Pressure: ");
+        display.print(F("Pressure: "));
         display.print(data->climate.Pressure / 100.0F);
-        display.print(" hPa");
+        display.print(F(" hPa"));
     }
 
     void FeatherOLEDProxy::PrintParticulates(SensorData *data, uint16_t color){
         display.setTextColor(color);
 
         display.setCursor(0, 0);
-        display.println(":Values in microns:");
+        display.println(F(":Values in microns:"));
 
         display.setCursor(0, 8);
-        display.print(".3u: ");
+        display.print(F(".3u: "));
         display.print(data->particulates.particles_03um);
-        display.print(" ");
-        display.print(".5u: ");
+        display.print(F(" "));
+        display.print(F(".5u: "));
         display.print(data->particulates.particles_05um);
 
         display.setCursor(0, 16);
-        display.print("1u: ");
+        display.print(F("1u: "));
         display.print(data->particulates.particles_10um);
-        display.print(" ");
-        display.print("2.5u: ");
+        display.print(F(" "));
+        display.print(F("2.5u: "));
         display.print(data->particulates.particles_25um);
 
         display.setCursor(0, 24);
-        display.print("5u: ");
+        display.print(F("5u: "));
         display.print(data->particulates.particles_50um);
-        display.print(" ");
-        display.print("10u: ");
+        display.print(F(" "));
+        display.print(F("10u: "));
         display.print(data->particulates.particles_100um);
 
         //display.startscrolldiagright(0x0F, 0x0F);
@@ -223,10 +223,10 @@ namespace Display {
         display.setCursor(0, 24);
 
         if(result->TransmitSuccessful){
-            display.print("RSSI: ");
+            display.print(F("RSSI: "));
             display.println(result->RSSI);
         }else{
-            display.println("Transmission failed!");
+            display.println(F("Transmission failed!"));
         }
 
         display.display();
