@@ -1,4 +1,3 @@
-#include <Adafruit_BME280.h>
 #include "BME280Proxy.h"
 
 namespace Sensors {

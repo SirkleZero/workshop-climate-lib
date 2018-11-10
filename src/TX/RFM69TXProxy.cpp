@@ -1,7 +1,4 @@
-#include <RH_RF69.h>
-#include <RHReliableDatagram.h>
 #include "RFM69TXProxy.h"
-#include "TXResult.h"
 
 using namespace Sensors;
 

@@ -1,8 +1,4 @@
-#include <Arduino.h>
-#include <Wire.h>
 #include "PMS5003Proxy.h"
-#include "PMS5003Frame.h"
-#include "SensorData.h"
 
 namespace Sensors {
     namespace PMS5003 {
