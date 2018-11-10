@@ -1,15 +1,19 @@
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 #include "FeatherOLEDProxy.h"
-#include "..\Sensors\SensorData.h"
-#include "..\TX\TXResult.h"
 
 using namespace Sensors;
 using namespace TX;
 
 namespace Display {
+    // these three variables exist in global scope because they are used to handle the interrupts for the
+    // buttons used by the application. displayMode and previousData exist here because of the need to have
+    // the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it.
+    // If they were an instance of it, then we'd have problems accessing their values.
+    FeatherOLEDProxy* interruptThis;
+    ButtonMode displayMode = ButtonMode::Default;
+    SensorData previousData;
+
+    // well, this apparently needs to be global. Don't know why, but I can't get it to work if it's part
+    // of the class. Lame.
     Adafruit_SSD1306 display = Adafruit_SSD1306();
 
     #if defined(ESP8266)
@@ -46,32 +50,29 @@ namespace Display {
 
     #if (SSD1306_LCDHEIGHT != 32)
         #error(F("Height incorrect, please fix Adafruit_SSD1306.h!"));
-    #endif
-
-    // global variable (display namespace) to allow for a pointer for the button interrupt.
-    FeatherOLEDProxy* interruptThis;
+    #endif    
 
     FeatherOLEDProxy::FeatherOLEDProxy() { }
 
     void FeatherOLEDProxy::ButtonA(){
-        if(displayMode != FeatherOLEDProxy::A) {
-            displayMode = FeatherOLEDProxy::A;
+        if(displayMode != ButtonMode::A) {
+            displayMode = ButtonMode::A;
             this->Clear();
             PrintSensors(previousData);
         }
     }
 
     void FeatherOLEDProxy::ButtonB() {
-        if(displayMode != FeatherOLEDProxy::B) {
-            displayMode = FeatherOLEDProxy::B;
+        if(displayMode != ButtonMode::B) {
+            displayMode = ButtonMode::B;
             this->Clear();
             PrintSensors(previousData);
         }
     }
 
     void FeatherOLEDProxy::ButtonC() {
-        if(displayMode != FeatherOLEDProxy::C) {
-            displayMode = FeatherOLEDProxy::C;
+        if(displayMode != ButtonMode::C) {
+            displayMode = ButtonMode::C;
             this->Clear();
             PrintSensors(previousData);
         }
@@ -152,7 +153,7 @@ namespace Display {
                 break;
             case Default:
                 // psuedo recursion
-                displayMode = FeatherOLEDProxy::A;
+                displayMode = ButtonMode::A;
                 PrintSensors(data);
                 break;
         }
@@ -168,7 +169,7 @@ namespace Display {
         display.print(data->climate.Humidity);
         display.print(F("% RH"));
     }
-    
+
     void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
         display.setCursor(0,8);
         display.setTextColor(color);
