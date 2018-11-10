@@ -146,6 +146,31 @@ namespace Display {
         interrupts();
     }
 
+    void RXTFTFeatherwingProxy::PrintFreeMemory(int freeMemory) {
+        noInterrupts();
+
+        tft.setFont(&FreeSansBold9pt7b);
+        tft.setTextSize(1);
+
+        char *memoryLabel = "Free SRAM: ";
+
+        // overwrite
+        tft.setCursor(156, 120);
+        tft.setTextColor(backgroundColor);
+        tft.print(memoryLabel);
+        tft.print(previousFreeMemory);
+
+        // print the value
+        tft.setCursor(156, 120);
+        tft.setTextColor(readingsTextColor);
+        tft.print(memoryLabel);
+        tft.print(freeMemory);
+
+        this->previousFreeMemory = freeMemory;
+
+        interrupts();
+    }
+
     void RXTFTFeatherwingProxy::PrintSensors(SensorData data) {
         noInterrupts();
 

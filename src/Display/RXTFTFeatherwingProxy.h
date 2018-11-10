@@ -13,6 +13,7 @@
                 RXTFTFeatherwingProxy();
                 void Initialize();
                 void PrintSensors(SensorData data);
+                void PrintFreeMemory(int freeMemory);
                 void DrawLayout();
                 void Clear();
             private:
@@ -42,6 +43,7 @@
                 uint16_t height;
                 uint16_t width;
                 SensorData previousData;
+                int previousFreeMemory = 0;
 
                 Rectangle humidityArea;
                 Rectangle temperatureArea;
