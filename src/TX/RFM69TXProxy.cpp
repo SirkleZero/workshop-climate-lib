@@ -64,13 +64,6 @@ namespace TX {
             if (this->rf69_manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, 2000, &from)) {
                 this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // zero out (no idea why we do this, but it works!)
 
-                Serial.print(F("Got reply from #"));
-                Serial.print(from);
-                Serial.print(F(" [RSSI :"));
-                Serial.print(rf69.lastRssi());
-                Serial.print(F("] : "));
-                Serial.println((char*)this->acknowledgementBuffer);
-
                 Blink(40, 3); //blink LED 3 times, 40ms between blinks
 
                 result.From = from;
