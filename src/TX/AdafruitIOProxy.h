@@ -8,6 +8,7 @@ https://io.adafruit.com/api/docs/
     #include "AdafruitIO_WiFi.h"
     #include "..\Sensors\SensorData.h"
     #include "..\Configuration\Secrets.h"
+    #include "IoTUploadResult.h"
 
     using namespace Sensors;
     using namespace Configuration;
@@ -18,7 +19,7 @@ https://io.adafruit.com/api/docs/
                 AdafruitIOProxy();
                 ~AdafruitIOProxy();
                 void Initialize(Secrets *secrets);
-                void Transmit(SensorData data);
+                IoTUploadResult Transmit(SensorData data);
             private:
                 Secrets *secrets;
                 AdafruitIO_WiFi *io;

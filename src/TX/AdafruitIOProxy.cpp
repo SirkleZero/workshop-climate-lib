@@ -1,7 +1,4 @@
-#include "AdafruitIO_WiFi.h"
 #include "AdafruitIOProxy.h"
-#include <Wire.h>
-#include "..\Configuration\Secrets.h"
 
 using namespace Sensors;
 using namespace Configuration;
@@ -41,13 +38,15 @@ namespace TX {
         WiFi.end();
     }
 
-    void AdafruitIOProxy::Transmit(SensorData data) {
+    IoTUploadResult AdafruitIOProxy::Transmit(SensorData data) {
+        IoTUploadResult result;
+
         Serial.println(F("sending data to adafruit"));
         io->connect();
 
         // wait for a connection
         while (io->status() < AIO_CONNECTED) {
-            Serial.print(".");
+            Serial.print(F(".");
             delay(500);
         }
 
@@ -77,6 +76,8 @@ namespace TX {
         this->Disconnect();
 
         Serial.println(F("data sent to adafruit!"));
+
+        return result;
     }
 
     void AdafruitIOProxy::printWiFiStatus() {
