@@ -5,7 +5,9 @@ https://io.adafruit.com/api/docs/
 #ifndef AdafruitIOProxy_h
     #define AdafruitIOProxy_h
 
-    #include "AdafruitIO_WiFi.h"
+    #include <AdafruitIO_WiFi.h>
+    #include <WiFi101.h>
+    
     #include "..\Sensors\SensorData.h"
     #include "..\Configuration\Secrets.h"
     #include "IoTUploadResult.h"

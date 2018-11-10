@@ -42,15 +42,29 @@ namespace TX {
         IoTUploadResult result;
 
         Serial.println(F("sending data to adafruit"));
-        io->connect();
+        io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
 
-        // wait for a connection
-        while (io->status() < AIO_CONNECTED) {
-            Serial.print(F(".");
-            delay(500);
+        // wait for a connection, but not forever yo! 15 seconds should be good enough?
+        // calling io->status() actually does a lot behind the scenes, and can return
+        // quite a few different status's. We only care about being connected though.
+        byte secondsToWait = 15;
+        unsigned long connectionDelay = 500;
+        float iterations = secondsToWait * (1000 / connectionDelay);
+        while (io->status() < AIO_CONNECTED && iterations > 0) {
+            Serial.print(F("."));
+            delay(connectionDelay);
+            iterations--;
+        }
+
+        if(iterations <= 0) {
+            // we exceeded our timeout period. return a failure.
+            return result;
         }
 
         Serial.println(io->statusText());
+        IPAddress ip = WiFi.localIP();
+        Serial.print(F("Local IP: ")); Serial.println(ip);
+        Serial.print(F("WiFi Status: ")); Serial.println(WiFi.status());        
 
         // send climate information to Adafruit IO
         temperatureFeed->save(data.climate.Temperature);
@@ -76,6 +90,8 @@ namespace TX {
         this->Disconnect();
 
         Serial.println(F("data sent to adafruit!"));
+
+        result.IsSuccess = true;
 
         return result;
     }

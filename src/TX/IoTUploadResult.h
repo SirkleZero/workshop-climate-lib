@@ -3,6 +3,7 @@
 
     namespace TX {
         struct IoTUploadResult {
+            bool IsSuccess = false;
 
             void PrintDebug(){
                 Serial.println(F("---------------------------------------"));
