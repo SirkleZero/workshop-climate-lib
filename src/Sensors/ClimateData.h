@@ -12,20 +12,20 @@
             float Pressure;      // pascals
 
             void PrintDebug(){
-                Serial.println("---------------------------------------");
-                Serial.print("Temperature = ");
+                Serial.println(F("---------------------------------------"));
+                Serial.print(F("Temperature = "));
                 Serial.print(Temperature);
-                Serial.print(" *");
+                Serial.print(F(" *"));
                 Serial.println(Units);
 
-                Serial.print("Pressure = ");
+                Serial.print(F("Pressure = "));
                 Serial.print(Pressure / 100.0F);
-                Serial.println(" hPa"); // pressure in pascals
+                Serial.println(F(" hPa")); // pressure in pascals
 
-                Serial.print("Humidity = ");
+                Serial.print(F("Humidity = "));
                 Serial.print(Humidity);
-                Serial.println(" %");
-                Serial.println("---------------------------------------");
+                Serial.println(F(" %"));
+                Serial.println(F("---------------------------------------"));
                 Serial.println();
             }
             

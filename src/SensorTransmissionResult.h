@@ -12,12 +12,12 @@
         int16_t RSSI;
 
         void PrintDebug(){
-            Serial.println("---------------------------------------");
-            Serial.print("Got packet from #"); Serial.print(TransmissionSource);
-            Serial.print(" [RSSI :");
+            Serial.println(F("---------------------------------------"));
+            Serial.print(F("Got packet from #")); Serial.print(TransmissionSource);
+            Serial.print(F(" [RSSI :"));
             Serial.print(RSSI);
-            Serial.println("]");
-            Serial.println("---------------------------------------");
+            Serial.println(F("]"));
+            Serial.println(F("---------------------------------------"));
             Serial.println();
             
             Data.PrintDebug();

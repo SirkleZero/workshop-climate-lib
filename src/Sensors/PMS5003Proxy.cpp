@@ -40,7 +40,7 @@ namespace Sensors {
                 if (Serial1.available() > 32) {
                     int drain = Serial1.available();
                     if (DEBUG) {
-                        Serial.print("-- Draining buffer: ");
+                        Serial.print(F("-- Draining buffer: "));
                         Serial.println(Serial1.available(), DEC);
                     }
                     for (int i = drain; i > 0; i--) {
@@ -49,12 +49,12 @@ namespace Sensors {
                 }
                 if (Serial1.available() > 0) {
                     if (DEBUG) {
-                        Serial.print("-- Available: ");
+                        Serial.print(F("-- Available: "));
                         Serial.println(Serial1.available(), DEC);
                     }
                     incomingByte = Serial1.read();
                     if (DEBUG) {
-                        Serial.print("-- READ: ");
+                        Serial.print(F("-- READ: "));
                         Serial.println(incomingByte, HEX);
                     }
                     if (!inFrame) {
@@ -72,7 +72,7 @@ namespace Sensors {
                             detectOff++;
                         }
                         else {
-                            Serial.print("-- Frame syncing... ");
+                            Serial.print(F("-- Frame syncing... "));
                             Serial.print(incomingByte, HEX);
                             if (DEBUG) {
                             }
@@ -165,24 +165,24 @@ namespace Sensors {
             this->ReadSensor(&data);
 
             Serial.println();
-            Serial.println("---------------------------------------");
-            Serial.println("Concentration Units (standard)");
-            Serial.print("PM 1.0: "); Serial.print(data.particulates.pm10_standard);
-            Serial.print("\t\tPM 2.5: "); Serial.print(data.particulates.pm25_standard);
-            Serial.print("\t\tPM 10: "); Serial.println(data.particulates.pm100_standard);
-            Serial.println("---------------------------------------");
-            Serial.println("Concentration Units (environmental)");
-            Serial.print("PM 1.0: "); Serial.print(data.particulates.pm10_env);
-            Serial.print("\t\tPM 2.5: "); Serial.print(data.particulates.pm25_env);
-            Serial.print("\t\tPM 10: "); Serial.println(data.particulates.pm100_env);
-            Serial.println("---------------------------------------");
-            Serial.print("Particles > 0.3um / 0.1L air:"); Serial.println(data.particulates.particles_03um);
-            Serial.print("Particles > 0.5um / 0.1L air:"); Serial.println(data.particulates.particles_05um);
-            Serial.print("Particles > 1.0um / 0.1L air:"); Serial.println(data.particulates.particles_10um);
-            Serial.print("Particles > 2.5um / 0.1L air:"); Serial.println(data.particulates.particles_25um);
-            Serial.print("Particles > 5.0um / 0.1L air:"); Serial.println(data.particulates.particles_50um);
-            Serial.print("Particles > 10.0 um / 0.1L air:"); Serial.println(data.particulates.particles_100um);
-            Serial.println("---------------------------------------");
+            Serial.println(F("---------------------------------------"));
+            Serial.println(F("Concentration Units (standard)"));
+            Serial.print(F("PM 1.0: ")); Serial.print(data.particulates.pm10_standard);
+            Serial.print(F("\t\tPM 2.5: ")); Serial.print(data.particulates.pm25_standard);
+            Serial.print(F("\t\tPM 10: ")); Serial.println(data.particulates.pm100_standard);
+            Serial.println(F("---------------------------------------"));
+            Serial.println(F("Concentration Units (environmental)"));
+            Serial.print(F("PM 1.0: ")); Serial.print(data.particulates.pm10_env);
+            Serial.print(F("\t\tPM 2.5: ")); Serial.print(data.particulates.pm25_env);
+            Serial.print(F("\t\tPM 10: ")); Serial.println(data.particulates.pm100_env);
+            Serial.println(F("---------------------------------------"));
+            Serial.print(F("Particles > 0.3um / 0.1L air:")); Serial.println(data.particulates.particles_03um);
+            Serial.print(F("Particles > 0.5um / 0.1L air:")); Serial.println(data.particulates.particles_05um);
+            Serial.print(F("Particles > 1.0um / 0.1L air:")); Serial.println(data.particulates.particles_10um);
+            Serial.print(F("Particles > 2.5um / 0.1L air:")); Serial.println(data.particulates.particles_25um);
+            Serial.print(F("Particles > 5.0um / 0.1L air:")); Serial.println(data.particulates.particles_50um);
+            Serial.print(F("Particles > 10.0 um / 0.1L air:")); Serial.println(data.particulates.particles_100um);
+            Serial.println(F("---------------------------------------"));
         }
     }
 }

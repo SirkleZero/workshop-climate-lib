@@ -39,12 +39,10 @@ namespace TX {
     void AdafruitIOProxy::Disconnect() {
         WiFi.disconnect();
         WiFi.end();
-
-        Serial.println("turned off WiFi");
     }
 
     void AdafruitIOProxy::Transmit(SensorData data) {
-        Serial.println("sending data to adafruit");
+        Serial.println(F("sending data to adafruit"));
         io->connect();
 
         // wait for a connection
@@ -78,23 +76,23 @@ namespace TX {
 
         this->Disconnect();
 
-        Serial.println("data sent to adafruit!");
+        Serial.println(F("data sent to adafruit!"));
     }
 
     void AdafruitIOProxy::printWiFiStatus() {
         // print the SSID of the network you're attached to:
-        Serial.print("SSID: ");
+        Serial.print(F("SSID: "));
         Serial.println(WiFi.SSID());
 
         // print your WiFi shield's IP address:
         IPAddress ip = WiFi.localIP();
-        Serial.print("IP Address: ");
+        Serial.print(F("IP Address: "));
         Serial.println(ip);
 
         // print the received signal strength:
         long rssi = WiFi.RSSI();
-        Serial.print("signal strength (RSSI):");
+        Serial.print(F("signal strength (RSSI):"));
         Serial.print(rssi);
-        Serial.println(" dBm");
+        Serial.println(F(" dBm"));
     }
 }
