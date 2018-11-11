@@ -1,8 +1,4 @@
-#include <ArduinoJson.h>
-#include <SD.h>
-#include <SPI.h>
 #include "SDCardProxy.h"
-#include "Secrets.h"
 
 namespace Configuration {
   SDCardProxy::SDCardProxy() { }
