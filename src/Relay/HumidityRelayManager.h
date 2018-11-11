@@ -1,8 +1,10 @@
 #ifndef HumidityRelayManager_h
     #define HumidityRelayManager_h
 
-    #include "..\Configuration\ControllerConfiguration.h"
+    #include <Arduino.h>
+    
     #include "..\Sensors\SensorData.h"
+    #include "..\Configuration\ControllerConfiguration.h"
     
     using namespace Configuration;
     using namespace Sensors;

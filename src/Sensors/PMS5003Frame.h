@@ -1,6 +1,7 @@
 #ifndef PMS5003Frame_h
     #define PMS5003Frame_h
 
+    #include <Arduino.h>
     #include "ParticleData.h"
 
     namespace Sensors {

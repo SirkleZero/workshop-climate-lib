@@ -1,6 +1,7 @@
 #ifndef RFM69TXProxy_h
     #define RFM69TXProxy_h
 
+    #include <Arduino.h>
     #include <RH_RF69.h>
     #include <RHReliableDatagram.h>
 

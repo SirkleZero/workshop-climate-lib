@@ -1,6 +1,7 @@
 #ifndef SensorTransmissionResult_h
     #define SensorTransmissionResult_h
 
+    #include <Arduino.h>
     #include "Sensors\SensorData.h"
 
     using namespace Sensors;

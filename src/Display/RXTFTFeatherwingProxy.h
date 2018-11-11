@@ -1,7 +1,17 @@
 #ifndef RXTFTFeatherwingProxy_h
     #define RXTFTFeatherwingProxy_h
 
+    // external dependencies
+    #include <Arduino.h>
+    #include <Adafruit_GFX.h>
     #include <Adafruit_ILI9341.h>
+
+    // include some fonts
+    #include <Fonts\FreeSansBold24pt7b.h>
+    #include <Fonts\FreeSansBold12pt7b.h>
+    #include <Fonts\FreeSansBold9pt7b.h>
+    #include <Fonts\FreeSans9pt7b.h>
+
     #include "..\Sensors\SensorData.h"
     #include "..\Rectangle.h"
 

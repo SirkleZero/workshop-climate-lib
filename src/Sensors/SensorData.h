@@ -1,5 +1,7 @@
 #ifndef SensorData_h
     #define SensorData_h
+    
+    #include <Arduino.h>
 
     #include "ClimateData.h"
     #include "ParticleData.h"

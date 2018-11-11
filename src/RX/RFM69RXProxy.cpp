@@ -1,6 +1,3 @@
-#include <SPI.h>
-#include <RH_RF69.h>
-#include <RHReliableDatagram.h>
 #include "RFM69RXProxy.h"
 
 using namespace Sensors;

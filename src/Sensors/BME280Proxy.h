@@ -1,6 +1,7 @@
 #ifndef BME280Proxy_h
     #define BME280Proxy_h
 
+    #include <Arduino.h>
     #include <Adafruit_Sensor.h>
     #include <Adafruit_BME280.h>
 
