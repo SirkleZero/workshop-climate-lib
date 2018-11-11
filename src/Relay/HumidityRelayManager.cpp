@@ -15,11 +15,11 @@ namespace Relay {
     }
 
     void HumidityRelayManager::KeepAlive() {
-
+        this->previousKeepAliveCall = millis();
     }
 
     void HumidityRelayManager::AdjustClimate(SensorData data) {
-        
+        this->KeepAlive();
 
         // figure out which mode we need to be in. Humidification or Dehumidification.
         if(data.climate.Humidity > this->configuration->MaximumHumidity){
@@ -36,11 +36,10 @@ namespace Relay {
 
     void HumidityRelayManager::EmergencyShutoff() {
         currentMillis = millis();
-        //previousKeepAliveCall
-        // previousEnableCall
-        // if (currentMillis - previousOnBoardLedMillis >= onBoardLedInterval) {
-        //     // timing elapsed
-        // }
+        if(this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit) {
+            // we exceeded our time! Shut it down!
+            this->ShutDown();
+        }
     }
 
     void HumidityRelayManager::EnableHumidifier() {
