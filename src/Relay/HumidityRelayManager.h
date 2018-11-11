@@ -15,7 +15,7 @@
                 HumidityRelayManager();
 
                 void Initialize(ControllerConfiguration *configuration);
-                void AdjustClimate(SensorData *data);
+                void AdjustClimate(SensorData data);
                 void KeepAlive();
                 
             private:

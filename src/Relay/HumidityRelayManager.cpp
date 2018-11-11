@@ -18,12 +18,12 @@ namespace Relay {
 
     }
 
-    void HumidityRelayManager::AdjustClimate(SensorData *data) {
+    void HumidityRelayManager::AdjustClimate(SensorData data) {
         // figure out which mode we need to be in. Humidification or Dehumidification.
-        if(data->climate.Humidity > this->configuration->MaximumHumidity){
+        if(data.climate.Humidity > this->configuration->MaximumHumidity){
             // it's too humid, enable the dehumidifier
             this->EnableDehumidifier();
-        } else if (data->climate.Humidity < this->configuration->MinimumHumidity){
+        } else if (data.climate.Humidity < this->configuration->MinimumHumidity){
             // it's too dry, enable the humidifier
             this->EnableHumidifier();
         } else {
