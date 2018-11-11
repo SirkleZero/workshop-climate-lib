@@ -1,5 +1,4 @@
 #include "HumidityRelayManager.h"
-#include "..\Sensors\SensorData.h"
 
 using namespace Sensors;
 
