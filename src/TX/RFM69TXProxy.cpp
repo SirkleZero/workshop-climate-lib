@@ -1,7 +1,4 @@
-#include <RH_RF69.h>
-#include <RHReliableDatagram.h>
 #include "RFM69TXProxy.h"
-#include "TXResult.h"
 
 using namespace Sensors;
 
@@ -16,9 +13,6 @@ namespace TX {
         pinMode(this->RFM69_RST, OUTPUT);
         digitalWrite(this->RFM69_RST, LOW);
 
-        Serial.println("Feather Addressed RFM69 TX Test!");
-        Serial.println();
-
         // manual reset
         digitalWrite(this->RFM69_RST, HIGH);
         delay(10);
@@ -26,14 +20,14 @@ namespace TX {
         delay(10);
 
         if (!this->rf69_manager.init()) {
-            Serial.println("RFM69 radio init failed");
+            Serial.println(F("RFM69 radio init failed"));
             while (1);
         }
-        Serial.println("RFM69 radio init OK!");
+        
         // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
         // No encryption
         if (!this->rf69.setFrequency(RF69_FREQ)) {
-            Serial.println("setFrequency failed");
+            Serial.println(F("setFrequency failed"));
         }
 
         // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
@@ -46,8 +40,6 @@ namespace TX {
         this->rf69.setEncryptionKey(key);
 
         pinMode(this->LED, OUTPUT);
-
-        Serial.print("RFM69 radio @");  Serial.print((int)this->RF69_FREQ);  Serial.println(" MHz");
     }
 
     // NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class.
@@ -63,8 +55,6 @@ namespace TX {
         memcpy(transmissionBuffer, &data, sizeof(data));
         byte dataSize = sizeof(data);
 
-        Serial.print("sending "); Serial.print(dataSize); Serial.println(" bytes of data");
-
         // Send a message to the node designated as the server
         if (this->rf69_manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, this->SERVER_ADDRESS)) {
             // Now wait for a reply from the server
@@ -74,23 +64,16 @@ namespace TX {
             if (this->rf69_manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, 2000, &from)) {
                 this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // zero out (no idea why we do this, but it works!)
 
-                Serial.print("Got reply from #");
-                Serial.print(from);
-                Serial.print(" [RSSI :");
-                Serial.print(rf69.lastRssi());
-                Serial.print("] : ");
-                Serial.println((char*)this->acknowledgementBuffer);
-
                 Blink(40, 3); //blink LED 3 times, 40ms between blinks
 
                 result.From = from;
                 result.RSSI = this->rf69.lastRssi();
                 result.TransmitSuccessful = true;
             } else {
-                Serial.println("No reply, is anyone listening?");
+                Serial.println(F("No reply, is anyone listening?"));
             }
         } else {
-            Serial.println("Sending failed (no ack)");
+            Serial.println(F("Sending failed (no ack)"));
         }
 
         return result;

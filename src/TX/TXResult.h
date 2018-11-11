@@ -8,16 +8,13 @@
             int16_t RSSI;
 
             void PrintDebug(){
-                Serial.println("---------------------------------------");
-                Serial.print("TransmitSuccessful = ");
-                Serial.println(TransmitSuccessful);
+                Serial.println(F("---------------------------------------"));
+                Serial.print(F("TransmitSuccessful = ")); Serial.println(TransmitSuccessful);
 
-                Serial.print("From = ");
-                Serial.println(From);
+                Serial.print(F("From = ")); Serial.println(From);
 
-                Serial.print("RSSI = ");
-                Serial.println(RSSI);
-                Serial.println("---------------------------------------");
+                Serial.print(F("RSSI = ")); Serial.println(RSSI);
+                Serial.println(F("---------------------------------------"));
                 Serial.println();
             }
         };

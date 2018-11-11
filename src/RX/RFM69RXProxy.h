@@ -22,7 +22,7 @@
                 const byte RFM69_CS = 12;
                 const byte RFM69_RST = 11;
                 const byte RFM69_IRQ = 13;
-                const byte RFM69_IRQN = digitalPinToInterrupt(RFM69_IRQ);
+                //const byte RFM69_IRQN = digitalPinToInterrupt(RFM69_IRQ);
 
                 RH_RF69 rf69;
                 RHReliableDatagram manager;

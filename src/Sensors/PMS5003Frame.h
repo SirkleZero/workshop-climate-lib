@@ -1,6 +1,8 @@
 #ifndef PMS5003Frame_h
     #define PMS5003Frame_h
 
+    #include "ParticleData.h"
+
     namespace Sensors {
         struct PMS5003Frame {
             uint8_t  frameHeader[2];

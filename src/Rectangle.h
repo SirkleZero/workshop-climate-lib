@@ -8,25 +8,25 @@
         int16_t height;
         int16_t width;
 
-        void PrintDebug(){
-            Serial.print("x: ");
+        virtual void PrintDebug(){
+            Serial.print(F("x: "));
             Serial.println(x);
 
-            Serial.print("y: ");
+            Serial.print(F("y: "));
             Serial.println(y);
 
-            Serial.print("height: ");
+            Serial.print(F("height: "));
             Serial.println(height);
 
-            Serial.print("width: ");
+            Serial.print(F("width: "));
             Serial.println(width);
         }
     };
 
     struct AqiScaleRectangle : Rectangle {
-        AqiScaleRectangle(int16_t x, int16_t y, int16_t width, int16_t height, char *label, uint16_t color, int16_t minIndex, int16_t maxIndex) : Rectangle(x, y, width, height), Label(label), Color(color), MinIndex(minIndex), MaxIndex(maxIndex) { }
+        AqiScaleRectangle(int16_t x, int16_t y, int16_t width, int16_t height, const char *label, uint16_t color, int16_t minIndex, int16_t maxIndex) : Rectangle(x, y, width, height), Label(label), Color(color), MinIndex(minIndex), MaxIndex(maxIndex) { }
 
-        char *Label;
+        const char *Label;
         uint16_t Color;
         int16_t MinIndex;
         int16_t MaxIndex;

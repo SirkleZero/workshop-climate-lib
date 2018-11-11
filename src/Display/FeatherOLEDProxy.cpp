@@ -1,15 +1,19 @@
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 #include "FeatherOLEDProxy.h"
-#include "..\Sensors\SensorData.h"
-#include "..\TX\TXResult.h"
 
 using namespace Sensors;
 using namespace TX;
 
 namespace Display {
+    // these three variables exist in global scope because they are used to handle the interrupts for the
+    // buttons used by the application. displayMode and previousData exist here because of the need to have
+    // the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it.
+    // If they were an instance of it, then we'd have problems accessing their values.
+    FeatherOLEDProxy* interruptThis;
+    ButtonMode displayMode = ButtonMode::Default;
+    SensorData previousData;
+
+    // well, this apparently needs to be global. Don't know why, but I can't get it to work if it's part
+    // of the class. Lame.
     Adafruit_SSD1306 display = Adafruit_SSD1306();
 
     #if defined(ESP8266)
@@ -45,33 +49,30 @@ namespace Display {
     #endif
 
     #if (SSD1306_LCDHEIGHT != 32)
-        #error("Height incorrect, please fix Adafruit_SSD1306.h!");
-    #endif
-
-    // global variable (display namespace) to allow for a pointer for the button interrupt.
-    FeatherOLEDProxy* interruptThis;
+        #error(F("Height incorrect, please fix Adafruit_SSD1306.h!"));
+    #endif    
 
     FeatherOLEDProxy::FeatherOLEDProxy() { }
 
     void FeatherOLEDProxy::ButtonA(){
-        if(displayMode != FeatherOLEDProxy::A) {
-            displayMode = FeatherOLEDProxy::A;
+        if(displayMode != ButtonMode::A) {
+            displayMode = ButtonMode::A;
             this->Clear();
             PrintSensors(previousData);
         }
     }
 
     void FeatherOLEDProxy::ButtonB() {
-        if(displayMode != FeatherOLEDProxy::B) {
-            displayMode = FeatherOLEDProxy::B;
+        if(displayMode != ButtonMode::B) {
+            displayMode = ButtonMode::B;
             this->Clear();
             PrintSensors(previousData);
         }
     }
 
     void FeatherOLEDProxy::ButtonC() {
-        if(displayMode != FeatherOLEDProxy::C) {
-            displayMode = FeatherOLEDProxy::C;
+        if(displayMode != ButtonMode::C) {
+            displayMode = ButtonMode::C;
             this->Clear();
             PrintSensors(previousData);
         }
@@ -90,12 +91,12 @@ namespace Display {
     }
 
     void FeatherOLEDProxy::Initialize(){
-        Serial.println("OLED FeatherWing test");
+        Serial.println(F("OLED FeatherWing test"));
         // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
         display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
 
         // init done
-        Serial.println("OLED begun");
+        Serial.println(F("OLED begun"));
 
         // display the adafruit splash screen
         display.display();
@@ -121,7 +122,7 @@ namespace Display {
         display.setTextColor(WHITE);
         display.setCursor(0,0);
 
-        display.println("waiting on sensors...");
+        display.println(F("waiting on sensors..."));
         display.display();
     }
 
@@ -130,14 +131,14 @@ namespace Display {
 
         switch(displayMode){
             case A:
-                // print out the temperature
-                this->PrintTemperature(&previousData, BLACK);
-                this->PrintTemperature(&data, WHITE);
-
                 //print out the humidity
                 this->PrintHumidity(&previousData, BLACK);
                 this->PrintHumidity(&data, WHITE);
 
+                // print out the temperature
+                this->PrintTemperature(&previousData, BLACK);
+                this->PrintTemperature(&data, WHITE);
+                
                 //print out the pressure
                 this->PrintPressure(&previousData, BLACK);
                 this->PrintPressure(&data, WHITE);
@@ -152,7 +153,7 @@ namespace Display {
                 break;
             case Default:
                 // psuedo recursion
-                displayMode = FeatherOLEDProxy::A;
+                displayMode = ButtonMode::A;
                 PrintSensors(data);
                 break;
         }
@@ -161,57 +162,57 @@ namespace Display {
         previousData = data;
     }
 
-    void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
+    void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color) {
         display.setCursor(0,0);
         display.setTextColor(color);
-        display.print("Temperature: ");
-        display.print(data->climate.Temperature);
-        display.print(" ");
-        display.print((char)247); // this is the ascii degrees character as displayed by the feather oled display
-        display.print("F");
+        display.print(F("Humidity: "));
+        display.print(data->climate.Humidity);
+        display.print(F("% RH"));
     }
 
-    void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color) {
+    void FeatherOLEDProxy::PrintTemperature(SensorData *data, uint16_t color) {
         display.setCursor(0,8);
         display.setTextColor(color);
-        display.print("Humidity: ");
-        display.print(data->climate.Humidity);
-        display.print("% RH");
+        display.print(F("Temperature: "));
+        display.print(data->climate.Temperature);
+        display.print(F(" "));
+        display.print((char)247); // this is the ascii degrees character as displayed by the feather oled display
+        display.print(F("F"));
     }
 
     void FeatherOLEDProxy::PrintPressure(SensorData *data, uint16_t color) {
         display.setCursor(0,16);
         display.setTextColor(color);
-        display.print("Pressure: ");
+        display.print(F("Pressure: "));
         display.print(data->climate.Pressure / 100.0F);
-        display.print(" hPa");
+        display.print(F(" hPa"));
     }
 
     void FeatherOLEDProxy::PrintParticulates(SensorData *data, uint16_t color){
         display.setTextColor(color);
 
         display.setCursor(0, 0);
-        display.println(":Values in microns:");
+        display.println(F(":Values in microns:"));
 
         display.setCursor(0, 8);
-        display.print(".3u: ");
+        display.print(F(".3u: "));
         display.print(data->particulates.particles_03um);
-        display.print(" ");
-        display.print(".5u: ");
+        display.print(F(" "));
+        display.print(F(".5u: "));
         display.print(data->particulates.particles_05um);
 
         display.setCursor(0, 16);
-        display.print("1u: ");
+        display.print(F("1u: "));
         display.print(data->particulates.particles_10um);
-        display.print(" ");
-        display.print("2.5u: ");
+        display.print(F(" "));
+        display.print(F("2.5u: "));
         display.print(data->particulates.particles_25um);
 
         display.setCursor(0, 24);
-        display.print("5u: ");
+        display.print(F("5u: "));
         display.print(data->particulates.particles_50um);
-        display.print(" ");
-        display.print("10u: ");
+        display.print(F(" "));
+        display.print(F("10u: "));
         display.print(data->particulates.particles_100um);
 
         //display.startscrolldiagright(0x0F, 0x0F);
@@ -223,10 +224,10 @@ namespace Display {
         display.setCursor(0, 24);
 
         if(result->TransmitSuccessful){
-            display.print("RSSI: ");
+            display.print(F("RSSI: "));
             display.println(result->RSSI);
         }else{
-            display.println("Transmission failed!");
+            display.println(F("Transmission failed!"));
         }
 
         display.display();

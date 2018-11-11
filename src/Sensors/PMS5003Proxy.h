@@ -1,8 +1,12 @@
 #ifndef PMS5003Proxy_h
     #define PMS5003Proxy_h
 
-    #include "SensorData.h"
+    #include <Arduino.h>
+    #include <Wire.h>
 
+    #include "PMS5003Frame.h"
+    #include "SensorData.h"
+    
     namespace Sensors {
         namespace PMS5003 {        
             class PMS5003Proxy {

@@ -5,9 +5,12 @@ https://io.adafruit.com/api/docs/
 #ifndef AdafruitIOProxy_h
     #define AdafruitIOProxy_h
 
-    #include "AdafruitIO_WiFi.h"
+    #include <AdafruitIO_WiFi.h>
+    #include <WiFi101.h>
+    
     #include "..\Sensors\SensorData.h"
     #include "..\Configuration\Secrets.h"
+    #include "IoTUploadResult.h"
 
     using namespace Sensors;
     using namespace Configuration;
@@ -18,8 +21,11 @@ https://io.adafruit.com/api/docs/
                 AdafruitIOProxy();
                 ~AdafruitIOProxy();
                 void Initialize(Secrets *secrets);
-                void Transmit(SensorData data);
+                IoTUploadResult Transmit(SensorData data);
             private:
+                const byte SecondsToWait = 15;
+                const unsigned long ConnectionDelay = 500;
+
                 Secrets *secrets;
                 AdafruitIO_WiFi *io;
 
@@ -39,8 +45,7 @@ https://io.adafruit.com/api/docs/
                 AdafruitIO_Feed *particles_25um;
                 AdafruitIO_Feed *particles_50um;
                 AdafruitIO_Feed *particles_100um;
-
-                void printWiFiStatus();
+                
                 void Disconnect();
         };
     }

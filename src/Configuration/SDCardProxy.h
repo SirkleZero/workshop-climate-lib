@@ -17,7 +17,6 @@
             private:
                 const char *secretsFileName = "/SECRET~1.JSO";  // <- SD library uses 8.3 filenames
                 const char *controllerConfigurationFileName = "CONTRO~1.JSO";
-                Secrets secrets;
         };
     }
 #endif

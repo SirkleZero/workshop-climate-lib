@@ -13,9 +13,18 @@
                 RXTFTFeatherwingProxy();
                 void Initialize();
                 void PrintSensors(SensorData data);
+                void PrintFreeMemory(int freeMemory);
                 void DrawLayout();
                 void Clear();
             private:
+                // labels
+                const char *aqiScaleGoodLabel = "Good";
+                const char *aqiScaleModerateLabel = "Moderate";
+                const char *aqiScaleUnhealthySensitiveLabel = "Sensitive";
+                const char *aqiScaleUnhealthyLabel = "Unhealthy";
+                const char *aqiScaleVeryUnhealthyLabel = "Very Unhealthy";
+                const char *aqiScaleHazardousLabel = "Hazardous";
+
                 // colors
                 const uint16_t readingsTextColor = 0x5DDF;
                 const uint16_t layouttextColor = ILI9341_WHITE;
@@ -34,6 +43,7 @@
                 uint16_t height;
                 uint16_t width;
                 SensorData previousData;
+                int previousFreeMemory = 0;
 
                 Rectangle humidityArea;
                 Rectangle temperatureArea;
@@ -54,6 +64,7 @@
                 void PrintParticulates(SensorData *data, uint16_t color);
 
                 int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
+                int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
                 void DrawAirQualityIndicator(SensorData *data, bool overwritting);
         };
     }

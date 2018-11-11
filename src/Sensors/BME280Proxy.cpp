@@ -1,4 +1,3 @@
-#include <Adafruit_BME280.h>
 #include "BME280Proxy.h"
 
 namespace Sensors {
@@ -10,18 +9,16 @@ namespace Sensors {
         void BME280Proxy::Initialize(){
             // initialize the BME280 sensor          
             if (!bme.begin(&Wire)) {
-                Serial.println("Could not find a valid BME280 sensor, check wiring!");
+                Serial.println(F("Could not find a valid BME280 sensor, check wiring!"));
                 while (1);
             }
 
-            // configure the BME280 sensor
+            // configure the BME280 sensor, // suggested rate is 1/60Hz (1s)
             bme.setSampling(Adafruit_BME280::MODE_FORCED,
                         Adafruit_BME280::SAMPLING_X1,   // temperature
                         Adafruit_BME280::SAMPLING_X1, // pressure
                         Adafruit_BME280::SAMPLING_X1,   // humidity
                         Adafruit_BME280::FILTER_OFF);
-
-            // suggested rate is 1/60Hz (1s)
         }
 
         bool BME280Proxy::ReadSensor(SensorData *data){
@@ -52,20 +49,20 @@ namespace Sensors {
             SensorData data;
             this->ReadSensor(&data);
 
-            Serial.print("Temperature = ");
+            Serial.print(F("Temperature = "));
             Serial.print(data.climate.Temperature);
-            Serial.print(" *");
+            Serial.print(F(" *"));
             Serial.println(this->units);
 
-            Serial.print("Pressure = ");
+            Serial.print(F("Pressure = "));
             Serial.print(data.climate.Pressure / 100.0F);
-            Serial.println(" hPa"); // pressure in pascals
+            Serial.println(F(" hPa")); // pressure in pascals
 
-            Serial.print("Humidity = ");
+            Serial.print(F("Humidity = "));
             Serial.print(data.climate.Humidity + humidityOffset);
-            Serial.println(" %");
+            Serial.println(F(" %"));
 
-            Serial.println("");
+            Serial.println();
         }
     }
 }

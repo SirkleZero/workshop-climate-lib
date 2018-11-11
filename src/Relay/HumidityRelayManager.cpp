@@ -32,7 +32,5 @@ namespace Relay {
             // digitalWrite(this->relayControlPin, this->relayState);
             Serial.println("relay off");
         }
-
-        
     }
 }

@@ -1,6 +1,11 @@
 #ifndef FeatherOLEDProxy_h
     #define FeatherOLEDProxy_h
 
+    #include <SPI.h>
+    #include <Wire.h>
+    #include <Adafruit_GFX.h>
+    #include <Adafruit_SSD1306.h>
+    
     #include "..\Sensors\SensorData.h"
     #include "..\TX\TXResult.h"
 
@@ -8,15 +13,15 @@
     using namespace TX;
 
     namespace Display {
+        enum ButtonMode {
+            Default = 0x00,
+            A = 0x01,
+            B = 0x02,
+            C = 0x03
+        };
+
         class FeatherOLEDProxy {
             public:
-                enum ButtonMode {
-                    Default = 0x00,
-                    A = 0x01,
-                    B = 0x02,
-                    C = 0x03
-                };
-
                 FeatherOLEDProxy();
 
                 void Initialize();
@@ -30,9 +35,6 @@
                 void ButtonC();
                 
             private:
-                FeatherOLEDProxy::ButtonMode displayMode = FeatherOLEDProxy::Default;
-                SensorData previousData;
-
                 void PrintTemperature(SensorData *data, uint16_t color);
                 void PrintHumidity(SensorData *data, uint16_t color);
                 void PrintPressure(SensorData *data, uint16_t color);

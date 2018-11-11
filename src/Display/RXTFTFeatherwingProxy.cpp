@@ -67,17 +67,16 @@ namespace Display {
         particulateArea(150, 28, 170, 184),
         aqiLabelArea(150, 0, 170, 28),
         aqiIndicatorArea(0, 212, 320, 28),
-        aqiScaleGoodArea(160, 216, 25, 20, "Good", aqiGood, 0, 50),
-        aqiScaleModerateArea(185, 216, 25, 20, "Moderate", aqiModerate, 51, 100),
-        aqiScaleUnhealthySensitiveArea(210, 216, 25, 20, "Sensitive", aqiUnhealthySensitive, 101, 150),
-        aqiScaleUnhealthyArea(235, 216, 25, 20, "Unhealthy", aqiUnhealthy, 151, 200),
-        aqiScaleVeryUnhealthyArea(260, 216, 25, 20, "Very Unhealthy", aqiVeryUnhealthy, 201, 300),
-        aqiScaleHazardousArea(285, 216, 25, 20, "Hazardous", aqiHazardous, 301, 500),
+        aqiScaleGoodArea(160, 216, 25, 20, aqiScaleGoodLabel, aqiGood, 0, 50),
+        aqiScaleModerateArea(185, 216, 25, 20, aqiScaleModerateLabel, aqiModerate, 51, 100),
+        aqiScaleUnhealthySensitiveArea(210, 216, 25, 20, aqiScaleUnhealthySensitiveLabel, aqiUnhealthySensitive, 101, 150),
+        aqiScaleUnhealthyArea(235, 216, 25, 20, aqiScaleUnhealthyLabel, aqiUnhealthy, 151, 200),
+        aqiScaleVeryUnhealthyArea(260, 216, 25, 20, aqiScaleVeryUnhealthyLabel, aqiVeryUnhealthy, 201, 300),
+        aqiScaleHazardousArea(285, 216, 25, 20, aqiScaleHazardousLabel, aqiHazardous, 301, 500),
         aqiScaleStrokeArea(159, 216, 152, 20)
     {}
 
     void RXTFTFeatherwingProxy::Initialize() {
-        Serial.println("FeatherWing TFT Test!");
         tft.begin();
 
         noInterrupts();
@@ -143,6 +142,31 @@ namespace Display {
         
         // stroke the scale
         tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, layoutlineColor);
+
+        interrupts();
+    }
+
+    void RXTFTFeatherwingProxy::PrintFreeMemory(int freeMemory) {
+        noInterrupts();
+
+        tft.setFont(&FreeSansBold9pt7b);
+        tft.setTextSize(1);
+
+        char *memoryLabel = "Free SRAM: ";
+
+        // overwrite
+        tft.setCursor(156, 120);
+        tft.setTextColor(backgroundColor);
+        tft.print(memoryLabel);
+        tft.print(previousFreeMemory);
+
+        // print the value
+        tft.setCursor(156, 120);
+        tft.setTextColor(readingsTextColor);
+        tft.print(memoryLabel);
+        tft.print(freeMemory);
+
+        this->previousFreeMemory = freeMemory;
 
         interrupts();
     }
@@ -246,7 +270,6 @@ namespace Display {
 
     void RXTFTFeatherwingProxy::DrawAirQualityIndicator(SensorData *data, bool overwritting) {
         uint16_t aqi = data->particulates.pm25_standard;
-        char *aqiIndexLabel;
         uint16_t color;
         uint16_t indicatorColor; // the color of the verticle indicator
         int16_t indicatorXPosition = 0; // the verticle indicator line's x position
@@ -277,7 +300,6 @@ namespace Display {
             tempScaleArea = &aqiScaleHazardousArea;
         }
 
-        aqiIndexLabel = tempScaleArea->Label;
         color = tempScaleArea->Color;
         indicatorXPosition = tempScaleArea->GetVerticalIndicatorLocation(aqi);
 
@@ -292,9 +314,9 @@ namespace Display {
         tft.setFont(&FreeSans9pt7b);
         tft.setTextSize(1);
         tft.setTextColor(color);
-        centeredTextXPosition = GetCenteredPosition(aqiIndexLabel, 0, 231, 160);
+        centeredTextXPosition = GetCenteredPosition(tempScaleArea->Label, 0, 231, 160);
         tft.setCursor(centeredTextXPosition, 231);
-        tft.println(aqiIndexLabel);
+        tft.println(tempScaleArea->Label);
 
         // draw an indicator line on the scale. 160 is the beginning of the scale, and we
         // increment up from that. Only draw the indicator line if we fit within our aqi scale
@@ -305,6 +327,15 @@ namespace Display {
     }
 
     int16_t RXTFTFeatherwingProxy::GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth) {
+        // values used for centering text in display areas (rectangles)
+        int16_t  x1, y1;
+        uint16_t textWidth, textHeight;
+
+        tft.getTextBounds(text, x, y, &x1, &y1, &textWidth, &textHeight);
+        return ((areaWidth - textWidth) / 2) + x;
+    }
+
+    int16_t RXTFTFeatherwingProxy::GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth) {
         // values used for centering text in display areas (rectangles)
         int16_t  x1, y1;
         uint16_t textWidth, textHeight;
