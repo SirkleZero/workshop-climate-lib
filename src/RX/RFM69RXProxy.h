@@ -1,7 +1,6 @@
 #ifndef RFM69RXProxy_h
     #define RFM69RXProxy_h
-
-    #include <SPI.h>
+    
     #include <RH_RF69.h>
     #include <RHReliableDatagram.h>
     #include "..\Sensors\SensorData.h"
