@@ -30,6 +30,7 @@
                 const int DehumidifierControlPin = 19;
 
                 ControllerConfiguration *configuration;
+                byte indicatorEnabled = false;
 
                 unsigned long currentMillis = 0; // stores the current value of millis()
                 unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
@@ -41,7 +42,9 @@
                 void DisableDehumidifier();
 
                 void ShutDown();
-                void SetIndicatorColor(int red, int green, int blue);           
+                void SetIndicatorColor(int red, int green, int blue);
+                void DisableIndicator();
+                void EnableIndicator();     
         };
     }
 

@@ -11,13 +11,10 @@ namespace Relay {
         // relay control pins
         pinMode(HumidityRelayManager::HumidifierControlPin, OUTPUT);
         pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
+        
+        this->EnableIndicator();
 
-        // relay indicator pins
-        pinMode(HumidityRelayManager::RedPin, OUTPUT);
-        pinMode(HumidityRelayManager::GreenPin, OUTPUT);
-        pinMode(HumidityRelayManager::BluePin, OUTPUT);
-
-        this->SetIndicatorColor(0, 255, 0);
+        this->SetIndicatorColor(255, 153, 0); // orange
     }
 
     void HumidityRelayManager::KeepAlive() {
@@ -30,9 +27,11 @@ namespace Relay {
         // figure out which mode we need to be in. Humidification or Dehumidification.
         if(data.climate.Humidity > this->configuration->MaximumHumidity){
             // it's too humid, enable the dehumidifier
+            this->DisableHumidifier();
             this->EnableDehumidifier();
         } else if (data.climate.Humidity < this->configuration->MinimumHumidity){
             // it's too dry, enable the humidifier
+            this->DisableDehumidifier();
             this->EnableHumidifier();
         } else {
             // goldilocks zone, shut them both down
@@ -84,8 +83,30 @@ namespace Relay {
             blue = 255 - blue;
         #endif
 
+        this->EnableIndicator();
+
         analogWrite(HumidityRelayManager::RedPin, red);
         analogWrite(HumidityRelayManager::GreenPin, green);
-        analogWrite(HumidityRelayManager::BluePin, blue);  
+        analogWrite(HumidityRelayManager::BluePin, blue);
+    }
+
+    void HumidityRelayManager::DisableIndicator() {
+        if(this->indicatorEnabled) {
+            pinMode(HumidityRelayManager::RedPin, INPUT);
+            pinMode(HumidityRelayManager::GreenPin, INPUT);
+            pinMode(HumidityRelayManager::BluePin, INPUT);
+
+            this->indicatorEnabled = false;
+        }
+    }
+
+    void HumidityRelayManager::EnableIndicator() {
+        if(!this->indicatorEnabled) {
+            pinMode(HumidityRelayManager::RedPin, OUTPUT);
+            pinMode(HumidityRelayManager::GreenPin, OUTPUT);
+            pinMode(HumidityRelayManager::BluePin, OUTPUT);
+
+            this->indicatorEnabled = true;
+        }
     }
 }
