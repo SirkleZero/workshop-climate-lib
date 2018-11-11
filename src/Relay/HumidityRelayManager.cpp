@@ -17,7 +17,7 @@ namespace Relay {
         pinMode(HumidityRelayManager::GreenPin, OUTPUT);
         pinMode(HumidityRelayManager::BluePin, OUTPUT);
 
-        this->SetIndicatorColor(255, 0, 0);  // yellow
+        this->SetIndicatorColor(0, 255, 0);
     }
 
     void HumidityRelayManager::KeepAlive() {
@@ -44,34 +44,35 @@ namespace Relay {
         currentMillis = millis();
         if(this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit) {
             // we exceeded our time! Shut it down!
+            Serial.println(F("HumidityRelayManager: runaway limit reached!"));
             this->ShutDown();
         }
     }
 
     void HumidityRelayManager::EnableHumidifier() {
-        Serial.println(F("HumidityRelayManager: Enabling the humidifier"));
+        //Serial.println(F("HumidityRelayManager: Enabling the humidifier"));
         this->SetIndicatorColor(0, 255, 255);  // aqua
         digitalWrite(HumidityRelayManager::HumidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableHumidifier() {
-        Serial.println(F("HumidityRelayManager: Disabling the humidifier"));
+        //Serial.println(F("HumidityRelayManager: Disabling the humidifier"));
         digitalWrite(HumidityRelayManager::HumidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::EnableDehumidifier() {
-        Serial.println(F("HumidityRelayManager: Enabling the dehumidifier"));
+        //Serial.println(F("HumidityRelayManager: Enabling the dehumidifier"));
         this->SetIndicatorColor(255, 0, 0);  // red
         digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableDehumidifier() {
-        Serial.println(F("HumidityRelayManager: Disabling the dehumidifier"));
+        //Serial.println(F("HumidityRelayManager: Disabling the dehumidifier"));
         digitalWrite(HumidityRelayManager::DehumidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::ShutDown() {
-        Serial.println(F("HumidityRelayManager: Goldilocks! Shutting down humidifier AND dehumidifier!"));
+        //Serial.println(F("HumidityRelayManager: Goldilocks! Shutting down humidifier AND dehumidifier!"));
         this->DisableHumidifier();
         this->DisableDehumidifier();
     }

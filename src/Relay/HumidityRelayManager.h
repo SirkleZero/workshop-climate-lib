@@ -26,8 +26,8 @@
                 const int RedPin = 15;
                 const int GreenPin = 16;
                 const int BluePin = 17;
-                const int HumidifierControlPin = 5;
-                const int DehumidifierControlPin = 3;
+                const int HumidifierControlPin = 18;
+                const int DehumidifierControlPin = 19;
 
                 ControllerConfiguration *configuration;
 
