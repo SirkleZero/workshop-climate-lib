@@ -41,7 +41,7 @@ namespace TX {
     IoTUploadResult AdafruitIOProxy::Transmit(SensorData data) {
         IoTUploadResult result;
 
-        Serial.println(F("sending data to adafruit"));
+        Serial.println(F("connecting to wifi via Adafruit IO library"));
         io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
 
         // wait for a connection, but not forever yo! 15 seconds should be good enough?
@@ -61,10 +61,12 @@ namespace TX {
             return result;
         }
 
-        Serial.println(io->statusText());
-        IPAddress ip = WiFi.localIP();
-        Serial.print(F("Local IP: ")); Serial.println(ip);
-        Serial.print(F("WiFi Status: ")); Serial.println(WiFi.status());        
+        result.SSID = WiFi.SSID();
+        result.RSSI = WiFi.RSSI();
+        result.LocalIP = WiFi.localIP();
+        result.GatewayIP = WiFi.gatewayIP();
+        result.SubnetMask = WiFi.subnetMask();
+        result.ErrorMessage = io->statusText();
 
         // send climate information to Adafruit IO
         temperatureFeed->save(data.climate.Temperature);
@@ -85,6 +87,7 @@ namespace TX {
         particles_50um->save(data.particulates.particles_50um);
         particles_100um->save(data.particulates.particles_100um);
 
+        Serial.println(F("sending data to Adafruit IO..."));
         io->run(); // send the queued up data points
 
         this->Disconnect();
