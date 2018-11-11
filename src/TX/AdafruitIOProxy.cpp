@@ -47,26 +47,20 @@ namespace TX {
         // wait for a connection, but not forever yo! 15 seconds should be good enough?
         // calling io->status() actually does a lot behind the scenes, and can return
         // quite a few different status's. We only care about being connected though.
-        byte secondsToWait = 15;
-        unsigned long connectionDelay = 500;
-        float iterations = secondsToWait * (1000 / connectionDelay);
+        //byte secondsToWait = 15;
+        //unsigned long connectionDelay = 500;
+        float iterations = AdafruitIOProxy::SecondsToWait * (1000 / AdafruitIOProxy::ConnectionDelay);
         while (io->status() < AIO_CONNECTED && iterations > 0) {
             Serial.print(F("."));
-            delay(connectionDelay);
+            delay(AdafruitIOProxy::ConnectionDelay);
             iterations--;
         }
 
         if(iterations <= 0) {
             // we exceeded our timeout period. return a failure.
+            result.ErrorMessage = io->statusText();
             return result;
         }
-
-        result.SSID = WiFi.SSID();
-        result.RSSI = WiFi.RSSI();
-        result.LocalIP = WiFi.localIP();
-        result.GatewayIP = WiFi.gatewayIP();
-        result.SubnetMask = WiFi.subnetMask();
-        result.ErrorMessage = io->statusText();
 
         // send climate information to Adafruit IO
         temperatureFeed->save(data.climate.Temperature);
@@ -88,31 +82,23 @@ namespace TX {
         particles_100um->save(data.particulates.particles_100um);
 
         Serial.println(F("sending data to Adafruit IO..."));
-        io->run(); // send the queued up data points
 
-        this->Disconnect();
+        // send the queued up data points. run commits the transaction (essentially).
+        io->run();
+        result.IsSuccess = true;
 
         Serial.println(F("data sent to adafruit!"));
 
-        result.IsSuccess = true;
+        // get information about the wifi connection for use on the display
+        result.SSID = WiFi.SSID();
+        result.RSSI = WiFi.RSSI();
+        result.LocalIP = WiFi.localIP();
+        result.GatewayIP = WiFi.gatewayIP();
+        result.SubnetMask = WiFi.subnetMask();
+        result.ErrorMessage = F("");
 
+        this->Disconnect();
+        
         return result;
-    }
-
-    void AdafruitIOProxy::printWiFiStatus() {
-        // print the SSID of the network you're attached to:
-        Serial.print(F("SSID: "));
-        Serial.println(WiFi.SSID());
-
-        // print your WiFi shield's IP address:
-        IPAddress ip = WiFi.localIP();
-        Serial.print(F("IP Address: "));
-        Serial.println(ip);
-
-        // print the received signal strength:
-        long rssi = WiFi.RSSI();
-        Serial.print(F("signal strength (RSSI):"));
-        Serial.print(rssi);
-        Serial.println(F(" dBm"));
     }
 }

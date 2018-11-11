@@ -23,6 +23,9 @@ https://io.adafruit.com/api/docs/
                 void Initialize(Secrets *secrets);
                 IoTUploadResult Transmit(SensorData data);
             private:
+                const byte SecondsToWait = 15;
+                const unsigned long ConnectionDelay = 500;
+
                 Secrets *secrets;
                 AdafruitIO_WiFi *io;
 
@@ -42,8 +45,7 @@ https://io.adafruit.com/api/docs/
                 AdafruitIO_Feed *particles_25um;
                 AdafruitIO_Feed *particles_50um;
                 AdafruitIO_Feed *particles_100um;
-
-                void printWiFiStatus();
+                
                 void Disconnect();
         };
     }
