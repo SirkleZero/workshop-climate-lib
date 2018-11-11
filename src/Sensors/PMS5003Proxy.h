@@ -1,9 +1,6 @@
 #ifndef PMS5003Proxy_h
     #define PMS5003Proxy_h
 
-    #include <Arduino.h>
-    #include <Wire.h>
-
     #include "PMS5003Frame.h"
     #include "SensorData.h"
     
