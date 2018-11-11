@@ -19,6 +19,8 @@ namespace Relay {
     }
 
     void HumidityRelayManager::AdjustClimate(SensorData data) {
+        currentMillis = millis();
+        
         // figure out which mode we need to be in. Humidification or Dehumidification.
         if(data.climate.Humidity > this->configuration->MaximumHumidity){
             // it's too humid, enable the dehumidifier
