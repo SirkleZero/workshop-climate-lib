@@ -11,6 +11,9 @@
 
     namespace Relay {
         class HumidityRelayManager {
+            //uncomment this line if using a Common Anode LED
+            #define COMMON_ANODE
+
             public:
                 HumidityRelayManager();
 
@@ -20,12 +23,13 @@
                 void EmergencyShutoff();
                 
             private:
-                ControllerConfiguration *configuration;
+                const int RedPin = 15;
+                const int GreenPin = 16;
+                const int BluePin = 17;
+                const int HumidifierControlPin = 5;
+                const int DehumidifierControlPin = 3;
 
-                const int humidificationModeLedPin = LED_BUILTIN;
-                const int dehumidificationModeLedPin = LED_BUILTIN;
-                const int humidifierControlPin = 5;
-                const int dehumidifierControlPin = 3;
+                ControllerConfiguration *configuration;
 
                 unsigned long currentMillis = 0; // stores the current value of millis()
                 unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
@@ -36,7 +40,8 @@
                 void EnableDehumidifier();
                 void DisableDehumidifier();
 
-                void ShutDown();                
+                void ShutDown();
+                void SetIndicatorColor(int red, int green, int blue);           
         };
     }
 

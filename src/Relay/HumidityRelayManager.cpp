@@ -8,10 +8,16 @@ namespace Relay {
     void HumidityRelayManager::Initialize(ControllerConfiguration *configuration) {
         this->configuration = configuration;
 
-        pinMode(this->humidificationModeLedPin, OUTPUT);
-        pinMode(this->dehumidificationModeLedPin, OUTPUT);
-        pinMode(this->humidifierControlPin, OUTPUT);
-        pinMode(this->dehumidifierControlPin, OUTPUT);
+        // relay control pins
+        pinMode(HumidityRelayManager::HumidifierControlPin, OUTPUT);
+        pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
+
+        // relay indicator pins
+        pinMode(HumidityRelayManager::RedPin, OUTPUT);
+        pinMode(HumidityRelayManager::GreenPin, OUTPUT);
+        pinMode(HumidityRelayManager::BluePin, OUTPUT);
+
+        this->SetIndicatorColor(255, 0, 0);  // yellow
     }
 
     void HumidityRelayManager::KeepAlive() {
@@ -44,31 +50,41 @@ namespace Relay {
 
     void HumidityRelayManager::EnableHumidifier() {
         Serial.println(F("HumidityRelayManager: Enabling the humidifier"));
-        digitalWrite(this->humidificationModeLedPin, HIGH);
-        digitalWrite(this->humidifierControlPin, HIGH);
+        this->SetIndicatorColor(0, 255, 255);  // aqua
+        digitalWrite(HumidityRelayManager::HumidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableHumidifier() {
         Serial.println(F("HumidityRelayManager: Disabling the humidifier"));
-        digitalWrite(this->humidificationModeLedPin, LOW);
-        digitalWrite(this->humidifierControlPin, LOW);
+        digitalWrite(HumidityRelayManager::HumidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::EnableDehumidifier() {
         Serial.println(F("HumidityRelayManager: Enabling the dehumidifier"));
-        digitalWrite(this->dehumidificationModeLedPin, HIGH);
-        digitalWrite(this->dehumidifierControlPin, HIGH);
+        this->SetIndicatorColor(255, 0, 0);  // red
+        digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableDehumidifier() {
         Serial.println(F("HumidityRelayManager: Disabling the dehumidifier"));
-        digitalWrite(this->dehumidificationModeLedPin, LOW);
-        digitalWrite(this->dehumidifierControlPin, LOW);
+        digitalWrite(HumidityRelayManager::DehumidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::ShutDown() {
         Serial.println(F("HumidityRelayManager: Goldilocks! Shutting down humidifier AND dehumidifier!"));
         this->DisableHumidifier();
         this->DisableDehumidifier();
+    }
+
+    void HumidityRelayManager::SetIndicatorColor(int red, int green, int blue) {
+        #ifdef COMMON_ANODE
+            red = 255 - red;
+            green = 255 - green;
+            blue = 255 - blue;
+        #endif
+
+        analogWrite(HumidityRelayManager::RedPin, red);
+        analogWrite(HumidityRelayManager::GreenPin, green);
+        analogWrite(HumidityRelayManager::BluePin, blue);  
     }
 }
