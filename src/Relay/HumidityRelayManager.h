@@ -17,6 +17,7 @@
                 void Initialize(ControllerConfiguration *configuration);
                 void AdjustClimate(SensorData data);
                 void KeepAlive();
+                void EmergencyShutoff();
                 
             private:
                 ControllerConfiguration *configuration;
@@ -36,7 +37,7 @@
                 void EnableDehumidifier();
                 void DisableDehumidifier();
 
-                void ShutDown();
+                void ShutDown();                
         };
     }
 

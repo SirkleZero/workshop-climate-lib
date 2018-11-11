@@ -19,8 +19,8 @@ namespace Relay {
     }
 
     void HumidityRelayManager::AdjustClimate(SensorData data) {
-        currentMillis = millis();
         
+
         // figure out which mode we need to be in. Humidification or Dehumidification.
         if(data.climate.Humidity > this->configuration->MaximumHumidity){
             // it's too humid, enable the dehumidifier
@@ -32,6 +32,15 @@ namespace Relay {
             // goldilocks zone, shut them both down
             this->ShutDown();
         }
+    }
+
+    void HumidityRelayManager::EmergencyShutoff() {
+        currentMillis = millis();
+        //previousKeepAliveCall
+        // previousEnableCall
+        // if (currentMillis - previousOnBoardLedMillis >= onBoardLedInterval) {
+        //     // timing elapsed
+        // }
     }
 
     void HumidityRelayManager::EnableHumidifier() {
