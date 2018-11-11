@@ -15,7 +15,7 @@
                 HumidityRelayManager();
 
                 void Initialize(ControllerConfiguration *configuration);
-                void SetRelayState(SensorData *data);
+                void AdjustClimate(SensorData *data);
                 void KeepAlive();
                 
             private:
@@ -26,7 +26,13 @@
                 const int humidifierControlPin = 5;
                 const int dehumidifierControlPin = 3;
 
-                byte relayState = LOW;
+                void EnableHumidifier();
+                void DisableHumidifier();
+
+                void EnableDehumidifier();
+                void DisableDehumidifier();
+
+                void ShutDown();
         };
     }
 

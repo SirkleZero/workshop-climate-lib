@@ -18,21 +18,42 @@ namespace Relay {
 
     }
 
-    void HumidityRelayManager::SetRelayState(SensorData *data) {
-        // re-write this to handle two different relays.
-        // one for humidification
-        // one for dehumidification
-
-        if(data->climate.Humidity > this->configuration->MaximumHumidity || data->climate.Humidity < this->configuration->MinimumHumidity) {
-            this->relayState = HIGH;
-            // digitalWrite(this->ledPin, this->relayState);
-            // digitalWrite(this->relayControlPin, this->relayState);
-            Serial.println("relay on");
+    void HumidityRelayManager::AdjustClimate(SensorData *data) {
+        // figure out which mode we need to be in. Humidification or Dehumidification.
+        if(data->climate.Humidity > this->configuration->MaximumHumidity){
+            // it's too humid, enable the dehumidifier
+            this->EnableDehumidifier();
+        } else if (data->climate.Humidity < this->configuration->MinimumHumidity){
+            // it's too dry, enable the humidifier
+            this->EnableHumidifier();
         } else {
-            this->relayState = LOW;
-            // digitalWrite(this->ledPin, this->relayState);
-            // digitalWrite(this->relayControlPin, this->relayState);
-            Serial.println("relay off");
+            // goldilocks zone, shut them both down
+            this->ShutDown();
         }
+    }
+
+    void HumidityRelayManager::EnableHumidifier() {
+        digitalWrite(this->humidificationModeLedPin, HIGH);
+        digitalWrite(this->humidifierControlPin, HIGH);
+    }
+
+    void HumidityRelayManager::DisableHumidifier() {
+        digitalWrite(this->humidificationModeLedPin, LOW);
+        digitalWrite(this->humidifierControlPin, LOW);
+    }
+
+    void HumidityRelayManager::EnableDehumidifier() {
+        digitalWrite(this->dehumidificationModeLedPin, HIGH);
+        digitalWrite(this->dehumidifierControlPin, HIGH);
+    }
+
+    void HumidityRelayManager::DisableDehumidifier() {
+        digitalWrite(this->dehumidificationModeLedPin, LOW);
+        digitalWrite(this->dehumidifierControlPin, LOW);
+    }
+
+    void HumidityRelayManager::ShutDown() {
+        this->DisableHumidifier();
+        this->DisableDehumidifier();
     }
 }
