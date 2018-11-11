@@ -36,6 +36,7 @@ namespace Relay {
         } else {
             // goldilocks zone, shut them both down
             this->ShutDown();
+            this->SetIndicatorColor(0, 255, 0); // green
         }
     }
 
@@ -45,6 +46,7 @@ namespace Relay {
             // we exceeded our time! Shut it down!
             Serial.println(F("HumidityRelayManager: runaway limit reached!"));
             this->ShutDown();
+            this->SetIndicatorColor(255, 153, 0); // orange
         }
     }
 
