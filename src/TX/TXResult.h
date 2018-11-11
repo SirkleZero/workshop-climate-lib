@@ -1,6 +1,8 @@
 #ifndef TXResult_h
     #define TXResult_h
 
+    #include <Arduino.h>
+
     namespace TX {
         struct TXResult {
             bool TransmitSuccessful;

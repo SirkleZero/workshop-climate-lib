@@ -1,6 +1,8 @@
 #ifndef HumidityRelayManager_h
     #define HumidityRelayManager_h
 
+    #include <Arduino.h>
+
     #include "..\Sensors\SensorData.h"
 
     using namespace Sensors;

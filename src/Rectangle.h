@@ -1,6 +1,8 @@
 #ifndef Rectangle_h
     #define Rectangle_h
 
+    #include <Arduino.h>
+
     struct Rectangle {
         Rectangle(int16_t x, int16_t y, int16_t width, int16_t height) : x(x), y(y), width(width), height(height) { }
         int16_t x;

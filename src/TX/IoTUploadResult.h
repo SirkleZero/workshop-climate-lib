@@ -1,6 +1,7 @@
 #ifndef IoTUploadResult_h
     #define IoTUploadResult_h
 
+    #include <Arduino.h>
     #include <WiFi101.h>
 
     namespace TX {

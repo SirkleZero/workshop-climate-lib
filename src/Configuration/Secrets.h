@@ -2,6 +2,8 @@ namespace Configuration {
     #ifndef Secrets_h
         #define Secrets_h
 
+        #include <Arduino.h>
+
         class Secrets {
             private:
                 String tmp_adafruitio_username;

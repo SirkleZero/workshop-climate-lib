@@ -1,6 +1,7 @@
 #ifndef SDCardProxy_h
     #define SDCardProxy_h
 
+    #include <Arduino.h>
     #include <ArduinoJson.h>
     #include <SD.h>
     #include <SPI.h>
