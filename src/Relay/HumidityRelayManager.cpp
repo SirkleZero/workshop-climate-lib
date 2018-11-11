@@ -33,26 +33,31 @@ namespace Relay {
     }
 
     void HumidityRelayManager::EnableHumidifier() {
+        Serial.println(F("HumidityRelayManager: Enabling the humidifier"));
         digitalWrite(this->humidificationModeLedPin, HIGH);
         digitalWrite(this->humidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableHumidifier() {
+        Serial.println(F("HumidityRelayManager: Disabling the humidifier"));
         digitalWrite(this->humidificationModeLedPin, LOW);
         digitalWrite(this->humidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::EnableDehumidifier() {
+        Serial.println(F("HumidityRelayManager: Enabling the dehumidifier"));
         digitalWrite(this->dehumidificationModeLedPin, HIGH);
         digitalWrite(this->dehumidifierControlPin, HIGH);
     }
 
     void HumidityRelayManager::DisableDehumidifier() {
+        Serial.println(F("HumidityRelayManager: Disabling the dehumidifier"));
         digitalWrite(this->dehumidificationModeLedPin, LOW);
         digitalWrite(this->dehumidifierControlPin, LOW);
     }
 
     void HumidityRelayManager::ShutDown() {
+        Serial.println(F("HumidityRelayManager: Goldilocks! Shutting down humidifier AND dehumidifier!"));
         this->DisableHumidifier();
         this->DisableDehumidifier();
     }
