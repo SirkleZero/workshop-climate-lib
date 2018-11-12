@@ -59,6 +59,7 @@ namespace TX {
         if(iterations <= 0) {
             // we exceeded our timeout period. return a failure.
             result.ErrorMessage = io->statusText();
+            this->Disconnect();
             return result;
         }
 
