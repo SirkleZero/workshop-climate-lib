@@ -63,7 +63,7 @@ namespace Relay {
 
     void HumidityRelayManager::EnableDehumidifier() {
         //Serial.println(F("HumidityRelayManager: Enabling the dehumidifier"));
-        this->SetIndicatorColor(0xb3, 0x2d, 0x00);  // red
+        this->SetIndicatorColor(0x99, 0x00, 0x00);  // red
         digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
     }
 
