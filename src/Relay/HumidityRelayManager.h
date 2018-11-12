@@ -5,15 +5,14 @@
     
     #include "..\Sensors\SensorData.h"
     #include "..\Configuration\ControllerConfiguration.h"
+    #include "..\Display\RGB.h"
     
     using namespace Configuration;
+    using namespace Display;
     using namespace Sensors;
 
     namespace Relay {
         class HumidityRelayManager {
-            //uncomment this line if using a Common Anode LED
-            #define COMMON_ANODE
-
             public:
                 HumidityRelayManager();
 
@@ -23,11 +22,22 @@
                 void EmergencyShutoff();
                 
             private:
+                // pins
                 const int RedPin = 15;
                 const int GreenPin = 16;
                 const int BluePin = 17;
                 const int HumidifierControlPin = 18;
                 const int DehumidifierControlPin = 19;
+
+                // if using a common anode LED, set this to true
+                const bool CommonAnode = true;
+
+                // colors
+                const RGB Orange;
+                const RGB Green;
+                const RGB Purple;
+                const RGB Aqua;
+                const RGB Red;
 
                 ControllerConfiguration *configuration;
                 byte indicatorEnabled = false;
@@ -42,7 +52,7 @@
                 void DisableDehumidifier();
 
                 void ShutDown();
-                void SetIndicatorColor(int red, int green, int blue);
+                void SetIndicatorColor(RGB color);
                 void DisableIndicator();
                 void EnableIndicator();     
         };

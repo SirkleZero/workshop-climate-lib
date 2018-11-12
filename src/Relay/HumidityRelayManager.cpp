@@ -3,7 +3,13 @@
 using namespace Sensors;
 
 namespace Relay {    
-    HumidityRelayManager::HumidityRelayManager() { }
+    HumidityRelayManager::HumidityRelayManager() :
+        Orange(0xe6, 0x5c, 0x00),
+        Green(0x33, 0xcc, 0x33),
+        Purple(0x66, 0x00, 0xcc),
+        Aqua(0x00, 0x99, 0xff),
+        Red(0x99, 0x00, 0x00)
+    { }
 
     void HumidityRelayManager::Initialize(ControllerConfiguration *configuration) {
         this->configuration = configuration;
@@ -13,8 +19,8 @@ namespace Relay {
         pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
         
         this->EnableIndicator();
-
-        this->SetIndicatorColor(0xe6, 0x5c, 0x00); // orange
+        
+        this->SetIndicatorColor(HumidityRelayManager::Orange);
     }
 
     void HumidityRelayManager::KeepAlive() {
@@ -36,7 +42,7 @@ namespace Relay {
         } else {
             // goldilocks zone, shut them both down
             this->ShutDown();
-            this->SetIndicatorColor(0x33, 0xcc, 0x33); // green
+            this->SetIndicatorColor(HumidityRelayManager::Green);
         }
     }
 
@@ -44,15 +50,13 @@ namespace Relay {
         currentMillis = millis();
         if(this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit) {
             // we exceeded our time! Shut it down!
-            Serial.println(F("HumidityRelayManager: runaway limit reached!"));
             this->ShutDown();
-            //this->SetIndicatorColor(0xe6, 0x5c, 0x00); // orange
-            this->SetIndicatorColor(0x66, 0x00, 0xcc); // purple
+            this->SetIndicatorColor(HumidityRelayManager::Purple);
         }
     }
 
     void HumidityRelayManager::EnableHumidifier() {
-        this->SetIndicatorColor(0x00, 0x99, 0xff);  // aqua
+        this->SetIndicatorColor(HumidityRelayManager::Aqua);
         digitalWrite(HumidityRelayManager::HumidifierControlPin, HIGH);
     }
 
@@ -61,7 +65,7 @@ namespace Relay {
     }
 
     void HumidityRelayManager::EnableDehumidifier() {
-        this->SetIndicatorColor(0x99, 0x00, 0x00);  // red
+        this->SetIndicatorColor(HumidityRelayManager::Red);
         digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
     }
 
@@ -74,18 +78,18 @@ namespace Relay {
         this->DisableDehumidifier();
     }
 
-    void HumidityRelayManager::SetIndicatorColor(int red, int green, int blue) {
-        #ifdef COMMON_ANODE
-            red = 255 - red;
-            green = 255 - green;
-            blue = 255 - blue;
-        #endif
-
+    void HumidityRelayManager::SetIndicatorColor(RGB color) {
         this->EnableIndicator();
 
-        analogWrite(HumidityRelayManager::RedPin, red);
-        analogWrite(HumidityRelayManager::GreenPin, green);
-        analogWrite(HumidityRelayManager::BluePin, blue);
+        if(HumidityRelayManager::CommonAnode) {
+            analogWrite(HumidityRelayManager::RedPin, 255 - color.Red);
+            analogWrite(HumidityRelayManager::GreenPin, 255 - color.Green);
+            analogWrite(HumidityRelayManager::BluePin, 255 - color.Blue);
+        } else {
+            analogWrite(HumidityRelayManager::RedPin, color.Red);
+            analogWrite(HumidityRelayManager::GreenPin, color.Green);
+            analogWrite(HumidityRelayManager::BluePin, color.Blue);
+        }
     }
 
     void HumidityRelayManager::DisableIndicator() {
