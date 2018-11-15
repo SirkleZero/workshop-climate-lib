@@ -10,6 +10,7 @@
             public:
                 unsigned long RunawayTimeLimit;
                 float MinimumHumidity;
+                float TargetHumidity;
                 float MaximumHumidity;
                 float HumidityOffset;
 
@@ -17,6 +18,7 @@
                     Serial.println(F("---------------------------------------"));
                     Serial.print(F("Runaway Time Limit = ")); Serial.println(this->RunawayTimeLimit);
                     Serial.print(F("Minimum Humidity = ")); Serial.println(this->MinimumHumidity);
+                    Serial.print(F("Target Humidity = ")); Serial.println(this->TargetHumidity);
                     Serial.print(F("Maximum Humidity = ")); Serial.println(this->MaximumHumidity);
                     Serial.print(F("Humidity Offset = ")); Serial.println(this->HumidityOffset);
                     Serial.println(F("---------------------------------------"));

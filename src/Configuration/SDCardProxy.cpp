@@ -53,6 +53,7 @@ namespace Configuration {
     
     configuration->RunawayTimeLimit = root["RunawayTimeLimit"];
     configuration->MinimumHumidity = root["MinimumHumidity"];
+    configuration->TargetHumidity = root["TargetHumidity"];
     configuration->MaximumHumidity = root["MaximumHumidity"];
     configuration->HumidityOffset = root["HumidityOffset"];
 
