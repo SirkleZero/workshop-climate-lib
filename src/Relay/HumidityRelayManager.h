@@ -1,68 +1,68 @@
 #ifndef HumidityRelayManager_h
-    #define HumidityRelayManager_h
+#define HumidityRelayManager_h
 
-    #include <Arduino.h>
-    
-    #include "..\Sensors\SensorData.h"
-    #include "..\Configuration\ControllerConfiguration.h"
-    #include "..\Display\RGB.h"
-    
-    using namespace Configuration;
-    using namespace Display;
-    using namespace Sensors;
+#include <Arduino.h>
 
-    namespace Relay {
-		enum HumidificationState {
-			Dehumidifying = 0x00,
-			Humidifying = 0x01,
-			None = 0x02
-		};
+#include "..\Sensors\SensorData.h"
+#include "..\Configuration\ControllerConfiguration.h"
+#include "..\Display\RGB.h"
 
-        class HumidityRelayManager {
-            public:
-                HumidityRelayManager();
+using namespace Configuration;
+using namespace Display;
+using namespace Sensors;
 
-                void Initialize(ControllerConfiguration *configuration);
-                void AdjustClimate(SensorData data);
-                void KeepAlive();
-                void EmergencyShutoff();
-                
-            private:
-                // pins
-                const int RedPin = 15;
-                const int GreenPin = 16;
-                const int BluePin = 17;
-                const int HumidifierControlPin = 18;
-                const int DehumidifierControlPin = 19;
+namespace Relay {
+	enum HumidificationState {
+		Dehumidifying = 0x00,
+		Humidifying = 0x01,
+		None = 0x02
+	};
 
-                // if using a common anode LED, set this to true
-                const bool CommonAnode = true;
+	class HumidityRelayManager {
+	public:
+		HumidityRelayManager();
 
-                // colors
-                const RGB Orange;
-                const RGB Green;
-                const RGB Purple;
-                const RGB Aqua;
-                const RGB Red;
+		void Initialize(ControllerConfiguration *configuration);
+		void AdjustClimate(SensorData data);
+		void KeepAlive();
+		void EmergencyShutoff();
 
-                ControllerConfiguration *configuration;
-                bool indicatorEnabled = false;
-				HumidificationState humidificationState = HumidificationState::None;
+	private:
+		// pins
+		const int RedPin = 15;
+		const int GreenPin = 16;
+		const int BluePin = 17;
+		const int HumidifierControlPin = 18;
+		const int DehumidifierControlPin = 19;
 
-                unsigned long currentMillis = 0; // stores the current value of millis()
-                unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
+		// if using a common anode LED, set this to true
+		const bool CommonAnode = true;
 
-                void EnableHumidifier();
-                void DisableHumidifier();
+		// colors
+		const RGB Orange;
+		const RGB Green;
+		const RGB Purple;
+		const RGB Aqua;
+		const RGB Red;
 
-                void EnableDehumidifier();
-                void DisableDehumidifier();
+		ControllerConfiguration *configuration;
+		bool indicatorEnabled = false;
+		HumidificationState humidificationState = HumidificationState::None;
 
-                void ShutDown();
-                void SetIndicatorColor(RGB color);
-                void DisableIndicator();
-                void EnableIndicator();     
-        };
-    }
+		unsigned long currentMillis = 0; // stores the current value of millis()
+		unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
+
+		void EnableHumidifier();
+		void DisableHumidifier();
+
+		void EnableDehumidifier();
+		void DisableDehumidifier();
+
+		void ShutDown();
+		void SetIndicatorColor(RGB color);
+		void DisableIndicator();
+		void EnableIndicator();
+	};
+}
 
 #endif

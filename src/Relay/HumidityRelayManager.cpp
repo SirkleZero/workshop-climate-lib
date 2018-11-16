@@ -2,117 +2,170 @@
 
 using namespace Sensors;
 
-namespace Relay {    
-    HumidityRelayManager::HumidityRelayManager() :
-        Orange(0xe6, 0x5c, 0x00),
-        Green(0x33, 0xcc, 0x33),
-        Purple(0x66, 0x00, 0xcc),
-        Aqua(0x00, 0x99, 0xff),
-        Red(0x99, 0x00, 0x00)
-    { }
+namespace Relay {
+	HumidityRelayManager::HumidityRelayManager() :
+		Orange(0xe6, 0x5c, 0x00),
+		Green(0x33, 0xcc, 0x33),
+		Purple(0x66, 0x00, 0xcc),
+		Aqua(0x00, 0x99, 0xff),
+		Red(0x99, 0x00, 0x00)
+	{}
 
-    void HumidityRelayManager::Initialize(ControllerConfiguration *configuration) {
-        this->configuration = configuration;
+	void HumidityRelayManager::Initialize(ControllerConfiguration *configuration)
+	{
+		this->configuration = configuration;
 
-        // relay control pins
-        pinMode(HumidityRelayManager::HumidifierControlPin, OUTPUT);
-        pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
-        
-        this->EnableIndicator();
-        
-        this->SetIndicatorColor(HumidityRelayManager::Orange);
-    }
+		// relay control pins
+		pinMode(HumidityRelayManager::HumidifierControlPin, OUTPUT);
+		pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
 
-    void HumidityRelayManager::KeepAlive() {
-        this->previousKeepAliveCall = millis();
-    }
+		this->EnableIndicator();
 
-    void HumidityRelayManager::AdjustClimate(SensorData data) {
-        this->KeepAlive();
+		this->SetIndicatorColor(HumidityRelayManager::Orange);
+	}
 
-        // figure out which mode we need to be in. Humidification or Dehumidification.
-        if(data.climate.Humidity > this->configuration->MaximumHumidity){
-            // it's too humid, enable the dehumidifier
-            this->EnableDehumidifier();
-        } else if (data.climate.Humidity < this->configuration->MinimumHumidity){
-            // it's too dry, enable the humidifier
-            this->EnableHumidifier();
-        } else {
-            // goldilocks zone, shut them both down
-            this->ShutDown();
-            this->SetIndicatorColor(HumidityRelayManager::Green);
-        }
-    }
+	void HumidityRelayManager::KeepAlive()
+	{
+		this->previousKeepAliveCall = millis();
+	}
 
-    void HumidityRelayManager::EmergencyShutoff() {
-        currentMillis = millis();
-        if(this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit) {
-            // we exceeded our time! Shut it down!
-            this->ShutDown();
-            this->SetIndicatorColor(HumidityRelayManager::Purple);
-        }
-    }
+	void HumidityRelayManager::AdjustClimate(SensorData data)
+	{
+		this->KeepAlive();
 
-    void HumidityRelayManager::EnableHumidifier() {
+		switch (this->humidificationState)
+		{
+			case HumidificationState::Dehumidifying:
+				// we are dehumidifying, check against the target level and run or
+				// shut down appropriately
+				if (data.climate.Humidity <= this->configuration->TargetHumidity)
+				{
+					// we hit our target, shut down so we don't overshoot by too much!
+					this->ShutDown();
+				}
+
+				break;
+			case HumidificationState::Humidifying:
+				// we are humidifying, check against the target level and run or
+				// shut down appropriately
+				if (data.climate.Humidity >= this->configuration->TargetHumidity)
+				{
+					// we hit our target, shut down so we don't overshoot by too much!
+					this->ShutDown();
+				}
+
+				break;
+			case HumidificationState::None:
+				// figure out which mode we need to be in. Humidification or Dehumidification.
+				if (data.climate.Humidity > this->configuration->MaximumHumidity)
+				{
+					// it's too humid, enable the dehumidifier
+					this->EnableDehumidifier();
+				}
+				else if (data.climate.Humidity < this->configuration->MinimumHumidity)
+				{
+					// it's too dry, enable the humidifier
+					this->EnableHumidifier();
+				}
+				else
+				{
+					// goldilocks zone, shut them both down
+					this->ShutDown();
+					this->humidificationState = HumidificationState::None;
+					this->SetIndicatorColor(HumidityRelayManager::Green);
+				}
+
+				break;
+		}
+	}
+
+	void HumidityRelayManager::EmergencyShutoff()
+	{
+		currentMillis = millis();
+		if (this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit)
+		{
+			// we exceeded our time! Shut it down!
+			this->ShutDown();
+			this->SetIndicatorColor(HumidityRelayManager::Purple);
+		}
+	}
+
+	void HumidityRelayManager::EnableHumidifier()
+	{
 		this->DisableDehumidifier();
 		this->humidificationState = HumidificationState::Humidifying;
+		this->SetIndicatorColor(HumidityRelayManager::Aqua);
 
-        this->SetIndicatorColor(HumidityRelayManager::Aqua);
-        digitalWrite(HumidityRelayManager::HumidifierControlPin, HIGH);
-    }
+		digitalWrite(HumidityRelayManager::HumidifierControlPin, HIGH);
+	}
 
-    void HumidityRelayManager::DisableHumidifier() {
-        digitalWrite(HumidityRelayManager::HumidifierControlPin, LOW);
-    }
-
-    void HumidityRelayManager::EnableDehumidifier() {
+	void HumidityRelayManager::EnableDehumidifier()
+	{
 		this->DisableHumidifier();
 		this->humidificationState = HumidificationState::Dehumidifying;
+		this->SetIndicatorColor(HumidityRelayManager::Red);
 
-        this->SetIndicatorColor(HumidityRelayManager::Red);
-        digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
-    }
+		digitalWrite(HumidityRelayManager::DehumidifierControlPin, HIGH);
+	}
 
-    void HumidityRelayManager::DisableDehumidifier() {
-        digitalWrite(HumidityRelayManager::DehumidifierControlPin, LOW);
-    }
+	void HumidityRelayManager::DisableHumidifier()
+	{
+		digitalWrite(HumidityRelayManager::HumidifierControlPin, LOW);
+	}
 
-    void HumidityRelayManager::ShutDown() {
-        this->DisableHumidifier();
-        this->DisableDehumidifier();
-    }
+	void HumidityRelayManager::DisableDehumidifier()
+	{
+		digitalWrite(HumidityRelayManager::DehumidifierControlPin, LOW);
+	}
 
-    void HumidityRelayManager::SetIndicatorColor(RGB color) {
-        this->EnableIndicator();
+	void HumidityRelayManager::ShutDown()
+	{
+		this->humidificationState = HumidificationState::None;
+		this->SetIndicatorColor(HumidityRelayManager::Green);
 
-        if(HumidityRelayManager::CommonAnode) {
-            analogWrite(HumidityRelayManager::RedPin, 255 - color.Red);
-            analogWrite(HumidityRelayManager::GreenPin, 255 - color.Green);
-            analogWrite(HumidityRelayManager::BluePin, 255 - color.Blue);
-        } else {
-            analogWrite(HumidityRelayManager::RedPin, color.Red);
-            analogWrite(HumidityRelayManager::GreenPin, color.Green);
-            analogWrite(HumidityRelayManager::BluePin, color.Blue);
-        }
-    }
+		this->DisableHumidifier();
+		this->DisableDehumidifier();
+	}
 
-    void HumidityRelayManager::DisableIndicator() {
-        if(this->indicatorEnabled) {
-            pinMode(HumidityRelayManager::RedPin, INPUT);
-            pinMode(HumidityRelayManager::GreenPin, INPUT);
-            pinMode(HumidityRelayManager::BluePin, INPUT);
+	void HumidityRelayManager::SetIndicatorColor(RGB color)
+	{
+		this->EnableIndicator();
 
-            this->indicatorEnabled = false;
-        }
-    }
+		if (HumidityRelayManager::CommonAnode)
+		{
+			analogWrite(HumidityRelayManager::RedPin, 255 - color.Red);
+			analogWrite(HumidityRelayManager::GreenPin, 255 - color.Green);
+			analogWrite(HumidityRelayManager::BluePin, 255 - color.Blue);
+		}
+		else
+		{
+			analogWrite(HumidityRelayManager::RedPin, color.Red);
+			analogWrite(HumidityRelayManager::GreenPin, color.Green);
+			analogWrite(HumidityRelayManager::BluePin, color.Blue);
+		}
+	}
 
-    void HumidityRelayManager::EnableIndicator() {
-        if(!this->indicatorEnabled) {
-            pinMode(HumidityRelayManager::RedPin, OUTPUT);
-            pinMode(HumidityRelayManager::GreenPin, OUTPUT);
-            pinMode(HumidityRelayManager::BluePin, OUTPUT);
+	void HumidityRelayManager::DisableIndicator()
+	{
+		if (this->indicatorEnabled)
+		{
+			pinMode(HumidityRelayManager::RedPin, INPUT);
+			pinMode(HumidityRelayManager::GreenPin, INPUT);
+			pinMode(HumidityRelayManager::BluePin, INPUT);
 
-            this->indicatorEnabled = true;
-        }
-    }
+			this->indicatorEnabled = false;
+		}
+	}
+
+	void HumidityRelayManager::EnableIndicator()
+	{
+		if (!this->indicatorEnabled)
+		{
+			pinMode(HumidityRelayManager::RedPin, OUTPUT);
+			pinMode(HumidityRelayManager::GreenPin, OUTPUT);
+			pinMode(HumidityRelayManager::BluePin, OUTPUT);
+
+			this->indicatorEnabled = true;
+		}
+	}
 }
