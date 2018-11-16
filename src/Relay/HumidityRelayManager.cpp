@@ -32,11 +32,16 @@ namespace Relay {
 
         // figure out which mode we need to be in. Humidification or Dehumidification.
         if(data.climate.Humidity > this->configuration->MaximumHumidity){
-            // it's too humid, enable the dehumidifier
+            // it's too humid, enable the dehumidifier, but only run it until we
+			// hit the target humidity, otherwise we could overshoot.
+
+			// TODO: adjust this to accomodate the above comment
+
             this->DisableHumidifier();
             this->EnableDehumidifier();
         } else if (data.climate.Humidity < this->configuration->MinimumHumidity){
-            // it's too dry, enable the humidifier
+            // it's too dry, enable the humidifier, but only run it until we
+			// hit the target humidity, otherwise we could overshoot.
             this->DisableDehumidifier();
             this->EnableHumidifier();
         } else {
@@ -93,22 +98,22 @@ namespace Relay {
     }
 
     void HumidityRelayManager::DisableIndicator() {
-        if(this->indicatorEnabled) {
+        if(this->relayEnabled) {
             pinMode(HumidityRelayManager::RedPin, INPUT);
             pinMode(HumidityRelayManager::GreenPin, INPUT);
             pinMode(HumidityRelayManager::BluePin, INPUT);
 
-            this->indicatorEnabled = false;
+            this->relayEnabled = false;
         }
     }
 
     void HumidityRelayManager::EnableIndicator() {
-        if(!this->indicatorEnabled) {
+        if(!this->relayEnabled) {
             pinMode(HumidityRelayManager::RedPin, OUTPUT);
             pinMode(HumidityRelayManager::GreenPin, OUTPUT);
             pinMode(HumidityRelayManager::BluePin, OUTPUT);
 
-            this->indicatorEnabled = true;
+            this->relayEnabled = true;
         }
     }
 }

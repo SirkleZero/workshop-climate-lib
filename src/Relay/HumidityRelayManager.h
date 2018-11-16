@@ -40,7 +40,7 @@
                 const RGB Red;
 
                 ControllerConfiguration *configuration;
-                byte indicatorEnabled = false;
+                bool relayEnabled = false;
 
                 unsigned long currentMillis = 0; // stores the current value of millis()
                 unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
