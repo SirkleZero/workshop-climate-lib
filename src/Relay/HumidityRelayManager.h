@@ -12,6 +12,12 @@
     using namespace Sensors;
 
     namespace Relay {
+		enum HumidificationState {
+			Dehumidifying = 0x00,
+			Humidifying = 0x01,
+			None = 0x02
+		};
+
         class HumidityRelayManager {
             public:
                 HumidityRelayManager();
@@ -40,7 +46,8 @@
                 const RGB Red;
 
                 ControllerConfiguration *configuration;
-                bool relayEnabled = false;
+                bool indicatorEnabled = false;
+				HumidificationState humidificationState = HumidificationState::None;
 
                 unsigned long currentMillis = 0; // stores the current value of millis()
                 unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
