@@ -12,9 +12,12 @@ namespace Display {
     ButtonMode displayMode = ButtonMode::Default;
     SensorData previousData;
 
-    // well, this apparently needs to be global. Don't know why, but I can't get it to work if it's part
-    // of the class. Lame.
-    Adafruit_SSD1306 display = Adafruit_SSD1306();
+	#define SCREEN_WIDTH 128 // OLED display width, in pixels
+	#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+	// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+	#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+	Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
     #if defined(ESP8266)
         #define BUTTON_A 0
