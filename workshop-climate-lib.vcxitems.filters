@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)readme.txt" />
+    <Text Include="$(MSBuildThisFileDirectory)library.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{778ae3b4-4ee3-47ac-8b8b-ac84dcc6df31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Configuration">
+      <UniqueIdentifier>{46d6591a-c0db-4716-bfb4-ff5fb3e05e90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Display">
+      <UniqueIdentifier>{9ae11182-470a-491f-bd39-3a107b8516e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Relay">
+      <UniqueIdentifier>{0c0298b3-fd50-4869-b310-36833f7466d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RX">
+      <UniqueIdentifier>{25d3320d-b79f-4c7a-88f7-0c9ff71aabe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Sensors">
+      <UniqueIdentifier>{7b0fb2ff-f82c-403f-b3c7-b2d530a5acbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TX">
+      <UniqueIdentifier>{6dd96cb9-c13f-4a65-9adc-7de19a7bebde}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\workshop-climate-lib.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\SensorTransmissionResult.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\ControllerConfiguration.h">
+      <Filter>src\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.h">
+      <Filter>src\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h">
+      <Filter>src\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h">
+      <Filter>src\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB.h">
+      <Filter>src\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h">
+      <Filter>src\Display</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h">
+      <Filter>src\Relay</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h">
+      <Filter>src\RX</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ClimateData.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ParticleData.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Frame.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorData.h">
+      <Filter>src\Sensors</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.h">
+      <Filter>src\TX</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\IoTUploadResult.h">
+      <Filter>src\TX</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.h">
+      <Filter>src\TX</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\TXResult.h">
+      <Filter>src\TX</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)src\Configuration\controllerconfiguration.json">
+      <Filter>src\Configuration</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)src\Configuration\secrets.json">
+      <Filter>src\Configuration</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)library.json" />
+    <None Include="$(MSBuildThisFileDirectory)README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp">
+      <Filter>src\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.cpp">
+      <Filter>src\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.cpp">
+      <Filter>src\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.cpp">
+      <Filter>src\Relay</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.cpp">
+      <Filter>src\RX</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.cpp">
+      <Filter>src\Sensors</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.cpp">
+      <Filter>src\Sensors</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.cpp">
+      <Filter>src\TX</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp">
+      <Filter>src\TX</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
