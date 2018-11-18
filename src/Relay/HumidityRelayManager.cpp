@@ -32,52 +32,52 @@ namespace Relay {
 	void HumidityRelayManager::AdjustClimate(SensorData data)
 	{
 		this->KeepAlive();
-
-		// check to see if we are either humidifying or dehumidifying
-		if (this->humidificationState == HumidificationState::Humidifying || this->humidificationState == HumidificationState::Dehumidifying)
+		
+		// Check to see what kind of humidification state we are in.
+		switch (this->humidificationState)
 		{
-			// if we're either humidifying or dehumidifying, then we need to determine if we should continue, or if we've hit our target humidity.
-			switch (this->humidificationState)
-			{
-				case HumidificationState::Dehumidifying:
-					// we are dehumidifying, check against the target level and run or
-					// shut down appropriately
-					if (data.climate.Humidity <= this->configuration->TargetHumidity)
-					{
-						// we hit our target, shut down so we don't overshoot by too much!
-						this->ShutDown();
-					}
-					break;
-				case HumidificationState::Humidifying:
-					// we are humidifying, check against the target level and run or
-					// shut down appropriately
-					if (data.climate.Humidity >= this->configuration->TargetHumidity)
-					{
-						// we hit our target, shut down so we don't overshoot by too much!
-						this->ShutDown();
-					}
-					break;
-			}
-		}
-		else
-		{
-			// we are neither humidifying or dehumidifying, so let's check to see if we are outside of our min and max operating parameters. If we are in the range, then we're goldilocks zoned, otherwise, we need to turn on either the humdififier or the dehumidifier.
-			// figure out which mode we need to be in. Humidification or Dehumidification.
-			if (data.climate.Humidity > this->configuration->MaximumHumidity)
-			{
-				// it's too humid, enable the dehumidifier
-				this->EnableDehumidifier();
-			}
-			else if (data.climate.Humidity < this->configuration->MinimumHumidity)
-			{
-				// it's too dry, enable the humidifier
-				this->EnableHumidifier();
-			}
-			else
-			{
-				// goldilocks zone, shut them both down
+			case HumidificationState::Dehumidifying:
+				// we are dehumidifying, check against the target level and run or
+				// shut down appropriately
+				if (data.climate.Humidity <= this->configuration->TargetHumidity)
+				{
+					// we hit our target, shut down so we don't overshoot by too much!
+					this->ShutDown();
+				}
+				break;
+			case HumidificationState::Humidifying:
+				// we are humidifying, check against the target level and run or
+				// shut down appropriately
+				if (data.climate.Humidity >= this->configuration->TargetHumidity)
+				{
+					// we hit our target, shut down so we don't overshoot by too much!
+					this->ShutDown();
+				}
+				break;
+			case HumidificationState::None:
+				// We are neither humidifying or dehumidifying, so let's check to see if we are outside of our min and max operating parameters. 
+				// If we are in the range, then we're in the goldilocks zone and don't need to do anything; otherwise, we need to turn on 
+				// either the humdififier or the dehumidifier.
+				if (data.climate.Humidity > this->configuration->MaximumHumidity)
+				{
+					// current humidity from the sensor exceeds the maximum threshold, enable the dehumidifier.
+					this->EnableDehumidifier();
+				}
+				else if (data.climate.Humidity < this->configuration->MinimumHumidity)
+				{
+					// current humidity from the sensor exceeds the minimum threshold, enable the humidifier.
+					this->EnableHumidifier();
+				}
+				else
+				{
+					// Goldilocks zone, shut the system down.
+					this->ShutDown();
+				}
+				break;
+			default:
+				// System has no idea wtf is going on, shut down for safety sake.
 				this->ShutDown();
-			}
+				break;
 		}
 	}
 

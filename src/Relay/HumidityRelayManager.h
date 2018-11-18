@@ -13,8 +13,11 @@ using namespace Sensors;
 
 namespace Relay {
 	enum HumidificationState {
+		// Represents that we are in a dehumidification state and that the dehumidifier is running.
 		Dehumidifying = 0x00,
+		// Represents that we are in a humidification state and that the humidifier is running.
 		Humidifying = 0x01,
+		// Represents that we are in neither humidification or dehumidification state.
 		None = 0x02
 	};
 
