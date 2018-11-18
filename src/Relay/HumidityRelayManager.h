@@ -65,6 +65,7 @@ namespace Relay {
 		void DisableDehumidifier();
 
 		void ShutDown();
+		void ShutDownTargetReached();
 		void ShutDownGoldilocks();
 		void ShutDownError();
 		void ShutDownEmergency();

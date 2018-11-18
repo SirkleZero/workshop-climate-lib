@@ -42,8 +42,9 @@ namespace Relay {
 				// shut down appropriately
 				if (data.climate.Humidity <= this->configuration->TargetHumidity)
 				{
-					// we hit our target, shut down so we don't overshoot by too much!
-					this->ShutDownGoldilocks();
+					// we hit our target. re-run this method to determine the next action to take.
+					this->ShutDownTargetReached();
+					this->AdjustClimate(data);
 				}
 				break;
 			case HumidificationState::Humidifying:
@@ -51,8 +52,9 @@ namespace Relay {
 				// shut down appropriately
 				if (data.climate.Humidity >= this->configuration->TargetHumidity)
 				{
-					// we hit our target, shut down so we don't overshoot by too much!
-					this->ShutDownGoldilocks();
+					// we hit our target. re-run this method to determine the next action to take.
+					this->ShutDownTargetReached();
+					this->AdjustClimate(data);
 				}
 				break;
 			case HumidificationState::None:
@@ -126,6 +128,11 @@ namespace Relay {
 
 		this->DisableHumidifier();
 		this->DisableDehumidifier();
+	}
+
+	void HumidityRelayManager::ShutDownTargetReached()
+	{
+		this->ShutDown();
 	}
 
 	void HumidityRelayManager::ShutDownGoldilocks()
