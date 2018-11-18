@@ -42,7 +42,7 @@ namespace Relay {
 				// shut down appropriately
 				if (data.climate.Humidity <= this->configuration->TargetHumidity)
 				{
-					// we hit our target. re-run this method to determine the next action to take.
+					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
 					this->AdjustClimate(data);
 				}
@@ -52,7 +52,7 @@ namespace Relay {
 				// shut down appropriately
 				if (data.climate.Humidity >= this->configuration->TargetHumidity)
 				{
-					// we hit our target. re-run this method to determine the next action to take.
+					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
 					this->AdjustClimate(data);
 				}
