@@ -47,11 +47,14 @@ namespace Relay {
 		const RGB Purple;
 		const RGB Aqua;
 		const RGB Red;
+		const RGB ErrorRed;
 
+		// configuration
 		ControllerConfiguration *configuration;
 		bool indicatorEnabled = false;
 		HumidificationState humidificationState = HumidificationState::None;
 
+		// timer - used for the keep alive and the emergency shutdown functions
 		unsigned long currentMillis = 0; // stores the current value of millis()
 		unsigned long previousKeepAliveCall = 0; // stores the last time KeepAlive() was called
 
@@ -62,6 +65,8 @@ namespace Relay {
 		void DisableDehumidifier();
 
 		void ShutDown();
+		void ShutDownGoldilocks();
+		void ShutDownError()
 		void SetIndicatorColor(RGB color);
 		void DisableIndicator();
 		void EnableIndicator();

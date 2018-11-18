@@ -8,7 +8,8 @@ namespace Relay {
 		Green(0x33, 0xcc, 0x33),
 		Purple(0x66, 0x00, 0xcc),
 		Aqua(0x00, 0x99, 0xff),
-		Red(0x99, 0x00, 0x00)
+		Red(0x99, 0x00, 0x00),
+		ErrorRed(0xff, 0x00, 0x00)
 	{}
 
 	void HumidityRelayManager::Initialize(ControllerConfiguration *configuration)
@@ -71,12 +72,12 @@ namespace Relay {
 				else
 				{
 					// Goldilocks zone, shut the system down.
-					this->ShutDown();
+					this->ShutDownGoldilocks();
 				}
 				break;
 			default:
 				// System has no idea wtf is going on, shut down for safety sake.
-				this->ShutDown();
+				this->ShutDownError();
 				break;
 		}
 	}
@@ -123,10 +124,21 @@ namespace Relay {
 	void HumidityRelayManager::ShutDown()
 	{
 		this->humidificationState = HumidificationState::None;
-		this->SetIndicatorColor(HumidityRelayManager::Green);
 
 		this->DisableHumidifier();
 		this->DisableDehumidifier();
+	}
+
+	void HumidityRelayManager::ShutDownGoldilocks()
+	{
+		this->SetIndicatorColor(HumidityRelayManager::Green);
+		this->ShutDown();
+	}
+
+	void HumidityRelayManager::ShutDownError()
+	{
+		this->SetIndicatorColor(HumidityRelayManager::ErrorRed);
+		this->ShutDown();
 	}
 
 	void HumidityRelayManager::SetIndicatorColor(RGB color)
