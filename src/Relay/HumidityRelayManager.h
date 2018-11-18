@@ -66,7 +66,8 @@ namespace Relay {
 
 		void ShutDown();
 		void ShutDownGoldilocks();
-		void ShutDownError()
+		void ShutDownError();
+		void ShutDownEmergency();
 		void SetIndicatorColor(RGB color);
 		void DisableIndicator();
 		void EnableIndicator();

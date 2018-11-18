@@ -43,7 +43,7 @@ namespace Relay {
 				if (data.climate.Humidity <= this->configuration->TargetHumidity)
 				{
 					// we hit our target, shut down so we don't overshoot by too much!
-					this->ShutDown();
+					this->ShutDownGoldilocks();
 				}
 				break;
 			case HumidificationState::Humidifying:
@@ -52,7 +52,7 @@ namespace Relay {
 				if (data.climate.Humidity >= this->configuration->TargetHumidity)
 				{
 					// we hit our target, shut down so we don't overshoot by too much!
-					this->ShutDown();
+					this->ShutDownGoldilocks();
 				}
 				break;
 			case HumidificationState::None:
@@ -88,8 +88,7 @@ namespace Relay {
 		if (this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit)
 		{
 			// we exceeded our time! Shut it down!
-			this->ShutDown();
-			this->SetIndicatorColor(HumidityRelayManager::Purple);
+			this->ShutDownEmergency();
 		}
 	}
 
@@ -138,6 +137,12 @@ namespace Relay {
 	void HumidityRelayManager::ShutDownError()
 	{
 		this->SetIndicatorColor(HumidityRelayManager::ErrorRed);
+		this->ShutDown();
+	}
+
+	void HumidityRelayManager::ShutDownEmergency()
+	{
+		this->SetIndicatorColor(HumidityRelayManager::Purple);
 		this->ShutDown();
 	}
 
