@@ -33,7 +33,7 @@ namespace Relay {
 	void HumidityRelayManager::AdjustClimate(SensorData data)
 	{
 		this->KeepAlive();
-		
+
 		// Check to see what kind of humidification state we are in.
 		switch (this->humidificationState)
 		{

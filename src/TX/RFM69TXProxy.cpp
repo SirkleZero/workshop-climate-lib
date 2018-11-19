@@ -3,88 +3,100 @@
 using namespace Sensors;
 
 namespace TX {
-    RFM69TXProxy::RFM69TXProxy() : 
-        rf69(this->RFM69_CS, this->RFM69_INT),
-        rf69_manager(this->rf69, this->MY_ADDRESS)
-    { }
+	RFM69TXProxy::RFM69TXProxy() :
+		rf69(this->RFM69_CS, this->RFM69_INT),
+		rf69_manager(this->rf69, this->MY_ADDRESS)
+	{}
 
-    void RFM69TXProxy::Initialize() {
-        pinMode(this->LED, OUTPUT);     
-        pinMode(this->RFM69_RST, OUTPUT);
-        digitalWrite(this->RFM69_RST, LOW);
+	void RFM69TXProxy::Initialize()
+	{
+		pinMode(this->LED, OUTPUT);
+		pinMode(this->RFM69_RST, OUTPUT);
+		digitalWrite(this->RFM69_RST, LOW);
 
-        // manual reset
-        digitalWrite(this->RFM69_RST, HIGH);
-        delay(10);
-        digitalWrite(this->RFM69_RST, LOW);
-        delay(10);
+		// manual reset
+		digitalWrite(this->RFM69_RST, HIGH);
+		delay(10);
+		digitalWrite(this->RFM69_RST, LOW);
+		delay(10);
 
-        if (!this->rf69_manager.init()) {
-            Serial.println(F("RFM69 radio init failed"));
-            while (1);
-        }
-        
-        // Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
-        // No encryption
-        if (!this->rf69.setFrequency(RF69_FREQ)) {
-            Serial.println(F("setFrequency failed"));
-        }
+		if (!this->rf69_manager.init())
+		{
+			Serial.println(F("RFM69 radio init failed"));
+			while (1);
+		}
 
-        // If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
-        // ishighpowermodule flag set like this:
-        this->rf69.setTxPower(20, true);  // range from 14-20 for power, 2nd arg must be true for 69HCW
+		// Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module)
+		// No encryption
+		if (!this->rf69.setFrequency(RF69_FREQ))
+		{
+			Serial.println(F("setFrequency failed"));
+		}
 
-        // The encryption key has to be the same as the one in the server
-        uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-        this->rf69.setEncryptionKey(key);
+		// If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
+		// ishighpowermodule flag set like this:
+		this->rf69.setTxPower(20, true);  // range from 14-20 for power, 2nd arg must be true for 69HCW
 
-        pinMode(this->LED, OUTPUT);
-    }
+		// The encryption key has to be the same as the one in the server
+		uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+						0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
+		this->rf69.setEncryptionKey(key);
 
-    // NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class.
-    // dumb on me.
-    uint8_t data[] = "  OK";
+		pinMode(this->LED, OUTPUT);
+	}
 
-    TXResult RFM69TXProxy::Transmit(SensorData data) {
-        TXResult result;
-        result.TransmitSuccessful = false;
+	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class.
+	// dumb on me.
+	uint8_t data[] = "  OK";
 
-        // copy the sensor data into a buffer that can be used to transmit the data to the server.
-        byte transmissionBuffer[sizeof(data)] = {0};
-        memcpy(transmissionBuffer, &data, sizeof(data));
-        byte dataSize = sizeof(data);
+	TXResult RFM69TXProxy::Transmit(SensorData data)
+	{
+		TXResult result;
+		result.TransmitSuccessful = false;
 
-        // Send a message to the node designated as the server
-        if (this->rf69_manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, this->SERVER_ADDRESS)) {
-            // Now wait for a reply from the server
-            uint8_t acknowledgementBufferLength = sizeof(this->acknowledgementBuffer);
-            uint8_t from;
+		// copy the sensor data into a buffer that can be used to transmit the data to the server.
+		byte transmissionBuffer[sizeof(data)] = { 0 };
+		memcpy(transmissionBuffer, &data, sizeof(data));
+		byte dataSize = sizeof(data);
 
-            if (this->rf69_manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, 2000, &from)) {
-                this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // zero out (no idea why we do this, but it works!)
+		// Send a message to the node designated as the server
+		if (this->rf69_manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, this->SERVER_ADDRESS))
+		{
+			// Now wait for a reply from the server
+			uint8_t acknowledgementBufferLength = sizeof(this->acknowledgementBuffer);
+			uint8_t from;
 
-                Blink(40, 3); //blink LED 3 times, 40ms between blinks
+			if (this->rf69_manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, 2000, &from))
+			{
+				this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // zero out (no idea why we do this, but it works!)
 
-                result.From = from;
-                result.RSSI = this->rf69.lastRssi();
-                result.TransmitSuccessful = true;
-            } else {
-                Serial.println(F("No reply, is anyone listening?"));
-            }
-        } else {
-            Serial.println(F("Sending failed (no ack)"));
-        }
+				Blink(40, 3); //blink LED 3 times, 40ms between blinks
 
-        return result;
-    }
+				result.From = from;
+				result.RSSI = this->rf69.lastRssi();
+				result.TransmitSuccessful = true;
+			}
+			else
+			{
+				Serial.println(F("No reply, is anyone listening?"));
+			}
+		}
+		else
+		{
+			Serial.println(F("Sending failed (no ack)"));
+		}
 
-    void RFM69TXProxy::Blink(byte delay_ms, byte loops) {
-        for (byte i = 0; i < loops; i++)  {
-            digitalWrite(this->LED,HIGH);
-            delay(delay_ms);
-            digitalWrite(this->LED,LOW);
-            delay(delay_ms);
-        }
-    }
+		return result;
+	}
+
+	void RFM69TXProxy::Blink(byte delay_ms, byte loops)
+	{
+		for (byte i = 0; i < loops; i++)
+		{
+			digitalWrite(this->LED, HIGH);
+			delay(delay_ms);
+			digitalWrite(this->LED, LOW);
+			delay(delay_ms);
+		}
+	}
 }

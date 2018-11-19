@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding ="utf-8" ?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
-  <PropertyGroup Label="Globals" >
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{16367af1-1ba7-4893-9e82-6f1102af0697}</ItemsProjectGuid>
@@ -15,47 +15,46 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.cpp" />
-<ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\SensorTransmissionResult.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\workshop-climate-lib.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\ControllerConfiguration.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ClimateData.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ParticleData.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Frame.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorData.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\TX\IoTUploadResult.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.h" />
-<ClInclude Include="$(MSBuildThisFileDirectory)src\TX\TXResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\SensorTransmissionResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\workshop-climate-lib.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\ControllerConfiguration.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ClimateData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ParticleData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Frame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\AdafruitIOProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\IoTUploadResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\TX\TXResult.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="$(MSBuildThisFileDirectory)library.properties" />
-<Text Include="$(MSBuildThisFileDirectory)vs-readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory).gitignore" />
-<None Include="$(MSBuildThisFileDirectory)library.json" />
-<None Include="$(MSBuildThisFileDirectory)README.md" />
-<None Include="$(MSBuildThisFileDirectory)src\Configuration\controllerconfiguration.json" />
-<None Include="$(MSBuildThisFileDirectory)src\Configuration\secrets.json" />
+    <None Include="$(MSBuildThisFileDirectory)library.json" />
+    <None Include="$(MSBuildThisFileDirectory)README.md" />
+    <None Include="$(MSBuildThisFileDirectory)src\Configuration\controllerconfiguration.json" />
+    <None Include="$(MSBuildThisFileDirectory)src\Configuration\secrets.json" />
   </ItemGroup>
 </Project>
