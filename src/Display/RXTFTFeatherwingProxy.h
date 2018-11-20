@@ -18,6 +18,7 @@
 using namespace Sensors;
 
 namespace Display {
+	/// <summary>Defines a class that controls the display of the controller unit.</summary>
 	class RXTFTFeatherwingProxy {
 	public:
 		RXTFTFeatherwingProxy();
@@ -27,34 +28,44 @@ namespace Display {
 		void DrawLayout();
 		void Clear();
 	private:
-		// labels
-		const char *aqiScaleGoodLabel = "Good";
-		const char *aqiScaleModerateLabel = "Moderate";
-		const char *aqiScaleUnhealthySensitiveLabel = "Sensitive";
-		const char *aqiScaleUnhealthyLabel = "Unhealthy";
-		const char *aqiScaleVeryUnhealthyLabel = "Very Unhealthy";
-		const char *aqiScaleHazardousLabel = "Hazardous";
+		// Constants
+		const int AqiScaleMaximum = 500;
 
-		// colors
-		const uint16_t readingsTextColor = 0x5DDF;
-		const uint16_t layouttextColor = ILI9341_WHITE;
-		const uint16_t layoutlineColor = ILI9341_WHITE;
-		const uint16_t backgroundColor = ILI9341_BLACK;
-		const uint16_t aqiGood = ILI9341_GREEN;
-		const uint16_t aqiModerate = ILI9341_YELLOW;
-		const uint16_t aqiUnhealthySensitive = ILI9341_ORANGE;
-		const uint16_t aqiUnhealthy = ILI9341_RED;
-		const uint16_t aqiVeryUnhealthy = 0xB800;
-		const uint16_t aqiHazardous = 0x8000;
+		// Interface label constants
+		const char *AqiScaleGoodLabel = "Good";
+		const char *AqiScaleModerateLabel = "Moderate";
+		const char *AqiScaleUnhealthySensitiveLabel = "Sensitive";
+		const char *AqiScaleUnhealthyLabel = "Unhealthy";
+		const char *AqiScaleVeryUnhealthyLabel = "Very Unhealthy";
+		const char *AqiScaleHazardousLabel = "Hazardous";
 
-		const uint8_t ROTATION_HORIZONTAL = 1;
+		// Interface color constants
+		const uint16_t ReadingsTextColor = 0x5DDF;
+		const uint16_t LayouttextColor = ILI9341_WHITE;
+		const uint16_t LayoutlineColor = ILI9341_WHITE;
+		const uint16_t BackgroundColor = ILI9341_BLACK;
+		const uint16_t AqiGood = ILI9341_GREEN;
+		const uint16_t AqiModerate = ILI9341_YELLOW;
+		const uint16_t AqiUnhealthySensitive = ILI9341_ORANGE;
+		const uint16_t AqiUnhealthy = ILI9341_RED;
+		const uint16_t AqiVeryUnhealthy = 0xB800;
+		const uint16_t AqiHazardous = 0x8000;
 
+		// Display unit variables
 		Adafruit_ILI9341 tft;
 		uint16_t height;
 		uint16_t width;
+
+		// a constant that defines the rotational position of the display.
+		// this could become dynamic if we used an accelerometer to determine
+		// the position of the display unit.
+		const uint8_t ScreenOrientation = 1;
+		
+		// variables used for display state management
 		SensorData previousData;
 		int previousFreeMemory = 0;
 
+		// Define the rectangles that are used to draw the screen layout elements
 		Rectangle humidityArea;
 		Rectangle temperatureArea;
 		Rectangle particulateArea;
@@ -68,11 +79,10 @@ namespace Display {
 		AqiScaleRectangle aqiScaleHazardousArea;
 		Rectangle aqiScaleStrokeArea;
 
+		// private functions
 		void PrintTemperature(SensorData *data, uint16_t color);
 		void PrintHumidity(SensorData *data, uint16_t color);
-		void PrintPressure(SensorData *data, uint16_t color);
 		void PrintParticulates(SensorData *data, uint16_t color);
-
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
 		void DrawAirQualityIndicator(SensorData *data, bool overwritting);

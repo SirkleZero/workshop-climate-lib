@@ -15,7 +15,7 @@ namespace TX {
 	{
 		this->secrets = secrets;
 
-		io = new AdafruitIO_WINC1500(this->secrets->adafruitio_username, this->secrets->adafruitio_key, this->secrets->wifi_ssid, this->secrets->wifi_password);
+		io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 
 		temperatureFeed = io->feed("workshop-climate.temperature");
 		humidityFeed = io->feed("workshop-climate.humidity");

@@ -48,6 +48,7 @@ using namespace Sensors;
 #endif
 
 namespace Display {
+	/// <summary>Initializes a new instance of the <see cref="RXTFTFeatherwingProxy"/> class.</summary>
 	RXTFTFeatherwingProxy::RXTFTFeatherwingProxy() :
 		tft(TFT_CS, TFT_DC),
 		humidityArea(0, 0, 150, 106),
@@ -55,34 +56,37 @@ namespace Display {
 		particulateArea(150, 28, 170, 184),
 		aqiLabelArea(150, 0, 170, 28),
 		aqiIndicatorArea(0, 212, 320, 28),
-		aqiScaleGoodArea(160, 216, 25, 20, aqiScaleGoodLabel, aqiGood, 0, 50),
-		aqiScaleModerateArea(185, 216, 25, 20, aqiScaleModerateLabel, aqiModerate, 51, 100),
-		aqiScaleUnhealthySensitiveArea(210, 216, 25, 20, aqiScaleUnhealthySensitiveLabel, aqiUnhealthySensitive, 101, 150),
-		aqiScaleUnhealthyArea(235, 216, 25, 20, aqiScaleUnhealthyLabel, aqiUnhealthy, 151, 200),
-		aqiScaleVeryUnhealthyArea(260, 216, 25, 20, aqiScaleVeryUnhealthyLabel, aqiVeryUnhealthy, 201, 300),
-		aqiScaleHazardousArea(285, 216, 25, 20, aqiScaleHazardousLabel, aqiHazardous, 301, 500),
+		aqiScaleGoodArea(160, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleGoodLabel, RXTFTFeatherwingProxy::AqiGood, 0, 50),
+		aqiScaleModerateArea(185, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleModerateLabel, RXTFTFeatherwingProxy::AqiModerate, 51, 100),
+		aqiScaleUnhealthySensitiveArea(210, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleUnhealthySensitiveLabel, RXTFTFeatherwingProxy::AqiUnhealthySensitive, 101, 150),
+		aqiScaleUnhealthyArea(235, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleUnhealthyLabel, RXTFTFeatherwingProxy::AqiUnhealthy, 151, 200),
+		aqiScaleVeryUnhealthyArea(260, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleVeryUnhealthyLabel, RXTFTFeatherwingProxy::AqiVeryUnhealthy, 201, 300),
+		aqiScaleHazardousArea(285, 216, 25, 20, RXTFTFeatherwingProxy::AqiScaleHazardousLabel, RXTFTFeatherwingProxy::AqiHazardous, 301, 500),
 		aqiScaleStrokeArea(159, 216, 152, 20)
 	{}
 
+	/// <summary>Executes initialization logic for the object.</summary>
 	void RXTFTFeatherwingProxy::Initialize()
 	{
 		tft.begin();
 
 		noInterrupts();
-		tft.setRotation(ROTATION_HORIZONTAL);
+		tft.setRotation(RXTFTFeatherwingProxy::ScreenOrientation);
 		interrupts();
 
 		this->height = tft.height();
 		this->width = tft.width();
 	}
 
+	/// <summary>Clears all displayed content from the screen by wiping it with a black background.</summary>
 	void RXTFTFeatherwingProxy::Clear()
 	{
 		noInterrupts();
-		tft.fillScreen(backgroundColor);
+		tft.fillScreen(RXTFTFeatherwingProxy::BackgroundColor);
 		interrupts();
 	}
 
+	/// <summary>Draws the initial static elements of the display.</summary>
 	void RXTFTFeatherwingProxy::DrawLayout()
 	{
 		noInterrupts();
@@ -92,7 +96,7 @@ namespace Display {
 
 		// for Humidity
 		char *humidityLabel = "% Humidity";
-		tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, layoutlineColor);
+		tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(humidityLabel, 0, 90, 150);
@@ -101,7 +105,7 @@ namespace Display {
 
 		// for temperature
 		char *temperatureLabel = "Fahrenheit";
-		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, layoutlineColor);
+		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(temperatureLabel, 0, 196, 150);
@@ -110,7 +114,7 @@ namespace Display {
 
 		// for AQI Label
 		char *AQILabel = "AQI (ug/m3)";
-		tft.drawRect(aqiLabelArea.x, aqiLabelArea.y, aqiLabelArea.width, aqiLabelArea.height, layoutlineColor);
+		tft.drawRect(aqiLabelArea.x, aqiLabelArea.y, aqiLabelArea.width, aqiLabelArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(AQILabel, 150, 18, 170);
@@ -118,25 +122,27 @@ namespace Display {
 		tft.println(AQILabel);
 
 		// for particulates area
-		tft.drawRect(particulateArea.x, particulateArea.y, particulateArea.width, particulateArea.height, layoutlineColor);
+		tft.drawRect(particulateArea.x, particulateArea.y, particulateArea.width, particulateArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 
 		// for AQI Indicator
-		tft.drawRect(aqiIndicatorArea.x, aqiIndicatorArea.y, aqiIndicatorArea.width, aqiIndicatorArea.height, layoutlineColor);
+		tft.drawRect(aqiIndicatorArea.x, aqiIndicatorArea.y, aqiIndicatorArea.width, aqiIndicatorArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 
-		// polution scale
-		tft.fillRect(aqiScaleGoodArea.x, aqiScaleGoodArea.y, aqiScaleGoodArea.width, aqiScaleGoodArea.height, aqiGood);
-		tft.fillRect(aqiScaleModerateArea.x, aqiScaleModerateArea.y, aqiScaleModerateArea.width, aqiScaleModerateArea.height, aqiModerate);
-		tft.fillRect(aqiScaleUnhealthySensitiveArea.x, aqiScaleUnhealthySensitiveArea.y, aqiScaleUnhealthySensitiveArea.width, aqiScaleUnhealthySensitiveArea.height, aqiUnhealthySensitive);
-		tft.fillRect(aqiScaleUnhealthyArea.x, aqiScaleUnhealthyArea.y, aqiScaleUnhealthyArea.width, aqiScaleUnhealthyArea.height, aqiUnhealthy);
-		tft.fillRect(aqiScaleVeryUnhealthyArea.x, aqiScaleVeryUnhealthyArea.y, aqiScaleVeryUnhealthyArea.width, aqiScaleVeryUnhealthyArea.height, aqiVeryUnhealthy);
-		tft.fillRect(aqiScaleHazardousArea.x, aqiScaleHazardousArea.y, aqiScaleHazardousArea.width, aqiScaleHazardousArea.height, aqiHazardous);
+		// air quality scale
+		tft.fillRect(aqiScaleGoodArea.x, aqiScaleGoodArea.y, aqiScaleGoodArea.width, aqiScaleGoodArea.height, RXTFTFeatherwingProxy::AqiGood);
+		tft.fillRect(aqiScaleModerateArea.x, aqiScaleModerateArea.y, aqiScaleModerateArea.width, aqiScaleModerateArea.height, RXTFTFeatherwingProxy::AqiModerate);
+		tft.fillRect(aqiScaleUnhealthySensitiveArea.x, aqiScaleUnhealthySensitiveArea.y, aqiScaleUnhealthySensitiveArea.width, aqiScaleUnhealthySensitiveArea.height, RXTFTFeatherwingProxy::AqiUnhealthySensitive);
+		tft.fillRect(aqiScaleUnhealthyArea.x, aqiScaleUnhealthyArea.y, aqiScaleUnhealthyArea.width, aqiScaleUnhealthyArea.height, RXTFTFeatherwingProxy::AqiUnhealthy);
+		tft.fillRect(aqiScaleVeryUnhealthyArea.x, aqiScaleVeryUnhealthyArea.y, aqiScaleVeryUnhealthyArea.width, aqiScaleVeryUnhealthyArea.height, RXTFTFeatherwingProxy::AqiVeryUnhealthy);
+		tft.fillRect(aqiScaleHazardousArea.x, aqiScaleHazardousArea.y, aqiScaleHazardousArea.width, aqiScaleHazardousArea.height, RXTFTFeatherwingProxy::AqiHazardous);
 
 		// stroke the scale
-		tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, layoutlineColor);
+		tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
 
 		interrupts();
 	}
 
+	/// <summary>Prints the amount of free memory in bytes to the screen.</summary>
+	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
 	void RXTFTFeatherwingProxy::PrintFreeMemory(int freeMemory)
 	{
 		noInterrupts();
@@ -148,13 +154,13 @@ namespace Display {
 
 		// overwrite
 		tft.setCursor(156, 120);
-		tft.setTextColor(backgroundColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::BackgroundColor);
 		tft.print(memoryLabel);
 		tft.print(previousFreeMemory);
 
 		// print the value
 		tft.setCursor(156, 120);
-		tft.setTextColor(readingsTextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::ReadingsTextColor);
 		tft.print(memoryLabel);
 		tft.print(freeMemory);
 
@@ -163,18 +169,22 @@ namespace Display {
 		interrupts();
 	}
 
+	/// <summary>Prints sensor information to the screen.</summary>
+	/// <param name="freeMemory">The <see cref="SensorData"> containing readings from the sensors.</param>
 	void RXTFTFeatherwingProxy::PrintSensors(SensorData data)
 	{
 		noInterrupts();
 
-		this->PrintHumidity(&this->previousData, backgroundColor);
-		this->PrintHumidity(&data, readingsTextColor);
+		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
 
-		this->PrintTemperature(&this->previousData, backgroundColor);
-		this->PrintTemperature(&data, readingsTextColor);
+		this->PrintHumidity(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
+		this->PrintHumidity(&data, RXTFTFeatherwingProxy::ReadingsTextColor);
 
-		this->PrintParticulates(&this->previousData, backgroundColor);
-		this->PrintParticulates(&data, readingsTextColor);
+		this->PrintTemperature(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
+		this->PrintTemperature(&data, RXTFTFeatherwingProxy::ReadingsTextColor);
+
+		this->PrintParticulates(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
+		this->PrintParticulates(&data, RXTFTFeatherwingProxy::ReadingsTextColor);
 
 		this->DrawAirQualityIndicator(&this->previousData, true);
 		this->DrawAirQualityIndicator(&data, false);
@@ -206,15 +216,6 @@ namespace Display {
 		tft.print(temperature);
 	}
 
-	void RXTFTFeatherwingProxy::PrintPressure(SensorData *data, uint16_t color)
-	{
-		// tft.setCursor(0, 128);
-		// tft.setTextColor(color);
-		// tft.setTextSize(1);
-		// tft.print(data->climate.Pressure / 100.0F);
-		// tft.println(" hPa");
-	}
-
 	void RXTFTFeatherwingProxy::PrintParticulates(SensorData *data, uint16_t color)
 	{
 		//tft.setFont(&FreeSans9pt7b);
@@ -224,7 +225,7 @@ namespace Display {
 		// TODO: break this apart into a portion that will go into the layout method
 		// and a portion (here) responsible for drawing out the values of the sensor.
 
-		tft.setTextColor(layouttextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::LayouttextColor);
 		tft.setCursor(156, 40);
 		tft.print("Standard");
 
@@ -244,7 +245,7 @@ namespace Display {
 		tft.setCursor(200, 83);
 		tft.print(data->particulates.pm100_standard);
 
-		tft.setTextColor(layouttextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::LayouttextColor);
 		tft.setCursor(235, 40);
 		tft.print("Environmental");
 
@@ -275,12 +276,10 @@ namespace Display {
 
 		AqiScaleRectangle *tempScaleArea;
 
-		// if the aqi is greater than 500, set it to 500. The AQI scale only goes to 500 so having it be larger
-		// would be pretty much meaningless. If the scale of the index where to change, then the settings for 
-		// all of this would need to change to compensate for the new scale.
-		if (aqi > 500)
+		// if the aqi is greater than 500, set it to 500. The AQI scale only goes to 500 so having it be larger would be pretty much meaningless. If the scale of the index where to change, then the settings for all of this would need to change to compensate for the new scale.
+		if (aqi > RXTFTFeatherwingProxy::AqiScaleMaximum)
 		{
-			aqi = 500;
+			aqi = RXTFTFeatherwingProxy::AqiScaleMaximum;
 		}
 
 		if (aqiScaleGoodArea.IsAqiRectangleFor(aqi))
@@ -318,11 +317,11 @@ namespace Display {
 		if (overwritting)
 		{
 			indicatorColor = color;
-			color = backgroundColor;
+			color = BackgroundColor;
 		}
 		else
 		{
-			indicatorColor = backgroundColor;
+			indicatorColor = BackgroundColor;
 		}
 
 		// print out the friendly AQI index name
@@ -333,9 +332,7 @@ namespace Display {
 		tft.setCursor(centeredTextXPosition, 231);
 		tft.println(tempScaleArea->Label);
 
-		// draw an indicator line on the scale. 160 is the beginning of the scale, and we
-		// increment up from that. Only draw the indicator line if we fit within our aqi scale
-		// of 0 to 500.
+		// draw an indicator line on the scale. 160 is the beginning of the scale, and we increment up from that. Only draw the indicator line if we fit within our aqi scale of 0 to 500.
 		if (aqi > 0 && aqi <= 500)
 		{
 			tft.drawFastVLine(indicatorXPosition, 217, 18, indicatorColor);

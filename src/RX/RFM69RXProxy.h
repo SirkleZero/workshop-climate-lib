@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #include <RH_RF69.h>
 #include <RHReliableDatagram.h>
+#include "SensorTransmissionResult.h"
 #include "..\Sensors\SensorData.h"
-#include "..\SensorTransmissionResult.h"
 
 using namespace Sensors;
 

@@ -1,59 +1,84 @@
-namespace Configuration {
 #ifndef Secrets_h
 #define Secrets_h
 
 #include <Arduino.h>
 
+namespace Configuration {
+	/// <summary>Class that represents secrets used by the system.</summary>
 	class Secrets {
 	private:
-		String tmp_adafruitio_username;
-		String tmp_adafruitio_key;
-		String tmp_wifi_ssid;
-		String tmp_wifi_password;
+		/*
+		HACK Incomming!!!
+
+		These private variables hold the values for the secrets used by the system. This is done this way to handle the fact
+		that these values come to us as const char * from the SD proxy underlying system. Once stuffed into the String type
+		these are then converted back to const char * for actual use by the various parts of our system.
+
+		Yes, this is lame, but I'm not sure of a better way to handle copying const char * values into a global object when they 
+		aren't in fact constants, but are set via a config file that goes out of scope once the method that populates the data
+		is complete.
+		*/
+		String adafruitIOUsername;
+		String adafruitIOAccessKey;
+		String wiFiSSID;
+		String wiFiPassword;
+
 	public:
-		const char *adafruitio_username;
-		const char *adafruitio_key;
-		const char *wifi_ssid;
-		const char *wifi_password;
+		/// <summary>The Adafruit IO username.</summary>
+		const char *AdafruitIOUsername;
+		/// <summary>The access key for Adafruit IO service calls.</summary>
+		const char *AdafruitIOAccessKey;
+		/// <summary>The WiFi network SSID to connect to for internet access.</summary>
+		const char *WiFiSSID;
+		/// <summary>The password for the WiFi network.</summary>
+		const char *WiFiPassword;
 
-		void SetUsername(const char * adafruitUsername)
+		/// <summary>Sets the Adafruit IO username.</summary>
+		/// <param name="adafruitUsername">The Adafruit IO username.</param>
+		void SetAdafruitIOUsername(const char * adafruitIOUsername)
 		{
-			this->tmp_adafruitio_username = String(adafruitUsername);
-			this->adafruitio_username = this->tmp_adafruitio_username.c_str();
+			this->adafruitIOUsername = String(adafruitIOUsername);
+			this->AdafruitIOUsername = this->adafruitIOUsername.c_str();
 		}
 
-		void SetPassword(const char * adafruitPassword)
+		/// <summary>Sets the key for Adafruit IO service calls.</summary>
+		/// <param name="adafruitPassword">The access key for Adafruit IO service calls.</param>
+		void SetAdafruitIOAccessKey(const char * adafruitIOAccessKey)
 		{
-			this->tmp_adafruitio_key = String(adafruitPassword);
-			this->adafruitio_key = this->tmp_adafruitio_key.c_str();
+			this->adafruitIOAccessKey = String(adafruitIOAccessKey);
+			this->AdafruitIOAccessKey = this->adafruitIOAccessKey.c_str();
 		}
 
+		/// <summary>Sets the WiFi network SSID to connect to for internet access.</summary>
+		/// <param name="wifiSSID">The WiFi network SSID to connect to for internet access.</param>
 		void SetWifiSSID(const char * wifiSSID)
 		{
-			this->tmp_wifi_ssid = String(wifiSSID);
-			this->wifi_ssid = this->tmp_wifi_ssid.c_str();
+			this->wiFiSSID = String(wifiSSID);
+			this->WiFiSSID = this->wiFiSSID.c_str();
 		}
 
+		/// <summary>Sets the password for the WiFi network.</summary>
+		/// <param name="wifiPassword">The password for the WiFi network.</param>
 		void SetWifiPassword(const char * wifiPassword)
 		{
-			this->tmp_wifi_password = String(wifiPassword);
-			this->wifi_password = this->tmp_wifi_password.c_str();
+			this->wiFiPassword = String(wifiPassword);
+			this->WiFiPassword = this->wiFiPassword.c_str();
 		}
 
+		///<summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
 		{
 			Serial.println(F("---------------------------------------"));
-			Serial.print(F("adafruitio_username = ")); Serial.println(this->adafruitio_username);
+			Serial.print(F("adafruitio_username = ")); Serial.println(this->AdafruitIOUsername);
 
-			Serial.print(F("adafruitio_key = ")); Serial.println(this->adafruitio_key);
+			Serial.print(F("adafruitio_key = ")); Serial.println(this->AdafruitIOAccessKey);
 
-			Serial.print(F("wifi_ssid = ")); Serial.println(this->wifi_ssid);
+			Serial.print(F("wifi_ssid = ")); Serial.println(this->WiFiSSID);
 
-			Serial.print(F("wifi_password = ")); Serial.println(this->wifi_password);
+			Serial.print(F("wifi_password = ")); Serial.println(this->WiFiPassword);
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}
 	};
-
-#endif
 }
+#endif

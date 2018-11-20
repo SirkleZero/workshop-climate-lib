@@ -10,17 +10,24 @@
 #include "Secrets.h"
 
 namespace Configuration {
+	/// <summary>Provides a class that wraps reading an SD Card.</summary>
 	class SDCardProxy {
-	public:
+	public:		
 		SDCardProxy();
-		void Initialize();
-		void LoadSecrets(Secrets *secrets);
-		void LoadConfiguration(ControllerConfiguration *configuration);
-
+		
+		void Initialize();		
+		bool LoadSecrets(Secrets *secrets);		
+		bool LoadConfiguration(ControllerConfiguration *configuration);
 		void PrintDebug();
 	private:
-		const char *secretsFileName = "/SECRET~1.JSO";  // <- SD library uses 8.3 filenames
-		const char *controllerConfigurationFileName = "CONTRO~1.JSO";
+		/// <summary>The name and path of the secrets file.</summary>
+		const char *SecretsFileName = "SECRET~1.JSO";
+
+		/// <summary>The name and path of the configuration file.</summary>
+		const char *ControllerConfigurationFileName = "CONTRO~1.JSO";
+
+		/// <summary>The chip select pin used by the SD card.</summary>
+		const uint8_t SDCardChipSelectPin = 5;
 	};
 }
 #endif

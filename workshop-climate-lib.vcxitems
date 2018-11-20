@@ -26,7 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\SensorTransmissionResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\SensorTransmissionResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\workshop-climate-lib.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\ControllerConfiguration.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.h" />
