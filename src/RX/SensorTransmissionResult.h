@@ -22,10 +22,8 @@ namespace RX {
 		void PrintDebug()
 		{
 			Serial.println(F("---------------------------------------"));
-			Serial.print(F("Got packet from #")); Serial.print(TransmissionSource);
-			Serial.print(F(" [RSSI :"));
-			Serial.print(RSSI);
-			Serial.println(F("]"));
+			Serial.print(F("Got packet from #")); Serial.print(this->TransmissionSource);
+			Serial.print(F(" [RSSI :")); Serial.print(this->RSSI); Serial.println(F("]"));
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 

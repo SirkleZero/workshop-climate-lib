@@ -10,6 +10,7 @@
 using namespace Sensors;
 
 namespace RX {
+	/// <summary></summary>
 	class RFM69RXProxy {
 	public:
 		RFM69RXProxy();
@@ -17,14 +18,18 @@ namespace RX {
 		void Initialize();
 		SensorTransmissionResult Listen();
 	private:
-		const int16_t RF69_FREQ = 915.0;
-		const byte SERVER_ADDRESS = 1;
-		const byte RFM69_CS = 12;
-		const byte RFM69_RST = 11;
-		const byte RFM69_IRQ = 13;
-		//const byte RFM69_IRQN = digitalPinToInterrupt(RFM69_IRQ);
+		/// <summary>The frequency at which the radio will operate.</summary>
+		const int16_t RadioFrequency = 915.0;
+		/// <summary>The address of the controller (server).</summary>
+		const byte ServerAddress = 1;
+		/// <summary>The chip select pin address.</summary>
+		const byte CSPin = 12;
+		/// <summary>The RST pin address.</summary>
+		const byte RSTPin = 11;
+		/// <summary>The IRQ pin address.</summary>
+		const byte IRQPin = 13;
 
-		RH_RF69 rf69;
+		RH_RF69 radio;
 		RHReliableDatagram manager;
 
 		uint8_t messageBuffer[RH_RF69_MAX_MESSAGE_LEN];
