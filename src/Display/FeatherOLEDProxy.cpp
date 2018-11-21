@@ -112,6 +112,7 @@ namespace Display {
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
 	InitializationResult FeatherOLEDProxy::Initialize()
 	{
 		InitializationResult result;

@@ -14,8 +14,11 @@ namespace Relay {
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
-	void HumidityRelayManager::Initialize(ControllerConfiguration *configuration)
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+	InitializationResult HumidityRelayManager::Initialize(ControllerConfiguration *configuration)
 	{
+		InitializationResult result;
+
 		this->configuration = configuration;
 
 		// configure relay control pins
@@ -25,6 +28,9 @@ namespace Relay {
 		// enable the LED indicator and set it's initial state color
 		this->EnableIndicator();
 		this->SetIndicatorColor(HumidityRelayManager::Orange);
+
+		result.IsSuccessful = true;
+		return result;
 	}
 
 	/// <summary>Resets the internal counter that is used to track the last time the system responded to sensor information.</summary>
