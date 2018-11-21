@@ -4,20 +4,34 @@
 #include <Arduino.h>
 
 namespace Sensors {
+	/// <summary>Represents data that describes airborn particulate matter.</summary>
 	struct ParticleData {
+		/// <summary>Indoor air quality indicator of particles 1.0 micron in size.</summary>
 		uint16_t pm10_standard;
+		/// <summary>Indoor air quality indicator of particles 2.5 micron in size.</summary>
 		uint16_t pm25_standard;
+		/// <summary>Indoor air quality indicator of particles 10.0 micron in size.</summary>
 		uint16_t pm100_standard;
+		/// <summary>Environmental air quality indicator of particles 1.0 micron in size.</summary>
 		uint16_t pm10_env;
+		/// <summary>Environmental air quality indicator of particles 2.5 micron in size.</summary>
 		uint16_t pm25_env;
+		/// <summary>Environmental air quality indicator of particles 10.0 micron in size.</summary>
 		uint16_t pm100_env;
+		/// <summary>Measurement of .03 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_03um;
+		/// <summary>Measurement of .05 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_05um;
+		/// <summary>Measurement of 1.0 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_10um;
+		/// <summary>Measurement of 2.5 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_25um;
+		/// <summary>Measurement of 5.0 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_50um;
+		/// <summary>Measurement of 10.0 micron sized particles per cubic meter of air.</summary>
 		uint16_t particles_100um;
 
+		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
 		{
 			Serial.println(F("---------------------------------------"));

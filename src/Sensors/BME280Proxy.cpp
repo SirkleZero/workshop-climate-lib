@@ -50,6 +50,7 @@ namespace Sensors {
 			return true;
 		}
 
+		/// <summary>Prints a debug statement to Serial output.</summary>
 		void BME280Proxy::PrintDebug()
 		{
 			SensorData data;

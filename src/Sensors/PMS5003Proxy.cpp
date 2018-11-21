@@ -2,7 +2,9 @@
 
 namespace Sensors {
 	namespace PMS5003 {
+		/// <summary></summary>
 		const bool DEBUG = false;
+		/// <summary></summary>
 		const int MAX_FRAME_LEN = 64;
 
 		int incomingByte = 0; // for incoming serial data
@@ -175,6 +177,7 @@ namespace Sensors {
 			return false;
 		}
 
+		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PMS5003Proxy::PrintDebug()
 		{
 			SensorData data;

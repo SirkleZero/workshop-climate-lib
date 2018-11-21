@@ -8,6 +8,7 @@
 
 namespace Sensors {
 	namespace PMS5003 {
+		/// <summary></summary>
 		class PMS5003Proxy {
 		public:
 			PMS5003Proxy();

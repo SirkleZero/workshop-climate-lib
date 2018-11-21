@@ -9,11 +9,15 @@
 
 namespace Sensors {
 	namespace BME280 {
+		/// <summary></summary>
 		class BME280Proxy {
 		public:
+			/// <summary></summary>
 			const float SeaLevelPressure_hPa = 1013.25;
+			/// <summary></summary>
 			const float humidityOffset = 0;
 
+			/// <summary></summary>
 			enum TemperatureUnit {
 				C = 0x00,
 				F = 0x01

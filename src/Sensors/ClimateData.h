@@ -5,12 +5,18 @@
 #include <avr/dtostrf.h>
 
 namespace Sensors {
+	/// <summary>Represents data related to the climate.</summary>
 	struct ClimateData {
-		float Temperature;   // [deg C]
+		/// <summary>The temperature represented in degrees celsius.</summary>
+		float Temperature;
+		/// <summary>The units that the temperature is represented in.</summary>
 		char Units;
-		float Humidity;      // [%]
-		float Pressure;      // pascals
+		/// <summary>The relative humidity as a percentage.</summary>
+		float Humidity;
+		/// <summary>The air pressure in pascals.</summary>
+		float Pressure;
 
+		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
 		{
 			Serial.println(F("---------------------------------------"));
@@ -30,11 +36,13 @@ namespace Sensors {
 			Serial.println();
 		}
 
+		/// <summary>Converts a celsius temperature to Fahrenheit.</summary>
 		static float ConvertCToF(float c)
 		{
 			return (c * 9 / 5) + 32;
 		}
 
+		/// <summary>Converts a float value to a string.</summary>
 		static char* ConvertFloatToString(float f, signed char width, unsigned char precision)
 		{
 			char buff[10];
