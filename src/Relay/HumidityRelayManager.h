@@ -12,15 +12,17 @@ using namespace Display;
 using namespace Sensors;
 
 namespace Relay {
+	/// <summary>Describes the state that the humidification system is currently in.</summary>
 	enum HumidificationState {
-		// Represents that we are in a dehumidification state and that the dehumidifier is running.
+		/// <summary>Represents that we are in a dehumidification state and that the dehumidifier is running.</summary>
 		Dehumidifying = 0x00,
-		// Represents that we are in a humidification state and that the humidifier is running.
+		/// <summary>Represents that we are in a humidification state and that the humidifier is running.</summary>
 		Humidifying = 0x01,
-		// Represents that we are in neither humidification or dehumidification state.
+		/// <summary>Represents that we are in neither humidification or dehumidification state.</summary>
 		None = 0x02
 	};
 
+	/// <summary>Class that represents the functionality of the relay attached to the climate controller.</summary>
 	class HumidityRelayManager {
 	public:
 		HumidityRelayManager();
@@ -31,7 +33,7 @@ namespace Relay {
 		void EmergencyShutoff();
 
 	private:
-		// pins
+		// pins used by the relay system
 		const int RedPin = 15;
 		const int GreenPin = 16;
 		const int BluePin = 17;
@@ -74,5 +76,4 @@ namespace Relay {
 		void EnableIndicator();
 	};
 }
-
 #endif
