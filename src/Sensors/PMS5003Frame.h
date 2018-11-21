@@ -5,20 +5,20 @@
 #include "ParticleData.h"
 
 namespace Sensors {
-	/// <summary></summary>
+	/// <summary>Structure used to deserialize data from the PMS5003 sensor.</summary>
 	struct PMS5003Frame {
-		/// <summary></summary>
-		uint8_t  frameHeader[2];
-		/// <summary></summary>
-		uint16_t frameLen;
-		/// <summary></summary>
-		ParticleData particulates;
-		/// <summary></summary>
-		uint8_t  version;
-		/// <summary></summary>
-		uint8_t  errorCode;
-		/// <summary></summary>
-		uint16_t checksum;
+		/// <summary>The header of the data frame.</summary>
+		uint8_t FrameHeader[2];
+		/// <summary>The length of the frame of data.</summary>
+		uint16_t FrameLength;
+		/// <summary>The <see cref="ParticleData"/> that contains the actual sensor readings.</summary>
+		ParticleData Particulates;
+		/// <summary>The version, not entirely sure what this represents to be honest.</summary>
+		uint8_t Version;
+		/// <summary>Unused</summary>
+		uint8_t ErrorCode;
+		/// <summary>The checksum of the frame, used for error handling.</summary>
+		uint16_t Checksum;
 	};
 }
 #endif

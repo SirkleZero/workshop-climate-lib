@@ -66,7 +66,7 @@ namespace Sensors {
 			Serial.println(F(" hPa")); // pressure in pascals
 
 			Serial.print(F("Humidity = "));
-			Serial.print(data.climate.Humidity + humidityOffset);
+			Serial.print(data.climate.Humidity);
 			Serial.println(F(" %"));
 
 			Serial.println();

@@ -28,7 +28,7 @@ namespace Sensors {
 
 		void PMS5003Proxy::ConfigurePMS5003()
 		{
-			thisFrame.frameLen = MAX_FRAME_LEN;
+			thisFrame.FrameLength = MAX_FRAME_LEN;
 		}
 
 		bool PMS5003Proxy::ReadSensor(SensorData *data)
@@ -70,14 +70,14 @@ namespace Sensors {
 						if (incomingByte == 0x42 && detectOff == 0)
 						{
 							frameBuf[detectOff] = incomingByte;
-							thisFrame.frameHeader[0] = incomingByte;
+							thisFrame.FrameHeader[0] = incomingByte;
 							calcChecksum = incomingByte; // Checksum init!
 							detectOff++;
 						}
 						else if (incomingByte == 0x4D && detectOff == 1)
 						{
 							frameBuf[detectOff] = incomingByte;
-							thisFrame.frameHeader[1] = incomingByte;
+							thisFrame.FrameHeader[1] = incomingByte;
 							calcChecksum += incomingByte;
 							inFrame = true;
 							detectOff++;
@@ -101,55 +101,55 @@ namespace Sensors {
 						switch (detectOff)
 						{
 							case 4:
-								thisFrame.frameLen = val;
+								thisFrame.FrameLength = val;
 								frameLen = val + detectOff;
 								break;
 							case 6:
-								thisFrame.particulates.pm10_standard = val;
+								thisFrame.Particulates.pm10_standard = val;
 								break;
 							case 8:
-								thisFrame.particulates.pm25_standard = val;
+								thisFrame.Particulates.pm25_standard = val;
 								break;
 							case 10:
-								thisFrame.particulates.pm100_standard = val;
+								thisFrame.Particulates.pm100_standard = val;
 								break;
 							case 12:
-								thisFrame.particulates.pm10_env = val;
+								thisFrame.Particulates.pm10_env = val;
 								break;
 							case 14:
-								thisFrame.particulates.pm25_env = val;
+								thisFrame.Particulates.pm25_env = val;
 								break;
 							case 16:
-								thisFrame.particulates.pm100_env = val;
+								thisFrame.Particulates.pm100_env = val;
 								break;
 							case 18:
-								thisFrame.particulates.particles_03um = val;
+								thisFrame.Particulates.particles_03um = val;
 								break;
 							case 20:
-								thisFrame.particulates.particles_05um = val;
+								thisFrame.Particulates.particles_05um = val;
 								break;
 							case 22:
-								thisFrame.particulates.particles_10um = val;
+								thisFrame.Particulates.particles_10um = val;
 								break;
 							case 24:
-								thisFrame.particulates.particles_25um = val;
+								thisFrame.Particulates.particles_25um = val;
 								break;
 							case 26:
-								thisFrame.particulates.particles_50um = val;
+								thisFrame.Particulates.particles_50um = val;
 								break;
 							case 28:
-								thisFrame.particulates.particles_100um = val;
+								thisFrame.Particulates.particles_100um = val;
 								break;
 							case 29:
 								val = frameBuf[detectOff - 1];
-								thisFrame.version = val;
+								thisFrame.Version = val;
 								break;
 							case 30:
 								val = frameBuf[detectOff - 1];
-								thisFrame.errorCode = val;
+								thisFrame.ErrorCode = val;
 								break;
 							case 32:
-								thisFrame.checksum = val;
+								thisFrame.Checksum = val;
 								calcChecksum -= ((val >> 8) + (val & 0xFF));
 								break;
 							default:
@@ -168,9 +168,9 @@ namespace Sensors {
 
 			Serial1.end();
 
-			if (calcChecksum == thisFrame.checksum)
+			if (calcChecksum == thisFrame.Checksum)
 			{
-				data->particulates = thisFrame.particulates;
+				data->particulates = thisFrame.Particulates;
 				return true;
 			}
 
