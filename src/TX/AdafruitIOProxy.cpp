@@ -4,23 +4,30 @@ using namespace Sensors;
 using namespace Configuration;
 
 namespace TX {
+	/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
 	AdafruitIOProxy::AdafruitIOProxy() {}
 
+	/// <summary>Destroys an existing instance of the <see cref="BME280Proxy"/> class.</summary>
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
 		delete io;
 	}
 
+	/// <summary>Executes initialization logic for the object.</summary>
+	/// <param name="secrets">The <see cref="Secrets"/> that contain information for connecting to the WiFi network and Adafruit IO services.</param>
 	void AdafruitIOProxy::Initialize(Secrets *secrets)
 	{
 		this->secrets = secrets;
 
+		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
 		io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 
+		// set up the feeds for the climate information.
 		temperatureFeed = io->feed("workshop-climate.temperature");
 		humidityFeed = io->feed("workshop-climate.humidity");
 		pressureFeed = io->feed("workshop-climate.pressure");
 
+		// set up the feeds for the particulate information.
 		pm10_standard = io->feed("workshop-climate.pm10-standard");
 		pm25_standard = io->feed("workshop-climate.pm25-standard");
 		pm100_standard = io->feed("workshop-climate.pm100-standard");
@@ -35,12 +42,15 @@ namespace TX {
 		particles_100um = io->feed("workshop-climate.particles-100um");
 	}
 
+	/// <summary>Disconnects from the WiFi network.</summary>
 	void AdafruitIOProxy::Disconnect()
 	{
 		WiFi.disconnect();
 		WiFi.end();
 	}
 
+	/// <summary>Connects to the WiFi network and transmits data to Adafruit IO.</summary>
+	/// <param name="data">The <see cref="SensorData" to send to Adafruit IO.</param>
 	IoTUploadResult AdafruitIOProxy::Transmit(SensorData data)
 	{
 		IoTUploadResult result;
@@ -90,7 +100,7 @@ namespace TX {
 
 		Serial.println(F("sending data to Adafruit IO..."));
 
-		// send the queued up data points. run commits the transaction (essentially).
+		// send the queued up data points. "run" commits the transaction (essentially).
 		io->run();
 		result.IsSuccess = true;
 
@@ -104,6 +114,7 @@ namespace TX {
 		result.SubnetMask = WiFi.subnetMask();
 		result.ErrorMessage = F("");
 
+		// disconnect from WiFi.
 		this->Disconnect();
 
 		return result;

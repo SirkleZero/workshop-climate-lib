@@ -17,6 +17,7 @@ using namespace Sensors;
 using namespace Configuration;
 
 namespace TX {
+	/// <summary>Represents a class that knows how to interact with Adafruit IO.</summary>
 	class AdafruitIOProxy {
 	public:
 		AdafruitIOProxy();
@@ -24,7 +25,9 @@ namespace TX {
 		void Initialize(Secrets *secrets);
 		IoTUploadResult Transmit(SensorData data);
 	private:
+		/// <summary>The number of seconds we should wait for an internet connection to Adafruit IO.</summary>
 		const byte SecondsToWait = 15;
+		/// <summary>The number of milliseconds to wait while we're attempting to connect to Adafruit IO.</summary>
 		const unsigned long ConnectionDelay = 500;
 
 		Secrets *secrets;
