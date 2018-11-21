@@ -5,46 +5,55 @@ using namespace Sensors;
 namespace RX {
 	/// <summary>Initializes a new instance of the <see cref="RFM69RXProxy"/> class.</summary>
 	RFM69RXProxy::RFM69RXProxy() :
-		radio(this->CSPin, this->IRQPin),
-		manager(this->radio, this->ServerAddress)
+		radio(RFM69RXProxy::CSPin, RFM69RXProxy::IRQPin),
+		manager(this->radio, RFM69RXProxy::ServerAddress)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
-	void RFM69RXProxy::Initialize()
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+	InitializationResult RFM69RXProxy::Initialize()
 	{
+		InitializationResult result;
+
 		// set up the reset pin
-		pinMode(this->RSTPin, OUTPUT);
-		digitalWrite(this->RSTPin, LOW);
+		pinMode(RFM69RXProxy::RSTPin, OUTPUT);
+		digitalWrite(RFM69RXProxy::RSTPin, LOW);
 
 		// manually reset the radio. Not exactly sure why we do this, but it's in the example sketch...
-		digitalWrite(this->RSTPin, HIGH);
-		delay(10);
-		digitalWrite(this->RSTPin, LOW);
-		delay(10);
+		digitalWrite(RFM69RXProxy::RSTPin, HIGH);
+		delay(25);
+		digitalWrite(RFM69RXProxy::RSTPin, LOW);
+		delay(25);
 
 		// check to make sure the radio has properly initialized.
 		if (!this->manager.init())
 		{
-			Serial.println(F("RFM69 radio init failed"));
-			while (1); //TODO: if the radio fails, for whatever reason, I suspect that this here line of code is haunting us. Instrument this!!!
+			result.ErrorMessage = F("RFM69 radio init failed");
+			return result;
 		}
 
 		// Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module). No encryption
-		if (!this->radio.setFrequency(this->RadioFrequency))
+		if (!this->radio.setFrequency(RFM69RXProxy::RadioFrequency))
 		{
-			Serial.println(F("setFrequency failed"));
+			result.ErrorMessage = F("setFrequency failed");
+			return result;
 		}
 
 		// If you are using a high power RF69 eg RFM69HW, you *must* set a Tx power with the
 		// ishighpowermodule flag set like this:
 		this->radio.setTxPower(20, true);  // range from 14-20 for power, 2nd arg must be true for 69HCW
 
-		// The encryption key has to be the same as the one in the server
-		uint8_t key[] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-							0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
-		this->radio.setEncryptionKey(key);
+		// set the encryption key
+		// TODO: make sure the key is working properly
+		this->radio.setEncryptionKey(Secrets::RadioEncryptionKey);
 
-		Serial.print(F("RFM69 radio @"));  Serial.print((int)this->RadioFrequency);  Serial.println(F(" MHz"));
+		result.IsSuccessful = true;
+		return result;
+	}
+
+	InitializationResult RFM69RXProxy::Reset()
+	{
+		return this->Initialize();
 	}
 
 	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class. dumb on me.

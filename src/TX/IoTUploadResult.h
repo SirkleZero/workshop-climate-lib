@@ -19,7 +19,7 @@ namespace TX {
 		IPAddress GatewayIP;
 		/// <summary>The subnet mask of the network the microcontroller is connected to.</summary>
 		IPAddress SubnetMask;
-		/// <summary>The flash string helper containing error messages if they are present.</summary>
+		/// <summary>The string containing any error message that occurred.</summary>
 		const __FlashStringHelper *ErrorMessage;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
