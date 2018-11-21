@@ -170,7 +170,7 @@ namespace Display {
 	}
 
 	/// <summary>Prints sensor information to the screen.</summary>
-	/// <param name="freeMemory">The <see cref="SensorData"> containing readings from the sensors.</param>
+	/// <param name="data">The <see cref="SensorData"> containing readings from the sensors.</param>
 	void RXTFTFeatherwingProxy::PrintSensors(SensorData data)
 	{
 		noInterrupts();

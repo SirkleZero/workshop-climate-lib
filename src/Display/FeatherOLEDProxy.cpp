@@ -4,20 +4,11 @@ using namespace Sensors;
 using namespace TX;
 
 namespace Display {
-	// these three variables exist in global scope because they are used to handle the interrupts for the
-	// buttons used by the application. displayMode and previousData exist here because of the need to have
-	// the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it.
-	// If they were an instance of it, then we'd have problems accessing their values.
-	FeatherOLEDProxy* interruptThis;
-	ButtonMode displayMode = ButtonMode::Default;
-	SensorData previousData;
-
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
 
-	// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
-	Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #if defined(ESP8266)
 #define BUTTON_A 0
@@ -53,10 +44,23 @@ namespace Display {
 
 #if (SSD1306_LCDHEIGHT != 32)
 #error(F("Height incorrect, please fix Adafruit_SSD1306.h!"));
-#endif    
+#endif
 
+	// these three variables exist in global scope because they are used to handle the interrupts for the
+	// buttons used by the application. displayMode and previousData exist here because of the need to have
+	// the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it.
+	// If they were an instance of it, then we'd have problems accessing their values.
+	FeatherOLEDProxy* interruptThis;
+	ButtonMode displayMode = ButtonMode::Default;
+	SensorData previousData;
+
+	// declare the display object. For whatever reason, this doesn't work as a class variable.
+	Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+	/// <summary>Initializes a new instance of the <see cref="FeatherOLEDProxy"/> class.</summary>
 	FeatherOLEDProxy::FeatherOLEDProxy() {}
 
+	/// <summary>Handles the press of the 'A' button, which places the display into a specific display mode.</summary>
 	void FeatherOLEDProxy::ButtonA()
 	{
 		if (displayMode != ButtonMode::A)
@@ -67,6 +71,7 @@ namespace Display {
 		}
 	}
 
+	/// <summary>Handles the press of the 'B' button, which places the display into a specific display mode.</summary>
 	void FeatherOLEDProxy::ButtonB()
 	{
 		if (displayMode != ButtonMode::B)
@@ -77,6 +82,7 @@ namespace Display {
 		}
 	}
 
+	/// <summary>Handles the press of the 'C' button, which places the display into a specific display mode.</summary>
 	void FeatherOLEDProxy::ButtonC()
 	{
 		if (displayMode != ButtonMode::C)
@@ -87,48 +93,52 @@ namespace Display {
 		}
 	}
 
+	/// <summary>Handles the interrupt for the click of the 'A' button.</summary>
 	void ButtonWrapperA()
 	{
 		interruptThis->ButtonA();
 	}
 
+	/// <summary>Handles the interrupt for the click of the 'B' button.</summary>
 	void ButtonWrapperB()
 	{
 		interruptThis->ButtonB();
 	}
 
+	/// <summary>Handles the interrupt for the click of the 'C' button.</summary>
 	void ButtonWrapperC()
 	{
 		interruptThis->ButtonC();
 	}
 
+	/// <summary>Executes initialization logic for the object.</summary>
 	void FeatherOLEDProxy::Initialize()
 	{
-		Serial.println(F("OLED FeatherWing test"));
 		// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
 		display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
-
-		// init done
-		Serial.println(F("OLED begun"));
 
 		// display the adafruit splash screen
 		display.display();
 
+		// set up the displays built in buttons using the built in pull up resistors.
 		pinMode(BUTTON_A, INPUT_PULLUP);
 		pinMode(BUTTON_B, INPUT_PULLUP);
 		pinMode(BUTTON_C, INPUT_PULLUP);
 
+		// set up the interrupts for the buttons so that when they are clicked we can capture the event and process the click.
 		attachInterrupt(digitalPinToInterrupt(BUTTON_A), ButtonWrapperA, FALLING);
 		attachInterrupt(digitalPinToInterrupt(BUTTON_B), ButtonWrapperB, FALLING);
 		attachInterrupt(digitalPinToInterrupt(BUTTON_C), ButtonWrapperC, FALLING);
 	}
 
+	/// <summary>Clears all displayed content from the screen.</summary>
 	void FeatherOLEDProxy::Clear()
 	{
 		display.clearDisplay();
 		display.display();
 	}
 
+	/// <summary>Prints a waiting message to the display.</summary>
 	void FeatherOLEDProxy::PrintWaiting()
 	{
 		this->Clear();
@@ -141,6 +151,8 @@ namespace Display {
 		display.display();
 	}
 
+	/// <summary>Prints sensor information to the screen.</summary>
+	/// <param name="data">The <see cref="SensorData"> containing readings from the sensors.</param>
 	void FeatherOLEDProxy::PrintSensors(SensorData data)
 	{
 		display.setTextSize(1);
@@ -177,6 +189,27 @@ namespace Display {
 
 		display.display();
 		previousData = data;
+	}
+
+	/// <summary>Prints RFM69 status information to the display.</summary>
+	/// <param name="result">The <see cref="TXResult"> containing the RFM69 result.</param>
+	void FeatherOLEDProxy::PrintRFM69Update(TXResult *result)
+	{
+		display.setTextSize(1);
+		display.setTextColor(WHITE);
+		display.setCursor(0, 24);
+
+		if (result->TransmitSuccessful)
+		{
+			display.print(F("RSSI: "));
+			display.println(result->RSSI);
+		}
+		else
+		{
+			display.println(F("Transmission failed!"));
+		}
+
+		display.display();
 	}
 
 	void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color)
@@ -237,24 +270,5 @@ namespace Display {
 		display.print(data->particulates.particles_100um);
 
 		//display.startscrolldiagright(0x0F, 0x0F);
-	}
-
-	void FeatherOLEDProxy::PrintRFM69Update(TXResult *result)
-	{
-		display.setTextSize(1);
-		display.setTextColor(WHITE);
-		display.setCursor(0, 24);
-
-		if (result->TransmitSuccessful)
-		{
-			display.print(F("RSSI: "));
-			display.println(result->RSSI);
-		}
-		else
-		{
-			display.println(F("Transmission failed!"));
-		}
-
-		display.display();
 	}
 }

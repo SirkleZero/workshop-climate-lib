@@ -13,6 +13,7 @@ using namespace Sensors;
 using namespace TX;
 
 namespace Display {
+	/// <summary>Describes the state of the buttons of the Feather OLED display.</summary>
 	enum ButtonMode {
 		Default = 0x00,
 		A = 0x01,
@@ -20,6 +21,7 @@ namespace Display {
 		C = 0x03
 	};
 
+	/// <summary>Defines a class that represents the display of the Sensor module.</summary>
 	class FeatherOLEDProxy {
 	public:
 		FeatherOLEDProxy();
@@ -29,10 +31,10 @@ namespace Display {
 		void PrintWaiting();
 		void PrintRFM69Update(TXResult *result);
 		void Clear();
-
 		void ButtonA();
 		void ButtonB();
 		void ButtonC();
+
 	private:
 		void PrintTemperature(SensorData *data, uint16_t color);
 		void PrintHumidity(SensorData *data, uint16_t color);
