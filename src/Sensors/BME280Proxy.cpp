@@ -2,18 +2,20 @@
 
 namespace Sensors {
 	namespace BME280 {
+		/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
 		BME280Proxy::BME280Proxy(BME280Proxy::TemperatureUnit units)
 		{
 			this->units = units;
 		}
 
+		/// <summary>Executes initialization logic for the object.</summary>
 		void BME280Proxy::Initialize()
 		{
 			// initialize the BME280 sensor          
 			if (!bme.begin(&Wire))
 			{
 				Serial.println(F("Could not find a valid BME280 sensor, check wiring!"));
-				while (1);
+				while (1); // TODO: this is bad in production code!
 			}
 
 			// configure the BME280 sensor, // suggested rate is 1/60Hz (1s)
@@ -24,8 +26,11 @@ namespace Sensors {
 				Adafruit_BME280::FILTER_OFF);
 		}
 
+		/// <summary>Reads data from the sensor.</summary>
+		/// <param name="data">The <see cref="SensorData"/> object to place the data into.</param>
 		bool BME280Proxy::ReadSensor(SensorData *data)
 		{
+			// we are taking a forced measurement based on the setSampling settings we've specified. If those change, then this needs to be revisited according to the spec of the sensor.
 			bme.takeForcedMeasurement();
 
 			switch (this->units)
@@ -56,19 +61,11 @@ namespace Sensors {
 			SensorData data;
 			this->ReadSensor(&data);
 
-			Serial.print(F("Temperature = "));
-			Serial.print(data.climate.Temperature);
-			Serial.print(F(" *"));
-			Serial.println(this->units);
-
-			Serial.print(F("Pressure = "));
-			Serial.print(data.climate.Pressure / 100.0F);
-			Serial.println(F(" hPa")); // pressure in pascals
-
-			Serial.print(F("Humidity = "));
-			Serial.print(data.climate.Humidity);
-			Serial.println(F(" %"));
-
+			Serial.println(F("---------------------------------------"));
+			Serial.print(F("Temperature = ")); Serial.print(data.climate.Temperature); Serial.print(F(" *")); Serial.println(this->units);
+			Serial.print(F("Pressure = ")); Serial.print(data.climate.Pressure / 100.0F); Serial.println(F(" hPa"));
+			Serial.print(F("Humidity = ")); Serial.print(data.climate.Humidity); Serial.println(F(" %"));
+			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}
 	}

@@ -9,16 +9,28 @@
 namespace Sensors {
 	namespace PMS5003 {
 		/// <summary></summary>
+		const int PMS5003MaxFrameLength = 64;
+
+		/// <summary>A class that handles the communication with the PMS5003 sensor.</summary>
 		class PMS5003Proxy {
 		public:
 			PMS5003Proxy();
 
 			void Initialize();
 			bool ReadSensor(SensorData *data);
-			void PrintDebug();
-
 		private:
-			void ConfigurePMS5003();
+			/// <summary>true if we are debugging; otherwise false.</summary>
+			const bool InDebugMode = false;
+			
+			char frameBuffer[PMS5003MaxFrameLength];
+			int incomingByte = 0;		
+			int detectOff = 0;
+			int frameLength = PMS5003MaxFrameLength;
+			bool inFrame = false;
+			char printBuffer[256];
+			uint16_t calculatedChecksum = 0;
+
+			PMS5003Frame thisFrame;
 		};
 	}
 }

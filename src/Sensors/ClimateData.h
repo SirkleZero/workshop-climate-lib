@@ -7,7 +7,7 @@
 namespace Sensors {
 	/// <summary>Represents data related to the climate.</summary>
 	struct ClimateData {
-		/// <summary>The temperature represented in degrees celsius.</summary>
+		/// <summary>The temperature of the environment.</summary>
 		float Temperature;
 		/// <summary>The units that the temperature is represented in.</summary>
 		char Units;

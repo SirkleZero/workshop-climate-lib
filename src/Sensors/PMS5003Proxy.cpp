@@ -2,38 +2,20 @@
 
 namespace Sensors {
 	namespace PMS5003 {
-		/// <summary></summary>
-		const bool DEBUG = false;
-		/// <summary></summary>
-		const int MAX_FRAME_LEN = 64;
-
-		int incomingByte = 0; // for incoming serial data
-		char frameBuf[MAX_FRAME_LEN];
-		int detectOff = 0;
-		int frameLen = MAX_FRAME_LEN;
-		bool inFrame = false;
-		char printbuf[256];
-		uint16_t calcChecksum = 0;
-
-		PMS5003Frame thisFrame;
-
-		// Constructor
+		/// <summary>Initializes a new instance of the <see cref="PMS5003Proxy"/> class.</summary>
 		PMS5003Proxy::PMS5003Proxy() {}
 
+		/// <summary>Executes initialization logic for the object.</summary>
 		void PMS5003Proxy::Initialize()
 		{
-			// configure the PMS5003 sensor
-			ConfigurePMS5003();
+			thisFrame.FrameLength = PMS5003MaxFrameLength;
 		}
 
-		void PMS5003Proxy::ConfigurePMS5003()
-		{
-			thisFrame.FrameLength = MAX_FRAME_LEN;
-		}
-
+		/// <summary>Reads data from the sensor.</summary>
+		/// <param name="data">The <see cref="SensorData"/> object to place the data into.</param>
 		bool PMS5003Proxy::ReadSensor(SensorData *data)
 		{
-			// send data only when you receive data:
+			// send data only when you receive data. This sensor communicates over the Serial1 interface based on how we have it hooked up to the microcontroller.
 			Serial1.begin(9600);
 			bool packetReceived = false;
 
@@ -42,7 +24,7 @@ namespace Sensors {
 				if (Serial1.available() > 32)
 				{
 					int drain = Serial1.available();
-					if (DEBUG)
+					if (InDebugMode)
 					{
 						Serial.print(F("-- Draining buffer: "));
 						Serial.println(Serial1.available(), DEC);
@@ -54,13 +36,13 @@ namespace Sensors {
 				}
 				if (Serial1.available() > 0)
 				{
-					if (DEBUG)
+					if (InDebugMode)
 					{
 						Serial.print(F("-- Available: "));
 						Serial.println(Serial1.available(), DEC);
 					}
 					incomingByte = Serial1.read();
-					if (DEBUG)
+					if (InDebugMode)
 					{
 						Serial.print(F("-- READ: "));
 						Serial.println(incomingByte, HEX);
@@ -69,16 +51,16 @@ namespace Sensors {
 					{
 						if (incomingByte == 0x42 && detectOff == 0)
 						{
-							frameBuf[detectOff] = incomingByte;
+							frameBuffer[detectOff] = incomingByte;
 							thisFrame.FrameHeader[0] = incomingByte;
-							calcChecksum = incomingByte; // Checksum init!
+							calculatedChecksum = incomingByte; // Checksum init!
 							detectOff++;
 						}
 						else if (incomingByte == 0x4D && detectOff == 1)
 						{
-							frameBuf[detectOff] = incomingByte;
+							frameBuffer[detectOff] = incomingByte;
 							thisFrame.FrameHeader[1] = incomingByte;
-							calcChecksum += incomingByte;
+							calculatedChecksum += incomingByte;
 							inFrame = true;
 							detectOff++;
 						}
@@ -86,7 +68,7 @@ namespace Sensors {
 						{
 							Serial.print(F("-- Frame syncing... "));
 							Serial.print(incomingByte, HEX);
-							if (DEBUG)
+							if (InDebugMode)
 							{
 							}
 							Serial.println();
@@ -94,15 +76,15 @@ namespace Sensors {
 					}
 					else
 					{
-						frameBuf[detectOff] = incomingByte;
-						calcChecksum += incomingByte;
+						frameBuffer[detectOff] = incomingByte;
+						calculatedChecksum += incomingByte;
 						detectOff++;
-						uint16_t val = frameBuf[detectOff - 1] + (frameBuf[detectOff - 2] << 8);
+						uint16_t val = frameBuffer[detectOff - 1] + (frameBuffer[detectOff - 2] << 8);
 						switch (detectOff)
 						{
 							case 4:
 								thisFrame.FrameLength = val;
-								frameLen = val + detectOff;
+								frameLength = val + detectOff;
 								break;
 							case 6:
 								thisFrame.Particulates.pm10_standard = val;
@@ -141,22 +123,22 @@ namespace Sensors {
 								thisFrame.Particulates.particles_100um = val;
 								break;
 							case 29:
-								val = frameBuf[detectOff - 1];
+								val = frameBuffer[detectOff - 1];
 								thisFrame.Version = val;
 								break;
 							case 30:
-								val = frameBuf[detectOff - 1];
+								val = frameBuffer[detectOff - 1];
 								thisFrame.ErrorCode = val;
 								break;
 							case 32:
 								thisFrame.Checksum = val;
-								calcChecksum -= ((val >> 8) + (val & 0xFF));
+								calculatedChecksum -= ((val >> 8) + (val & 0xFF));
 								break;
 							default:
 								break;
 						}
 
-						if (detectOff >= frameLen)
+						if (detectOff >= frameLength)
 						{
 							packetReceived = true;
 							detectOff = 0;
@@ -168,40 +150,13 @@ namespace Sensors {
 
 			Serial1.end();
 
-			if (calcChecksum == thisFrame.Checksum)
+			if (calculatedChecksum == thisFrame.Checksum)
 			{
 				data->particulates = thisFrame.Particulates;
 				return true;
 			}
 
 			return false;
-		}
-
-		/// <summary>Prints a debug statement to Serial output.</summary>
-		void PMS5003Proxy::PrintDebug()
-		{
-			SensorData data;
-			this->ReadSensor(&data);
-
-			Serial.println();
-			Serial.println(F("---------------------------------------"));
-			Serial.println(F("Concentration Units (standard)"));
-			Serial.print(F("PM 1.0: ")); Serial.print(data.particulates.pm10_standard);
-			Serial.print(F("\t\tPM 2.5: ")); Serial.print(data.particulates.pm25_standard);
-			Serial.print(F("\t\tPM 10: ")); Serial.println(data.particulates.pm100_standard);
-			Serial.println(F("---------------------------------------"));
-			Serial.println(F("Concentration Units (environmental)"));
-			Serial.print(F("PM 1.0: ")); Serial.print(data.particulates.pm10_env);
-			Serial.print(F("\t\tPM 2.5: ")); Serial.print(data.particulates.pm25_env);
-			Serial.print(F("\t\tPM 10: ")); Serial.println(data.particulates.pm100_env);
-			Serial.println(F("---------------------------------------"));
-			Serial.print(F("Particles > 0.3um / 0.1L air:")); Serial.println(data.particulates.particles_03um);
-			Serial.print(F("Particles > 0.5um / 0.1L air:")); Serial.println(data.particulates.particles_05um);
-			Serial.print(F("Particles > 1.0um / 0.1L air:")); Serial.println(data.particulates.particles_10um);
-			Serial.print(F("Particles > 2.5um / 0.1L air:")); Serial.println(data.particulates.particles_25um);
-			Serial.print(F("Particles > 5.0um / 0.1L air:")); Serial.println(data.particulates.particles_50um);
-			Serial.print(F("Particles > 10.0 um / 0.1L air:")); Serial.println(data.particulates.particles_100um);
-			Serial.println(F("---------------------------------------"));
 		}
 	}
 }
