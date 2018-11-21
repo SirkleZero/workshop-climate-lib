@@ -6,6 +6,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#include "..\InitializationResult.h"
 #include "..\Sensors\SensorData.h"
 #include "..\TX\TXResult.h"
 
@@ -26,7 +27,7 @@ namespace Display {
 	public:
 		FeatherOLEDProxy();
 
-		void Initialize();
+		InitializationResult Initialize();
 		void PrintSensors(SensorData data);
 		void PrintWaiting();
 		void PrintRFM69Update(TXResult *result);

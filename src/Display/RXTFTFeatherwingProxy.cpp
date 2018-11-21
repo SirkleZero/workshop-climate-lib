@@ -48,6 +48,13 @@ using namespace Sensors;
 #endif
 
 namespace Display {
+	const char *RXTFTFeatherwingProxy::AqiScaleGoodLabel = "Good";
+	const char *RXTFTFeatherwingProxy::AqiScaleModerateLabel = "Moderate";
+	const char *RXTFTFeatherwingProxy::AqiScaleUnhealthySensitiveLabel = "Sensitive";
+	const char *RXTFTFeatherwingProxy::AqiScaleUnhealthyLabel = "Unhealthy";
+	const char *RXTFTFeatherwingProxy::AqiScaleVeryUnhealthyLabel = "Very Unhealthy";
+	const char *RXTFTFeatherwingProxy::AqiScaleHazardousLabel = "Hazardous";
+
 	/// <summary>Initializes a new instance of the <see cref="RXTFTFeatherwingProxy"/> class.</summary>
 	RXTFTFeatherwingProxy::RXTFTFeatherwingProxy() :
 		tft(TFT_CS, TFT_DC),
@@ -66,8 +73,10 @@ namespace Display {
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
-	void RXTFTFeatherwingProxy::Initialize()
+	InitializationResult RXTFTFeatherwingProxy::Initialize()
 	{
+		InitializationResult result;
+
 		tft.begin();
 
 		noInterrupts();
@@ -76,6 +85,9 @@ namespace Display {
 
 		this->height = tft.height();
 		this->width = tft.width();
+
+		result.IsSuccessful = true;
+		return result;
 	}
 
 	/// <summary>Clears all displayed content from the screen by wiping it with a black background.</summary>

@@ -112,10 +112,16 @@ namespace Display {
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
-	void FeatherOLEDProxy::Initialize()
+	InitializationResult FeatherOLEDProxy::Initialize()
 	{
-		// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-		display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
+		InitializationResult result;
+
+		// initialize with the I2C addr 0x3C (for the 128x32)
+		if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
+		{
+			result.IsSuccessful = false;
+			return result;
+		}
 
 		// display the adafruit splash screen
 		display.display();
@@ -129,6 +135,9 @@ namespace Display {
 		attachInterrupt(digitalPinToInterrupt(BUTTON_A), ButtonWrapperA, FALLING);
 		attachInterrupt(digitalPinToInterrupt(BUTTON_B), ButtonWrapperB, FALLING);
 		attachInterrupt(digitalPinToInterrupt(BUTTON_C), ButtonWrapperC, FALLING);
+
+		result.IsSuccessful = true;
+		return result;
 	}
 
 	/// <summary>Clears all displayed content from the screen.</summary>

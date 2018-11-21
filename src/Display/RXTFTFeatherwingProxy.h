@@ -12,6 +12,7 @@
 #include <Fonts\FreeSansBold9pt7b.h>
 #include <Fonts\FreeSans9pt7b.h>
 
+#include "..\InitializationResult.h"
 #include "..\Sensors\SensorData.h"
 #include "..\Rectangle.h"
 
@@ -22,34 +23,34 @@ namespace Display {
 	class RXTFTFeatherwingProxy {
 	public:
 		RXTFTFeatherwingProxy();
-		void Initialize();
+		InitializationResult Initialize();
 		void PrintSensors(SensorData data);
 		void PrintFreeMemory(int freeMemory);
 		void DrawLayout();
 		void Clear();
 	private:
 		// Constants
-		const int AqiScaleMaximum = 500;
-
-		// Interface label constants
-		const char *AqiScaleGoodLabel = "Good";
-		const char *AqiScaleModerateLabel = "Moderate";
-		const char *AqiScaleUnhealthySensitiveLabel = "Sensitive";
-		const char *AqiScaleUnhealthyLabel = "Unhealthy";
-		const char *AqiScaleVeryUnhealthyLabel = "Very Unhealthy";
-		const char *AqiScaleHazardousLabel = "Hazardous";
+		static const int AqiScaleMaximum = 500;
 
 		// Interface color constants
-		const uint16_t ReadingsTextColor = 0x5DDF;
-		const uint16_t LayouttextColor = ILI9341_WHITE;
-		const uint16_t LayoutlineColor = ILI9341_WHITE;
-		const uint16_t BackgroundColor = ILI9341_BLACK;
-		const uint16_t AqiGood = ILI9341_GREEN;
-		const uint16_t AqiModerate = ILI9341_YELLOW;
-		const uint16_t AqiUnhealthySensitive = ILI9341_ORANGE;
-		const uint16_t AqiUnhealthy = ILI9341_RED;
-		const uint16_t AqiVeryUnhealthy = 0xB800;
-		const uint16_t AqiHazardous = 0x8000;
+		static const uint16_t ReadingsTextColor = 0x5DDF;
+		static const uint16_t LayouttextColor = ILI9341_WHITE;
+		static const uint16_t LayoutlineColor = ILI9341_WHITE;
+		static const uint16_t BackgroundColor = ILI9341_BLACK;
+		static const uint16_t AqiGood = ILI9341_GREEN;
+		static const uint16_t AqiModerate = ILI9341_YELLOW;
+		static const uint16_t AqiUnhealthySensitive = ILI9341_ORANGE;
+		static const uint16_t AqiUnhealthy = ILI9341_RED;
+		static const uint16_t AqiVeryUnhealthy = 0xB800;
+		static const uint16_t AqiHazardous = 0x8000;
+
+		// Interface label constants
+		static const char *AqiScaleGoodLabel;
+		static const char *AqiScaleModerateLabel;
+		static const char *AqiScaleUnhealthySensitiveLabel;
+		static const char *AqiScaleUnhealthyLabel;
+		static const char *AqiScaleVeryUnhealthyLabel;
+		static const char *AqiScaleHazardousLabel;
 
 		// Display unit variables
 		Adafruit_ILI9341 tft;
@@ -59,7 +60,7 @@ namespace Display {
 		// a constant that defines the rotational position of the display.
 		// this could become dynamic if we used an accelerometer to determine
 		// the position of the display unit.
-		const uint8_t ScreenOrientation = 1;
+		static const uint8_t ScreenOrientation = 1;
 		
 		// variables used for display state management
 		SensorData previousData;
