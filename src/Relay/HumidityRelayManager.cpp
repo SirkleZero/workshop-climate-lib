@@ -45,7 +45,7 @@ namespace Relay {
 		{
 			case HumidificationState::Dehumidifying:
 				// we are dehumidifying, check against the target level and run or shut down appropriately
-				if (data.climate.Humidity <= this->configuration->TargetHumidity)
+				if (data.Climate.Humidity <= this->configuration->TargetHumidity)
 				{
 					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
@@ -54,7 +54,7 @@ namespace Relay {
 				break;
 			case HumidificationState::Humidifying:
 				// we are humidifying, check against the target level and run or shut down appropriately
-				if (data.climate.Humidity >= this->configuration->TargetHumidity)
+				if (data.Climate.Humidity >= this->configuration->TargetHumidity)
 				{
 					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
@@ -63,12 +63,12 @@ namespace Relay {
 				break;
 			case HumidificationState::None:
 				// We are neither humidifying or dehumidifying, so let's check to see if we are outside of our min and max operating parameters. If we are in the range, then we're in the goldilocks zone and don't need to do anything; otherwise, we need to turn on either the humdififier or the dehumidifier.
-				if (data.climate.Humidity > this->configuration->MaximumHumidity)
+				if (data.Climate.Humidity > this->configuration->MaximumHumidity)
 				{
 					// current humidity from the sensor exceeds the maximum threshold, enable the dehumidifier.
 					this->EnableDehumidifier();
 				}
-				else if (data.climate.Humidity < this->configuration->MinimumHumidity)
+				else if (data.Climate.Humidity < this->configuration->MinimumHumidity)
 				{
 					// current humidity from the sensor exceeds the minimum threshold, enable the humidifier.
 					this->EnableHumidifier();

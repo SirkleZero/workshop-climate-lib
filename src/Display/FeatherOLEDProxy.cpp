@@ -217,7 +217,7 @@ namespace Display {
 		display.setCursor(0, 0);
 		display.setTextColor(color);
 		display.print(F("Humidity: "));
-		display.print(data->climate.Humidity);
+		display.print(data->Climate.Humidity);
 		display.print(F("% RH"));
 	}
 
@@ -226,7 +226,7 @@ namespace Display {
 		display.setCursor(0, 8);
 		display.setTextColor(color);
 		display.print(F("Temperature: "));
-		display.print(data->climate.Temperature);
+		display.print(data->Climate.Temperature);
 		display.print(F(" "));
 		display.print((char)247); // this is the ascii degrees character as displayed by the feather oled display
 		display.print(F("F"));
@@ -237,7 +237,7 @@ namespace Display {
 		display.setCursor(0, 16);
 		display.setTextColor(color);
 		display.print(F("Pressure: "));
-		display.print(data->climate.Pressure / 100.0F);
+		display.print(data->Climate.Pressure / 100.0F);
 		display.print(F(" hPa"));
 	}
 
@@ -250,24 +250,24 @@ namespace Display {
 
 		display.setCursor(0, 8);
 		display.print(F(".3u: "));
-		display.print(data->particulates.particles_03um);
+		display.print(data->Particulates.particles_03um);
 		display.print(F(" "));
 		display.print(F(".5u: "));
-		display.print(data->particulates.particles_05um);
+		display.print(data->Particulates.particles_05um);
 
 		display.setCursor(0, 16);
 		display.print(F("1u: "));
-		display.print(data->particulates.particles_10um);
+		display.print(data->Particulates.particles_10um);
 		display.print(F(" "));
 		display.print(F("2.5u: "));
-		display.print(data->particulates.particles_25um);
+		display.print(data->Particulates.particles_25um);
 
 		display.setCursor(0, 24);
 		display.print(F("5u: "));
-		display.print(data->particulates.particles_50um);
+		display.print(data->Particulates.particles_50um);
 		display.print(F(" "));
 		display.print(F("10u: "));
-		display.print(data->particulates.particles_100um);
+		display.print(data->Particulates.particles_100um);
 
 		//display.startscrolldiagright(0x0F, 0x0F);
 	}

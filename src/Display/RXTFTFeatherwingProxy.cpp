@@ -198,7 +198,7 @@ namespace Display {
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *humidity = ClimateData::ConvertFloatToString(data->climate.Humidity, 4, 2);
+		char *humidity = ClimateData::ConvertFloatToString(data->Climate.Humidity, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, 0, 70, 150);
 		tft.setCursor(centeredTextXPosition, 70);
 		tft.setTextColor(color);
@@ -209,7 +209,7 @@ namespace Display {
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *temperature = ClimateData::ConvertFloatToString(data->climate.Temperature, 4, 2);
+		char *temperature = ClimateData::ConvertFloatToString(data->Climate.Temperature, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, 0, 176, 150);
 		tft.setCursor(centeredTextXPosition, 176);
 		tft.setTextColor(color);
@@ -233,17 +233,17 @@ namespace Display {
 		tft.setCursor(156, 53);
 		tft.print("PM1.0:");
 		tft.setCursor(200, 53);
-		tft.print(data->particulates.pm10_standard);
+		tft.print(data->Particulates.pm10_standard);
 
 		tft.setCursor(156, 68);
 		tft.print("PM2.5:");
 		tft.setCursor(200, 68);
-		tft.print(data->particulates.pm25_standard);
+		tft.print(data->Particulates.pm25_standard);
 
 		tft.setCursor(156, 83);
 		tft.print("PM10.0:");
 		tft.setCursor(200, 83);
-		tft.print(data->particulates.pm100_standard);
+		tft.print(data->Particulates.pm100_standard);
 
 		tft.setTextColor(RXTFTFeatherwingProxy::LayouttextColor);
 		tft.setCursor(235, 40);
@@ -253,22 +253,22 @@ namespace Display {
 		tft.setCursor(235, 53);
 		tft.print("PM1.0:");
 		tft.setCursor(279, 53);
-		tft.print(data->particulates.pm10_env);
+		tft.print(data->Particulates.pm10_env);
 
 		tft.setCursor(235, 68);
 		tft.print("PM2.5:");
 		tft.setCursor(279, 68);
-		tft.print(data->particulates.pm25_env);
+		tft.print(data->Particulates.pm25_env);
 
 		tft.setCursor(235, 83);
 		tft.print("PM10.0:");
 		tft.setCursor(279, 83);
-		tft.print(data->particulates.pm100_env);
+		tft.print(data->Particulates.pm100_env);
 	}
 
 	void RXTFTFeatherwingProxy::DrawAirQualityIndicator(SensorData *data, bool overwritting)
 	{
-		uint16_t aqi = data->particulates.pm25_standard;
+		uint16_t aqi = data->Particulates.pm25_standard;
 		uint16_t color;
 		uint16_t indicatorColor; // the color of the verticle indicator
 		int16_t indicatorXPosition = 0; // the verticle indicator line's x position

@@ -36,21 +36,21 @@ namespace Sensors {
 			switch (this->units)
 			{
 				case C:
-					data->climate.Temperature = bme.readTemperature();
-					data->climate.Units = 'C';
+					data->Climate.Temperature = bme.readTemperature();
+					data->Climate.Units = 'C';
 					break;
 				case F:
-					data->climate.Temperature = ClimateData::ConvertCToF(bme.readTemperature());
-					data->climate.Units = 'F';
+					data->Climate.Temperature = ClimateData::ConvertCToF(bme.readTemperature());
+					data->Climate.Units = 'F';
 					break;
 				default:
-					data->climate.Temperature = bme.readTemperature();
-					data->climate.Units = 'C';
+					data->Climate.Temperature = bme.readTemperature();
+					data->Climate.Units = 'C';
 					break;
 			}
 
-			data->climate.Pressure = bme.readPressure();
-			data->climate.Humidity = bme.readHumidity();
+			data->Climate.Pressure = bme.readPressure();
+			data->Climate.Humidity = bme.readHumidity();
 
 			return true;
 		}
@@ -62,9 +62,9 @@ namespace Sensors {
 			this->ReadSensor(&data);
 
 			Serial.println(F("---------------------------------------"));
-			Serial.print(F("Temperature = ")); Serial.print(data.climate.Temperature); Serial.print(F(" *")); Serial.println(this->units);
-			Serial.print(F("Pressure = ")); Serial.print(data.climate.Pressure / 100.0F); Serial.println(F(" hPa"));
-			Serial.print(F("Humidity = ")); Serial.print(data.climate.Humidity); Serial.println(F(" %"));
+			Serial.print(F("Temperature = ")); Serial.print(data.Climate.Temperature); Serial.print(F(" *")); Serial.println(this->units);
+			Serial.print(F("Pressure = ")); Serial.print(data.Climate.Pressure / 100.0F); Serial.println(F(" hPa"));
+			Serial.print(F("Humidity = ")); Serial.print(data.Climate.Humidity); Serial.println(F(" %"));
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}

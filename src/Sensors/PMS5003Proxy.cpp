@@ -152,7 +152,7 @@ namespace Sensors {
 
 			if (calculatedChecksum == thisFrame.Checksum)
 			{
-				data->particulates = thisFrame.Particulates;
+				data->Particulates = thisFrame.Particulates;
 				return true;
 			}
 

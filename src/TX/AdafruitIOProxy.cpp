@@ -80,23 +80,23 @@ namespace TX {
 		}
 
 		// send climate information to Adafruit IO
-		temperatureFeed->save(data.climate.Temperature);
-		humidityFeed->save(data.climate.Humidity);
-		pressureFeed->save(data.climate.Pressure / 100); // send it in hPa
+		temperatureFeed->save(data.Climate.Temperature);
+		humidityFeed->save(data.Climate.Humidity);
+		pressureFeed->save(data.Climate.Pressure / 100); // send it in hPa
 
 		// send particulates information to Adafruit IO
-		pm10_standard->save(data.particulates.pm10_standard);
-		pm25_standard->save(data.particulates.pm25_standard);
-		pm100_standard->save(data.particulates.pm100_standard);
-		pm10_environment->save(data.particulates.pm10_env);
-		pm25_environment->save(data.particulates.pm25_env);
-		pm100_environment->save(data.particulates.pm100_env);
-		particles_03um->save(data.particulates.particles_03um);
-		particles_05um->save(data.particulates.particles_05um);
-		particles_10um->save(data.particulates.particles_10um);
-		particles_25um->save(data.particulates.particles_25um);
-		particles_50um->save(data.particulates.particles_50um);
-		particles_100um->save(data.particulates.particles_100um);
+		pm10_standard->save(data.Particulates.pm10_standard);
+		pm25_standard->save(data.Particulates.pm25_standard);
+		pm100_standard->save(data.Particulates.pm100_standard);
+		pm10_environment->save(data.Particulates.pm10_env);
+		pm25_environment->save(data.Particulates.pm25_env);
+		pm100_environment->save(data.Particulates.pm100_env);
+		particles_03um->save(data.Particulates.particles_03um);
+		particles_05um->save(data.Particulates.particles_05um);
+		particles_10um->save(data.Particulates.particles_10um);
+		particles_25um->save(data.Particulates.particles_25um);
+		particles_50um->save(data.Particulates.particles_50um);
+		particles_100um->save(data.Particulates.particles_100um);
 
 		Serial.println(F("sending data to Adafruit IO..."));
 
