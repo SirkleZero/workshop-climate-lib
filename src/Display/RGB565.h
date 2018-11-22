@@ -5,19 +5,37 @@
 
 namespace Display {
 	/// <summary>Defines a structure that represents an RGB value.</summary>
-	struct RGB {
+	struct RGB565 {
 		/// <summary>Initializes a new instance of the <see cref="RGB"/> class.</summary>
 		/// <param name="red">The integer value of red.</param>
 		/// <param name="green">The integer value of green.</param>
 		/// <param name="blue">The integer value of blue.</param>
-		RGB(int red, int green, int blue) : Red(red), Green(green), Blue(blue) {}
+		RGB565(uint8_t red, uint8_t green, uint8_t blue) : Red(red), Green(green), Blue(blue) {}
 
 		/// <summary>The integer value of red.</summary>
-		int Red = 0;
+		uint8_t Red = 0;
 		/// <summary>The integer value of green.</summary>
-		int Green = 0;
+		uint8_t Green = 0;
 		/// <summary>The integer value of blue.</summary>
-		int Blue = 0;
+		uint8_t Blue = 0;
+
+		/// <summary>Converts the instance of this object to a decimal equivalent following the RGB565 spec.</summary>
+		uint16_t ToDecimal()
+		{
+			return RGB565::ToDecimal(this->Red, this->Green, this->Blue);
+		}
+
+		/// <summary>Converts RGB values to a decimal equivalent following the RGB565 spec.</summary>
+		/// <param name="red">The integer value of red.</param>
+		/// <param name="green">The integer value of green.</param>
+		/// <param name="blue">The integer value of blue.</param>
+		static uint16_t ToDecimal(uint8_t red, uint8_t green, uint8_t blue)
+		{
+			// http://www.barth-dev.de/online/rgb565-color-picker/
+			uint16_t Rgb565 = 0;
+			Rgb565 = (((red & 0b11111000) << 8) + ((green & 0b11111100) << 3) + (blue >> 3));
+			return Rgb565;
+		}
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		virtual void PrintDebug()

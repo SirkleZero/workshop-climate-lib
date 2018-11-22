@@ -166,7 +166,7 @@ namespace Relay {
 		this->ShutDown();
 	}
 
-	void HumidityRelayManager::SetIndicatorColor(RGB color)
+	void HumidityRelayManager::SetIndicatorColor(RGB565 color)
 	{
 		this->EnableIndicator();
 

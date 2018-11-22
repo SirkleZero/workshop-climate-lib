@@ -34,7 +34,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB565.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />

@@ -6,7 +6,7 @@
 #include "InitializationResult.h"
 #include "..\Sensors\SensorData.h"
 #include "..\Configuration\ControllerConfiguration.h"
-#include "..\Display\RGB.h"
+#include "..\Display\RGB565.h"
 
 using namespace Configuration;
 using namespace Display;
@@ -45,12 +45,12 @@ namespace Relay {
 		static const bool CommonAnode = true;
 
 		// colors
-		const RGB Orange;
-		const RGB Green;
-		const RGB Purple;
-		const RGB Aqua;
-		const RGB Red;
-		const RGB ErrorRed;
+		const RGB565 Orange;
+		const RGB565 Green;
+		const RGB565 Purple;
+		const RGB565 Aqua;
+		const RGB565 Red;
+		const RGB565 ErrorRed;
 
 		// configuration
 		ControllerConfiguration *configuration;
@@ -71,7 +71,7 @@ namespace Relay {
 		void ShutDownTargetReached();
 		void ShutDownGoldilocks();
 		void ShutDownEmergency();
-		void SetIndicatorColor(RGB color);
+		void SetIndicatorColor(RGB565 color);
 		void DisableIndicator();
 		void EnableIndicator();
 	};
