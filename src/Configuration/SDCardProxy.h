@@ -6,6 +6,7 @@
 #include <SD.h>
 #include <SPI.h>
 
+#include "..\InitializationResult.h"
 #include "ControllerConfiguration.h"
 #include "Secrets.h"
 
@@ -15,7 +16,7 @@ namespace Configuration {
 	public:		
 		SDCardProxy();
 		
-		void Initialize();		
+		InitializationResult Initialize();
 		bool LoadSecrets(Secrets *secrets);		
 		bool LoadConfiguration(ControllerConfiguration *configuration);
 		void PrintDebug();

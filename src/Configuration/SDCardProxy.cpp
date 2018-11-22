@@ -5,13 +5,19 @@ namespace Configuration {
 	SDCardProxy::SDCardProxy() {}
 
 	/// <summary>Executes initialization logic for the object.</summary>
-	void SDCardProxy::Initialize()
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+	InitializationResult SDCardProxy::Initialize()
 	{
-		while (!SD.begin(SDCardProxy::SDCardChipSelectPin))
+		InitializationResult result;
+
+		if (!SD.begin(SDCardProxy::SDCardChipSelectPin))
 		{
-			Serial.println(F("Failed to initialize SD library"));
-			delay(1000);
+			result.ErrorMessage = F("Failed to initialize the SD card.");
+			return result;
 		}
+
+		result.IsSuccessful = true;
+		return result;
 	}
 
 	/// <summary>Loads the secrets from the SD Card.</summary>
