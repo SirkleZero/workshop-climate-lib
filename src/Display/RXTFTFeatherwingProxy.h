@@ -36,7 +36,7 @@ namespace Display {
 		// Interface color constants
 		static const uint16_t ReadingsTextColor = 0x5DDF;
 		static const uint16_t LayoutTextColor = ILI9341_WHITE;
-		static const uint16_t ErrorTextColor = ILI9341_WHITE;
+		static const uint16_t ErrorTextColor = 0xF800;
 		static const uint16_t LayoutLineColor = ILI9341_WHITE;
 		static const uint16_t BackgroundColor = ILI9341_BLACK;
 		static const uint16_t AqiGood = ILI9341_GREEN;

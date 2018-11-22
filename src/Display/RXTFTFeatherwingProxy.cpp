@@ -205,7 +205,7 @@ namespace Display {
 
 		// print the value
 		tft.setCursor(156, 146);
-		tft.setTextColor(RXTFTFeatherwingProxy::ReadingsTextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::ErrorTextColor);
 		tft.print(message);
 
 		char buf[32];
