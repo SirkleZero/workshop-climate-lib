@@ -14,6 +14,7 @@ namespace Relay {
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
+	/// <param name="configuration">The <see cref="ControllerConfiguration"/> object that contains configuration information for the system.</param>
 	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
 	InitializationResult HumidityRelayManager::Initialize(ControllerConfiguration *configuration)
 	{

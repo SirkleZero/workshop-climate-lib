@@ -15,8 +15,11 @@ namespace TX {
 
 	/// <summary>Executes initialization logic for the object.</summary>
 	/// <param name="secrets">The <see cref="Secrets"/> that contain information for connecting to the WiFi network and Adafruit IO services.</param>
-	void AdafruitIOProxy::Initialize(Secrets *secrets)
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+	InitializationResult AdafruitIOProxy::Initialize(Secrets *secrets)
 	{
+		InitializationResult result;
+
 		this->secrets = secrets;
 
 		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
@@ -40,6 +43,9 @@ namespace TX {
 		particles_25um = io->feed("workshop-climate.particles-25um");
 		particles_50um = io->feed("workshop-climate.particles-50um");
 		particles_100um = io->feed("workshop-climate.particles-100um");
+
+		result.IsSuccessful = true;
+		return result;
 	}
 
 	/// <summary>Disconnects from the WiFi network.</summary>

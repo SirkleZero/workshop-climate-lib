@@ -120,7 +120,7 @@ namespace Display {
 		// initialize with the I2C addr 0x3C (for the 128x32)
 		if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
 		{
-			result.IsSuccessful = false;
+			result.ErrorMessage = F("Failed to initialize the Feather OLED display.");
 			return result;
 		}
 

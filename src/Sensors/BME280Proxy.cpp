@@ -2,6 +2,8 @@
 
 namespace Sensors {
 	namespace BME280 {
+		static const float SeaLevelPressure_hPa = 1013.25;
+
 		/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
 		BME280Proxy::BME280Proxy(BME280Proxy::TemperatureUnit units)
 		{
@@ -9,13 +11,16 @@ namespace Sensors {
 		}
 
 		/// <summary>Executes initialization logic for the object.</summary>
-		void BME280Proxy::Initialize()
+		/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+		InitializationResult BME280Proxy::Initialize()
 		{
+			InitializationResult result;
+
 			// initialize the BME280 sensor          
 			if (!bme.begin(&Wire))
 			{
-				Serial.println(F("Could not find a valid BME280 sensor, check wiring!"));
-				while (1); // TODO: this is bad in production code!
+				result.ErrorMessage = F("Could not find a valid BME280 sensor, check wiring!");
+				return result;
 			}
 
 			// configure the BME280 sensor, // suggested rate is 1/60Hz (1s)
@@ -24,6 +29,9 @@ namespace Sensors {
 				Adafruit_BME280::SAMPLING_X1, // pressure
 				Adafruit_BME280::SAMPLING_X1,   // humidity
 				Adafruit_BME280::FILTER_OFF);
+
+			result.IsSuccessful = true;
+			return result;
 		}
 
 		/// <summary>Reads data from the sensor.</summary>

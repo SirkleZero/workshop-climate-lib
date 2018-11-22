@@ -5,6 +5,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
+#include "..\InitializationResult.h"
 #include "SensorData.h"
 
 namespace Sensors {
@@ -13,7 +14,7 @@ namespace Sensors {
 		class BME280Proxy {
 		public:
 			/// <summary>A value that represents air pressure at sea level. NOTE: this is not a constant, but an accepted value in lieu of one.</summary>
-			const float SeaLevelPressure_hPa = 1013.25;
+			static const float SeaLevelPressure_hPa;
 
 			/// <summary>Specifies values that represent the various temperature units supported.</summary>
 			enum TemperatureUnit {
@@ -25,7 +26,7 @@ namespace Sensors {
 
 			BME280Proxy(BME280Proxy::TemperatureUnit units = C);
 
-			void Initialize();
+			InitializationResult Initialize();
 			bool ReadSensor(SensorData *data);
 			void PrintDebug();
 

@@ -3,20 +3,21 @@
 
 #include <Arduino.h>
 
+#include "..\InitializationResult.h"
 #include "PMS5003Frame.h"
 #include "SensorData.h"
 
 namespace Sensors {
 	namespace PMS5003 {
-		/// <summary></summary>
-		const int PMS5003MaxFrameLength = 64;
+		/// <summary>Describes the maximum frame size of data from the sensor.</summary>
+		static const int PMS5003MaxFrameLength = 64;
 
 		/// <summary>A class that handles the communication with the PMS5003 sensor.</summary>
 		class PMS5003Proxy {
 		public:
 			PMS5003Proxy();
 
-			void Initialize();
+			InitializationResult Initialize();
 			bool ReadSensor(SensorData *data);
 		private:
 			/// <summary>true if we are debugging; otherwise false.</summary>

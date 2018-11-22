@@ -6,9 +6,15 @@ namespace Sensors {
 		PMS5003Proxy::PMS5003Proxy() {}
 
 		/// <summary>Executes initialization logic for the object.</summary>
-		void PMS5003Proxy::Initialize()
+		/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+		InitializationResult PMS5003Proxy::Initialize()
 		{
+			InitializationResult result;
+
 			thisFrame.FrameLength = PMS5003MaxFrameLength;
+
+			result.IsSuccessful = true;
+			return result;
 		}
 
 		/// <summary>Reads data from the sensor.</summary>

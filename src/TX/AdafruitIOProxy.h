@@ -11,6 +11,7 @@ https://io.adafruit.com/api/docs/
 
 #include "..\Sensors\SensorData.h"
 #include "..\Configuration\Secrets.h"
+#include "..\InitializationResult.h"
 #include "IoTUploadResult.h"
 
 using namespace Sensors;
@@ -22,13 +23,13 @@ namespace TX {
 	public:
 		AdafruitIOProxy();
 		~AdafruitIOProxy();
-		void Initialize(Secrets *secrets);
+		InitializationResult Initialize(Secrets *secrets);
 		IoTUploadResult Transmit(SensorData data);
 	private:
 		/// <summary>The number of seconds we should wait for an internet connection to Adafruit IO.</summary>
-		const byte SecondsToWait = 15;
+		static const byte SecondsToWait = 15;
 		/// <summary>The number of milliseconds to wait while we're attempting to connect to Adafruit IO.</summary>
-		const unsigned long ConnectionDelay = 500;
+		static const unsigned long ConnectionDelay = 500;
 
 		Secrets *secrets;
 		AdafruitIO_WiFi *io;
