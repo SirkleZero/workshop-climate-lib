@@ -93,6 +93,25 @@ namespace Configuration {
 		return true;
 	}
 
+	void SDCardProxy::LogMessage(const __FlashStringHelper *message)
+	{
+		File logfile;
+
+		bool exists = SD.exists(SDCardProxy::LogFileName);
+		if (!exists)
+		{
+			logfile = SD.open(SDCardProxy::LogFileName, FILE_WRITE);
+			logfile.print(F("millis\t")); logfile.println(F("message"));
+			logfile.close();
+		}
+
+		logfile = SD.open(SDCardProxy::LogFileName, FILE_WRITE);
+		logfile.print(millis()); logfile.print("\t");  logfile.println(message);
+
+		logfile.flush();
+		logfile.close();
+	}
+
 	/// <summary>Prints a debug statement to Serial output.</summary>
 	void SDCardProxy::PrintDebug()
 	{

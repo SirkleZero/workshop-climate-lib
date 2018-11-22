@@ -19,16 +19,20 @@ namespace Configuration {
 		InitializationResult Initialize();
 		bool LoadSecrets(Secrets *secrets);		
 		bool LoadConfiguration(ControllerConfiguration *configuration);
+		void LogMessage(const __FlashStringHelper *message);
 		void PrintDebug();
 	private:
+		/// <summary>The chip select pin used by the SD card.</summary>
+		static const uint8_t SDCardChipSelectPin = 5;
+
 		/// <summary>The name and path of the secrets file.</summary>
 		const char *SecretsFileName = "SECRET~1.JSO";
 
 		/// <summary>The name and path of the configuration file.</summary>
 		const char *ControllerConfigurationFileName = "CONTRO~1.JSO";
 
-		/// <summary>The chip select pin used by the SD card.</summary>
-		const uint8_t SDCardChipSelectPin = 5;
+		/// <summary>The name and path of the log file.</summary>
+		const char *LogFileName = "log.txt";
 	};
 }
 #endif
