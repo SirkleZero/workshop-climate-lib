@@ -28,14 +28,14 @@ namespace RX {
 		// check to make sure the radio has properly initialized.
 		if (!this->manager.init())
 		{
-			result.ErrorMessage = F("RFM69 radio init failed");
+			result.ErrorMessage = F("RFM69 radio initialization failed.");
 			return result;
 		}
 
 		// Defaults after init are 434.0MHz, modulation GFSK_Rb250Fd250, +13dbM (for low power module). No encryption
 		if (!this->radio.setFrequency(RFM69RXProxy::RadioFrequency))
 		{
-			result.ErrorMessage = F("setFrequency failed");
+			result.ErrorMessage = F("Call to setFrequency() failed.");
 			return result;
 		}
 
@@ -44,7 +44,6 @@ namespace RX {
 		this->radio.setTxPower(20, true);  // range from 14-20 for power, 2nd arg must be true for 69HCW
 
 		// set the encryption key
-		// TODO: make sure the key is working properly
 		this->radio.setEncryptionKey(Secrets::RadioEncryptionKey);
 
 		result.IsSuccessful = true;
