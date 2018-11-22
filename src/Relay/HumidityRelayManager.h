@@ -32,6 +32,7 @@ namespace Relay {
 		void AdjustClimate(SensorData data);
 		void KeepAlive();
 		void EmergencyShutoff();
+		void ShutDownError();
 	private:
 		// pins used by the relay system
 		static const int RedPin = 15;
@@ -69,7 +70,6 @@ namespace Relay {
 		void ShutDown();
 		void ShutDownTargetReached();
 		void ShutDownGoldilocks();
-		void ShutDownError();
 		void ShutDownEmergency();
 		void SetIndicatorColor(RGB color);
 		void DisableIndicator();

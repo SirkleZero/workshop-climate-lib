@@ -153,6 +153,7 @@ namespace Relay {
 		this->ShutDown();
 	}
 
+	/// <summary>Shuts down the relays. Use this to shut down and denote that an error occurred.</summary>
 	void HumidityRelayManager::ShutDownError()
 	{
 		this->SetIndicatorColor(HumidityRelayManager::ErrorRed);
