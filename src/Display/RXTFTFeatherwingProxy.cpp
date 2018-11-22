@@ -109,7 +109,7 @@ namespace Display {
 
 		// for Humidity
 		char *humidityLabel = "% Humidity";
-		tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(humidityLabel, 0, 90, 150);
@@ -118,7 +118,7 @@ namespace Display {
 
 		// for temperature
 		char *temperatureLabel = "Fahrenheit";
-		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(temperatureLabel, 0, 196, 150);
@@ -127,7 +127,7 @@ namespace Display {
 
 		// for AQI Label
 		char *AQILabel = "AQI (ug/m3)";
-		tft.drawRect(aqiLabelArea.x, aqiLabelArea.y, aqiLabelArea.width, aqiLabelArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(aqiLabelArea.x, aqiLabelArea.y, aqiLabelArea.width, aqiLabelArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(AQILabel, 150, 18, 170);
@@ -135,10 +135,10 @@ namespace Display {
 		tft.println(AQILabel);
 
 		// for particulates area
-		tft.drawRect(particulateArea.x, particulateArea.y, particulateArea.width, particulateArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(particulateArea.x, particulateArea.y, particulateArea.width, particulateArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 
 		// for AQI Indicator
-		tft.drawRect(aqiIndicatorArea.x, aqiIndicatorArea.y, aqiIndicatorArea.width, aqiIndicatorArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(aqiIndicatorArea.x, aqiIndicatorArea.y, aqiIndicatorArea.width, aqiIndicatorArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 
 		// air quality scale
 		tft.fillRect(aqiScaleGoodArea.x, aqiScaleGoodArea.y, aqiScaleGoodArea.width, aqiScaleGoodArea.height, RXTFTFeatherwingProxy::AqiGood);
@@ -149,7 +149,7 @@ namespace Display {
 		tft.fillRect(aqiScaleHazardousArea.x, aqiScaleHazardousArea.y, aqiScaleHazardousArea.width, aqiScaleHazardousArea.height, RXTFTFeatherwingProxy::AqiHazardous);
 
 		// stroke the scale
-		tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, RXTFTFeatherwingProxy::LayoutlineColor);
+		tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, RXTFTFeatherwingProxy::LayoutLineColor);
 
 		interrupts();
 	}
@@ -178,6 +178,42 @@ namespace Display {
 		tft.print(freeMemory);
 
 		this->previousFreeMemory = freeMemory;
+
+		interrupts();
+	}
+
+	/// <summary>Prints an error message to the display.</summary>
+	/// <param name="message">The message to display as an error.</param>
+	void RXTFTFeatherwingProxy::PrintError(const __FlashStringHelper *message)
+	{
+		noInterrupts();
+
+		tft.setFont();
+		tft.setTextSize(1);
+
+		char *errorLabel = "Error Happened!: ";
+
+		// print the label
+		tft.setCursor(156, 136);
+		tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
+		tft.print(errorLabel);
+
+		// overwrite
+		tft.setCursor(156, 146);
+		tft.setTextColor(RXTFTFeatherwingProxy::BackgroundColor);
+		tft.print(previousError);
+
+		// print the value
+		tft.setCursor(156, 146);
+		tft.setTextColor(RXTFTFeatherwingProxy::ReadingsTextColor);
+		tft.print(message);
+
+		char buf[32];
+		memcpy(buf, message, 32);
+
+		this->previousError = buf;
+
+		Serial.println(this->previousError);
 
 		interrupts();
 	}
@@ -238,7 +274,7 @@ namespace Display {
 		// TODO: break this apart into a portion that will go into the layout method
 		// and a portion (here) responsible for drawing out the values of the sensor.
 
-		tft.setTextColor(RXTFTFeatherwingProxy::LayouttextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
 		tft.setCursor(156, 40);
 		tft.print("Standard");
 
@@ -258,7 +294,7 @@ namespace Display {
 		tft.setCursor(200, 83);
 		tft.print(data->Particulates.pm100_standard);
 
-		tft.setTextColor(RXTFTFeatherwingProxy::LayouttextColor);
+		tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
 		tft.setCursor(235, 40);
 		tft.print("Environmental");
 

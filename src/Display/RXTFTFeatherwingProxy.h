@@ -24,6 +24,7 @@ namespace Display {
 	public:
 		RXTFTFeatherwingProxy();
 		InitializationResult Initialize();
+		void PrintError(const __FlashStringHelper *message);
 		void PrintSensors(SensorData data);
 		void PrintFreeMemory(int freeMemory);
 		void DrawLayout();
@@ -34,8 +35,8 @@ namespace Display {
 
 		// Interface color constants
 		static const uint16_t ReadingsTextColor = 0x5DDF;
-		static const uint16_t LayouttextColor = ILI9341_WHITE;
-		static const uint16_t LayoutlineColor = ILI9341_WHITE;
+		static const uint16_t LayoutTextColor = ILI9341_WHITE;
+		static const uint16_t LayoutLineColor = ILI9341_WHITE;
 		static const uint16_t BackgroundColor = ILI9341_BLACK;
 		static const uint16_t AqiGood = ILI9341_GREEN;
 		static const uint16_t AqiModerate = ILI9341_YELLOW;
@@ -65,6 +66,7 @@ namespace Display {
 		// variables used for display state management
 		SensorData previousData;
 		int previousFreeMemory = 0;
+		char *previousError;
 
 		// Define the rectangles that are used to draw the screen layout elements
 		Rectangle humidityArea;
