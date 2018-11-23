@@ -27,7 +27,7 @@ namespace TX {
 		IoTUploadResult Transmit(SensorData data);
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
-		static const byte NetworkTimeoutMS = 15000;
+		static const unsigned long NetworkTimeoutMS = 10000;
 
 		Secrets *secrets;
 		AdafruitIO_WiFi *io;

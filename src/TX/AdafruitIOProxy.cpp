@@ -55,6 +55,20 @@ namespace TX {
 		WiFi.end();
 	}
 
+	/*bool waitAvailableTimeout(uint16_t timeout)
+	{
+		unsigned long starttime = millis();
+		while ((millis() - starttime) < timeout)
+		{
+			if (true)
+			{
+				return true;
+			}
+			YIELD;
+		}
+		return false;
+	}*/
+
 	/// <summary>Connects to the WiFi network and transmits data to Adafruit IO.</summary>
 	/// <param name="data">The <see cref="SensorData" to send to Adafruit IO.</param>
 	IoTUploadResult AdafruitIOProxy::Transmit(SensorData data)
@@ -64,14 +78,14 @@ namespace TX {
 		Serial.println(F("connecting to wifi via Adafruit IO library"));
 		io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
 
-		// wait for a connection, but not forever yo! 15 seconds should be good enough?
+		// wait for a connection, but not forever yo! a few seconds should be good enough?
 		// calling io->status() actually does a lot behind the scenes, and can return
 		// quite a few different status's. We only care about being connected though.
 		bool available = false;
 		unsigned long starttime = millis();
-		while ((millis() - starttime) < AdafruitIOProxy::NetworkTimeoutMS)
+		while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
 		{
-			if (io->status() < AIO_CONNECTED)
+			if (io->status() == AIO_CONNECTED)
 			{
 				available = true;
 				break;
