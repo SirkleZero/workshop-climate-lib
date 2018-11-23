@@ -98,7 +98,7 @@ namespace Relay {
 	void HumidityRelayManager::EmergencyShutoff()
 	{
 		// this method uses the the current milliseconds that the system has been running to create, essentially, a timer interrupt. It uses the keep alive and runaway timeout value to determine if a certain amount of time has lapsed.
-		currentMillis = millis();
+		this->currentMillis = millis();
 		if (this->currentMillis - this->previousKeepAliveCall >= this->configuration->RunawayTimeLimit)
 		{
 			// we exceeded our time! Shut it down!
