@@ -67,17 +67,18 @@ namespace TX {
 		// wait for a connection, but not forever yo! 15 seconds should be good enough?
 		// calling io->status() actually does a lot behind the scenes, and can return
 		// quite a few different status's. We only care about being connected though.
-		//byte secondsToWait = 15;
-		//unsigned long connectionDelay = 500;
-		float iterations = AdafruitIOProxy::SecondsToWait * (1000 / AdafruitIOProxy::ConnectionDelay);
-		while (io->status() < AIO_CONNECTED && iterations > 0)
+		bool available = false;
+		unsigned long starttime = millis();
+		while ((millis() - starttime) < AdafruitIOProxy::NetworkTimeoutMS)
 		{
-			Serial.print(F("."));
-			delay(AdafruitIOProxy::ConnectionDelay);
-			iterations--;
+			if (io->status() < AIO_CONNECTED)
+			{
+				available = true;
+				break;
+			}
 		}
 
-		if (iterations <= 0)
+		if (!available)
 		{
 			// we exceeded our timeout period. return a failure.
 			result.ErrorMessage = io->statusText();
