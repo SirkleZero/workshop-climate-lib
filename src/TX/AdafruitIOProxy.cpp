@@ -55,20 +55,6 @@ namespace TX {
 		WiFi.end();
 	}
 
-	/*bool waitAvailableTimeout(uint16_t timeout)
-	{
-		unsigned long starttime = millis();
-		while ((millis() - starttime) < timeout)
-		{
-			if (true)
-			{
-				return true;
-			}
-			YIELD;
-		}
-		return false;
-	}*/
-
 	/// <summary>Connects to the WiFi network and transmits data to Adafruit IO.</summary>
 	/// <param name="data">The <see cref="SensorData" to send to Adafruit IO.</param>
 	IoTUploadResult AdafruitIOProxy::Transmit(SensorData data)
