@@ -7,7 +7,7 @@ namespace TX {
 	/// <summary>Represents the status of sending a radio packet.</summary>
 	struct TXResult {
 		/// <summary>true if the transmission was successful; otherwise false.</summary>
-		bool TransmitSuccessful;
+		bool TransmitSuccessful = false;
 		/// <summary>The Source of the transmission.</summary>
 		uint8_t From;
 		/// <summary>The signal strength of the transmission.</summary>

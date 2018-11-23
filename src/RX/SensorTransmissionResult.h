@@ -12,7 +12,7 @@ namespace RX {
 		///<summary>The sensor data.</summary>
 		SensorData Data;
 		///<summary>A value that indicates if the transmission was successful.</summary>
-		bool HasResult;
+		bool HasResult = false;
 		///<summary>A value that indicates the source of the transmission.</summary>
 		uint8_t TransmissionSource;
 		///<summary>A value that indicates the relative received signal strength of the transmission.</summary>
