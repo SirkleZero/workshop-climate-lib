@@ -208,10 +208,12 @@ namespace Display {
 		tft.setTextColor(RXTFTFeatherwingProxy::ErrorTextColor);
 		tft.print(message);
 
-		char buf[32];
-		memcpy(buf, message, 32);
+		// copy the F() string to put it on the previousError stack.
+		char tmp[64];
+		String tmpStr = message;
+		strcpy(tmp, tmpStr.c_str());
 
-		this->previousError = buf;
+		this->previousError = tmp;
 
 		Serial.println(this->previousError);
 

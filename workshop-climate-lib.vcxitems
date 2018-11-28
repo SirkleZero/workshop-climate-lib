@@ -27,6 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)src\InitializationResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Lib.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\SensorTransmissionResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\workshop-climate-lib.h" />
