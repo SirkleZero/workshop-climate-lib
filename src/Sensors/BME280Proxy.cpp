@@ -5,7 +5,7 @@ namespace Sensors {
 		static const float SeaLevelPressure_hPa = 1013.25;
 
 		/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
-		BME280Proxy::BME280Proxy(BME280Proxy::TemperatureUnit units)
+		BME280Proxy::BME280Proxy(TemperatureUnit units)
 		{
 			this->units = units;
 		}
