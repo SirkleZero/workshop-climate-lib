@@ -1,8 +1,8 @@
 {
   "RunawayTimeLimit": 300000,
-  "MinimumHumidity": 43.5,
-  "TargetHumidity": 45,
-  "MaximumHumidity": 48.5,
+  "MinimumHumidity": 43.0,
+  "TargetHumidity": 45.0,
+  "MaximumHumidity": 47.0,
   "HumidifierOperationOffset": -1.2,
   "DeHumidifierOperationOffset": -0.5
 }
