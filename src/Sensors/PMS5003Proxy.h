@@ -8,31 +8,29 @@
 #include "SensorData.h"
 
 namespace Sensors {
-	namespace PMS5003 {
-		/// <summary>Describes the maximum frame size of data from the sensor.</summary>
-		static const int PMS5003MaxFrameLength = 64;
+	/// <summary>Describes the maximum frame size of data from the sensor.</summary>
+	static const int PMS5003MaxFrameLength = 64;
 
-		/// <summary>A class that handles the communication with the PMS5003 sensor.</summary>
-		class PMS5003Proxy {
-		public:
-			PMS5003Proxy();
+	/// <summary>A class that handles the communication with the PMS5003 sensor.</summary>
+	class PMS5003Proxy {
+	public:
+		PMS5003Proxy();
 
-			InitializationResult Initialize();
-			bool ReadSensor(SensorData *data);
-		private:
-			/// <summary>true if we are debugging; otherwise false.</summary>
-			const bool InDebugMode = false;
-			
-			char frameBuffer[PMS5003MaxFrameLength];
-			int incomingByte = 0;		
-			int detectOff = 0;
-			int frameLength = PMS5003MaxFrameLength;
-			bool inFrame = false;
-			char printBuffer[256];
-			uint16_t calculatedChecksum = 0;
+		InitializationResult Initialize();
+		bool ReadSensor(SensorData *data);
+	private:
+		/// <summary>true if we are debugging; otherwise false.</summary>
+		const bool InDebugMode = false;
 
-			PMS5003Frame thisFrame;
-		};
-	}
+		char frameBuffer[PMS5003MaxFrameLength];
+		int incomingByte = 0;
+		int detectOff = 0;
+		int frameLength = PMS5003MaxFrameLength;
+		bool inFrame = false;
+		char printBuffer[256];
+		uint16_t calculatedChecksum = 0;
+
+		PMS5003Frame thisFrame;
+	};
 }
 #endif
