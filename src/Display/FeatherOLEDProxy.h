@@ -16,10 +16,10 @@ using namespace TX;
 namespace Display {
 	/// <summary>Describes the state of the buttons of the Feather OLED display.</summary>
 	enum ButtonMode {
-		Default = 0x00,
-		A = 0x01,
-		B = 0x02,
-		C = 0x03
+		Default = 1u << 0,
+		A = 1u << 1,
+		B = 1u << 2,
+		C = 1u << 3
 	};
 
 	/// <summary>Defines a class that represents the display of the Sensor module.</summary>

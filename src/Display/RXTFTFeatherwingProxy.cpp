@@ -209,11 +209,7 @@ namespace Display {
 		tft.print(message);
 
 		// copy the F() string to put it on the previousError stack.
-		char tmp[64];
-		String tmpStr = message;
-		strcpy(tmp, tmpStr.c_str());
-
-		this->previousError = tmp;
+		this->previousError = strcpy_F(message);;
 
 		Serial.println(this->previousError);
 

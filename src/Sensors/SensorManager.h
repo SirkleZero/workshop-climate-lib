@@ -19,7 +19,7 @@ namespace Sensors {
 	/// <summary>A class that manages the various sensors used by the system.</summary>
 	class SensorManager {
 	public:
-		SensorManager(AvailableSensors enabledSensors = AvailableSensors::None);
+		SensorManager(AvailableSensors enabledSensors = AvailableSensors::None, TemperatureUnit temperatureUnit = TemperatureUnit::C);
 		~SensorManager();
 
 		InitializationResult Initialize();
@@ -27,6 +27,12 @@ namespace Sensors {
 		void PrintDebug();
 	private:
 		AvailableSensors enabledSensors;
+		TemperatureUnit temperatureUnit;
+
+		BME280Proxy climateProxy;
+		InitializationResult bmeR;
+		PMS5003Proxy particleProxy;
+		InitializationResult pms5003R;
 	};
 }
 #endif

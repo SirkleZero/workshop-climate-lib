@@ -10,3 +10,11 @@ size_t strlen_F(const __FlashStringHelper *ifsh)
 	}
 	return n;
 }
+
+char *strcpy_F(const __FlashStringHelper *message)
+{
+	char tmp[128];
+	String tmpStr = message;
+	strncpy(tmp, tmpStr.c_str(), 128);
+	return tmp;
+}

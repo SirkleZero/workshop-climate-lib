@@ -15,12 +15,12 @@ using namespace Sensors;
 namespace Relay {
 	/// <summary>Describes the state that the humidification system is currently in.</summary>
 	enum HumidificationState {
-		/// <summary>Represents that we are in a dehumidification state and that the dehumidifier is running.</summary>
-		Dehumidifying = 0x00,
-		/// <summary>Represents that we are in a humidification state and that the humidifier is running.</summary>
-		Humidifying = 0x01,
 		/// <summary>Represents that we are in neither humidification or dehumidification state.</summary>
-		None = 0x02
+		None = 1u << 0,
+		/// <summary>Represents that we are in a dehumidification state and that the dehumidifier is running.</summary>
+		Dehumidifying = 1u << 1,
+		/// <summary>Represents that we are in a humidification state and that the humidifier is running.</summary>
+		Humidifying = 1u << 2
 	};
 
 	/// <summary>Class that represents the functionality of the relay attached to the climate controller.</summary>

@@ -15,6 +15,7 @@
 #include "..\InitializationResult.h"
 #include "..\Sensors\SensorData.h"
 #include "..\Rectangle.h"
+#include "..\Lib.h"
 
 using namespace Sensors;
 
