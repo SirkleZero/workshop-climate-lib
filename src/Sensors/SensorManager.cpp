@@ -44,11 +44,11 @@ namespace Sensors {
 
 		if (this->enabledSensors & AvailableSensors::BME280 && this->bmeR.IsSuccessful)
 		{
-			returnValue |= this->climateProxy.ReadSensor(data);
+			returnValue &= this->climateProxy.ReadSensor(data);
 		}
 		else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pms5003R.IsSuccessful)
 		{
-			returnValue |= this->particleProxy.ReadSensor(data);
+			returnValue &= this->particleProxy.ReadSensor(data);
 		}
 
 		return returnValue;
