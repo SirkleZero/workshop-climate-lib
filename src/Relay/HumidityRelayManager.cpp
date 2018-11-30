@@ -52,7 +52,7 @@ namespace Relay {
 		{
 			case HumidificationState::Dehumidifying:
 				// we are dehumidifying, check against the target level and run or shut down appropriately
-				if (data.Climate.Humidity <= this->configuration->TargetHumidity)
+				if (data.Climate.Humidity <= this->CalculateCompensatedTargetHumidity(HumidificationState::Dehumidifying))
 				{
 					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
@@ -61,7 +61,7 @@ namespace Relay {
 				break;
 			case HumidificationState::Humidifying:
 				// we are humidifying, check against the target level and run or shut down appropriately
-				if (data.Climate.Humidity >= this->configuration->TargetHumidity)
+				if (data.Climate.Humidity >= this->CalculateCompensatedTargetHumidity(HumidificationState::Humidifying))
 				{
 					// we hit our target. shut down and re-run this method to determine the next action to take.
 					this->ShutDownTargetReached();
@@ -205,6 +205,21 @@ namespace Relay {
 			pinMode(HumidityRelayManager::BluePin, OUTPUT);
 
 			this->indicatorEnabled = true;
+		}
+	}
+
+	float HumidityRelayManager::CalculateCompensatedTargetHumidity(HumidificationState state)
+	{
+		switch (state)
+		{
+			case HumidificationState::Dehumidifying:
+				return this->configuration->TargetHumidity + this->configuration->DeHumidifierOperationOffset;
+			case HumidificationState::Humidifying:
+				return this->configuration->TargetHumidity + this->configuration->HumidifierOperationOffset;
+			case HumidificationState::None:
+				return this->configuration->TargetHumidity;
+			default:
+				return this->configuration->TargetHumidity;
 		}
 	}
 }

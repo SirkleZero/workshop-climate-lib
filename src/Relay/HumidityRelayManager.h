@@ -74,6 +74,8 @@ namespace Relay {
 		void SetIndicatorColor(RGB565 color);
 		void DisableIndicator();
 		void EnableIndicator();
+
+		float CalculateCompensatedTargetHumidity(HumidificationState state);
 	};
 }
 #endif

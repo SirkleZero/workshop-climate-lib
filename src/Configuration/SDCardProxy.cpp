@@ -86,7 +86,8 @@ namespace Configuration {
 		configuration->MinimumHumidity = root["MinimumHumidity"];
 		configuration->TargetHumidity = root["TargetHumidity"];
 		configuration->MaximumHumidity = root["MaximumHumidity"];
-		configuration->HumidityOffset = root["HumidityOffset"];
+		configuration->HumidifierOperationOffset = root["HumidifierOperationOffset"];
+		configuration->DeHumidifierOperationOffset = root["DeHumidifierOperationOffset"];
 
 		// Close the file (File's destructor doesn't close the file)
 		file.close();

@@ -17,8 +17,10 @@ namespace Configuration {
 		float TargetHumidity;
 		/// <summary>Specifies the maximum humidity allowed.</summary>
 		float MaximumHumidity;
-		/// <summary>Specifies the offset value of the humidity sensor to ensure proper calibration and accuracy.</summary>
-		float HumidityOffset;
+		/// <summary>Specifies the offset to be used to compensate for humidification over/under run.</summary>
+		float HumidifierOperationOffset;
+		/// <summary>Specifies the offset to be used to compensate for de-humidification over/under run.</summary>
+		float DeHumidifierOperationOffset;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
@@ -28,7 +30,8 @@ namespace Configuration {
 			Serial.print(F("Minimum Humidity = ")); Serial.println(this->MinimumHumidity);
 			Serial.print(F("Target Humidity = ")); Serial.println(this->TargetHumidity);
 			Serial.print(F("Maximum Humidity = ")); Serial.println(this->MaximumHumidity);
-			Serial.print(F("Humidity Offset = ")); Serial.println(this->HumidityOffset);
+			Serial.print(F("Humidifier Operation Offset = ")); Serial.println(this->HumidifierOperationOffset);
+			Serial.print(F("De-Humidifier Operation Offset = ")); Serial.println(this->DeHumidifierOperationOffset);
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}

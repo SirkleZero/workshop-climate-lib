@@ -3,5 +3,6 @@
   "MinimumHumidity": 43.5,
   "TargetHumidity": 45,
   "MaximumHumidity": 48.5,
-  "HumidityOffset": 0.0
+  "HumidifierOperationOffset": -1.2,
+  "DeHumidifierOperationOffset": -0.5
 }
