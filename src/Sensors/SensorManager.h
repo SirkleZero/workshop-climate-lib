@@ -9,10 +9,15 @@
 #include "SensorData.h"
 
 namespace Sensors {
+	/// <summary>Provides options for configuring the sensors that will be enabled on the system.</summary>
 	enum AvailableSensors {
+		/// <summary>None of the sensors are configured.</summary>
 		None = 1u << 0,
+		/// <summary>Specifies the BME280 sensor should be enabled.</summary>
 		BME280 = 1u << 1,
+		/// <summary>Specifies the PMS5003 sensor should be enabled.</summary>
 		PMS5003 = 1u << 2,
+		/// <summary>Specifies all of the sensors should be enabled.</summary>
 		All = BME280 | PMS5003
 	};
 
