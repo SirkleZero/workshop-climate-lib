@@ -209,7 +209,8 @@ namespace Display {
 		tft.print(message);
 
 		// copy the F() string to put it on the previousError stack.
-		this->previousError = strcpy_F(message);;
+		//this->previousError = strcpy_F(message);
+		// TODO: ok, this is currently fuckin fucked, so I have no idea how I want to solve this stupid problem of not being able to make copies of F() strings, because C++ is stupid. How the hell are you supposed to be able to make a temporary value to hold a goddamn F() string so I can wipe and re-write this area of the goddamn display?!?!
 
 		Serial.println(this->previousError);
 
