@@ -218,18 +218,14 @@ namespace Display {
 	/// <param name="result">The <see cref="TXResult"> containing the RFM69 result.</param>
 	void FeatherOLEDProxy::PrintTransmissionInfo(TXResult result)
 	{
-		display.setTextSize(1);
-		this->PrintRSSI(&previousResult, BLACK);
-
-		if (result.TransmitSuccessful)
+		// don't print the rssi on the b button screen.
+		if ((displayMode & ButtonMode::B) != ButtonMode::B)
 		{
+			display.setTextSize(1);
+			this->PrintRSSI(&previousResult, BLACK);
 			this->PrintRSSI(&result, WHITE);
 		}
-		else
-		{
-			display.println(F("Transmission failed!"));
-		}
-
+		
 		display.display();
 		previousResult = result;
 	}
@@ -298,7 +294,5 @@ namespace Display {
 		display.print(F(" "));
 		display.print(F("10u: "));
 		display.print(data->Particulates.particles_100um);
-
-		//display.startscrolldiagright(0x0F, 0x0F);
 	}
 }

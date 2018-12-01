@@ -37,6 +37,7 @@ namespace Sensors {
 		unsigned long currentMillis = 0; // stores the current value of millis()
 		unsigned long lastUpdate = 0; // stores the last time we tried to execute a sensor reading
 		unsigned long updateInterval = 0;
+		bool isFirstIteration = true;
 
 		BME280Proxy climateProxy;
 		InitializationResult bmeInitializationResult;

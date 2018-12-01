@@ -18,10 +18,12 @@ namespace Sensors {
 	InitializationResult SensorManager::Initialize()
 	{
 		InitializationResult result;
+		Serial.print("enabledsensors: "); Serial.println(this->enabledSensors);
 
 		// check to see if the BME 280 is enabled to run.
-		if (this->enabledSensors & AvailableSensors::BME280)
+		if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280)
 		{
+			Serial.println("Loading the bme280");
 			// initialize the BME280
 			this->bmeInitializationResult = this->climateProxy.Initialize();
 			if (!bmeInitializationResult.IsSuccessful)
@@ -29,11 +31,11 @@ namespace Sensors {
 				result.ErrorMessage = F("Failed to load the BME280 Sensor.");
 				return result;
 			}
-
 		}
 		// checks to see if the PMS5003 has been specified to run
-		else if (this->enabledSensors & AvailableSensors::PMS5003)
+		if ((this->enabledSensors & AvailableSensors::PMS5003) == AvailableSensors::PMS5003)
 		{
+			Serial.println("Loading the pms5003");
 			// initialize the PMS5003
 			this->pmsInitializationResult = this->particleProxy.Initialize();
 			if (!pmsInitializationResult.IsSuccessful)
@@ -55,19 +57,23 @@ namespace Sensors {
 		this->currentMillis = millis();
 
 		// simple timer implementation.
-		if ((this->currentMillis - this->lastUpdate) > this->updateInterval)
+		if (((this->currentMillis - this->lastUpdate) > this->updateInterval) || this->isFirstIteration)
 		{
 			this->lastUpdate = millis();
+			this->isFirstIteration = false;
+			bool sensorsSucceeded = true;
 
 			// for each enabled sensor, read its information.
-			if (this->enabledSensors & AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
+			if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
 			{
-				returnValue &= this->climateProxy.ReadSensor(data);
+				sensorsSucceeded &= this->climateProxy.ReadSensor(data);
 			}
-			else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
+			if ((this->enabledSensors & AvailableSensors::PMS5003) == AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
 			{
-				returnValue &= this->particleProxy.ReadSensor(data);
+				sensorsSucceeded &= this->particleProxy.ReadSensor(data);
 			}
+
+			returnValue = sensorsSucceeded;
 		}
 
 		return returnValue;
