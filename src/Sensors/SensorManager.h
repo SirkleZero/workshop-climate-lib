@@ -19,7 +19,7 @@ namespace Sensors {
 	/// <summary>A class that manages the various sensors used by the system.</summary>
 	class SensorManager {
 	public:
-		SensorManager(AvailableSensors enabledSensors = AvailableSensors::None, TemperatureUnit temperatureUnit = TemperatureUnit::C);
+		SensorManager(AvailableSensors enabledSensors = AvailableSensors::None, TemperatureUnit temperatureUnit = TemperatureUnit::C, unsigned long interval = 60000);
 		~SensorManager();
 
 		InitializationResult Initialize();
@@ -27,6 +27,11 @@ namespace Sensors {
 	private:
 		AvailableSensors enabledSensors;
 		TemperatureUnit temperatureUnit;
+
+		// timer - used for controlling when we take sensor readings and transmit them
+		unsigned long currentMillis = 0; // stores the current value of millis()
+		unsigned long lastUpdate = 0; // stores the last time we tried to execute a sensor reading
+		unsigned long updateInterval = 0;
 
 		BME280Proxy climateProxy;
 		InitializationResult bmeInitializationResult;

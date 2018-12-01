@@ -1,11 +1,12 @@
 #include "SensorManager.h"
 
 namespace Sensors {
-	SensorManager::SensorManager(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit) : 
+	SensorManager::SensorManager(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit, unsigned long updateInterval) :
 		climateProxy(temperatureUnit)
 	{
 		this->enabledSensors = enabledSensors;
 		this->temperatureUnit = temperatureUnit;
+		this->updateInterval = updateInterval;
 	}
 
 	InitializationResult SensorManager::Initialize()
@@ -40,15 +41,21 @@ namespace Sensors {
 
 	bool SensorManager::ReadSensors(SensorData *data)
 	{
-		bool returnValue = true;
+		bool returnValue = false;
+		this->currentMillis = millis();
 
-		if (this->enabledSensors & AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
+		if ((this->currentMillis - this->lastUpdate) > this->updateInterval)
 		{
-			returnValue &= this->climateProxy.ReadSensor(data);
-		}
-		else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
-		{
-			returnValue &= this->particleProxy.ReadSensor(data);
+			this->lastUpdate = millis();
+
+			if (this->enabledSensors & AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
+			{
+				returnValue &= this->climateProxy.ReadSensor(data);
+			}
+			else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
+			{
+				returnValue &= this->particleProxy.ReadSensor(data);
+			}
 		}
 
 		return returnValue;
