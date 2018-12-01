@@ -30,13 +30,15 @@ namespace Display {
 		InitializationResult Initialize();
 		void PrintSensors(SensorData data);
 		void PrintWaiting();
-		void PrintRFM69Update(TXResult *result);
+		void PrintError(const __FlashStringHelper *message);
+		void PrintTransmissionInfo(TXResult result);
 		void Clear();
 		void ButtonA();
 		void ButtonB();
 		void ButtonC();
 
 	private:
+		void PrintRSSI(TXResult *result, uint16_t color);
 		void PrintTemperature(SensorData *data, uint16_t color);
 		void PrintHumidity(SensorData *data, uint16_t color);
 		void PrintPressure(SensorData *data, uint16_t color);

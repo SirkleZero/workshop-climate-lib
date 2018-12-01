@@ -46,13 +46,14 @@ namespace Display {
 #error(F("Height incorrect, please fix Adafruit_SSD1306.h!"));
 #endif
 
-	// these three variables exist in global scope because they are used to handle the interrupts for the
-	// buttons used by the application. displayMode and previousData exist here because of the need to have
-	// the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it.
-	// If they were an instance of it, then we'd have problems accessing their values.
+	// these three variables exist in global scope because they are used to handle the interrupts for the buttons used by the application.
+	
+	// displayMode, previousData, previousResult, and previousError exist here because of the need to have the button interrupts happen on a pointer to the OLED display proxy rather than on an instance of it. If they were an instance of it, then we'd have problems accessing their values.
 	FeatherOLEDProxy* interruptThis;
 	ButtonMode displayMode = ButtonMode::Default;
 	SensorData previousData;
+	TXResult previousResult;
+	char *previousError;	
 
 	// declare the display object. For whatever reason, this doesn't work as a class variable.
 	Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -161,6 +162,18 @@ namespace Display {
 		display.display();
 	}
 
+	void FeatherOLEDProxy::PrintError(const __FlashStringHelper *message)
+	{
+		this->Clear();
+
+		display.setTextSize(1);
+		display.setTextColor(WHITE);
+		display.setCursor(0, 0);
+
+		display.println(message);
+		display.display();
+	}
+
 	/// <summary>Prints sensor information to the screen.</summary>
 	/// <param name="data">The <see cref="SensorData"> containing readings from the sensors.</param>
 	void FeatherOLEDProxy::PrintSensors(SensorData data)
@@ -203,16 +216,14 @@ namespace Display {
 
 	/// <summary>Prints RFM69 status information to the display.</summary>
 	/// <param name="result">The <see cref="TXResult"> containing the RFM69 result.</param>
-	void FeatherOLEDProxy::PrintRFM69Update(TXResult *result)
+	void FeatherOLEDProxy::PrintTransmissionInfo(TXResult result)
 	{
 		display.setTextSize(1);
-		display.setTextColor(WHITE);
-		display.setCursor(0, 24);
+		this->PrintRSSI(&previousResult, BLACK);
 
-		if (result->TransmitSuccessful)
+		if (result.TransmitSuccessful)
 		{
-			display.print(F("RSSI: "));
-			display.println(result->RSSI);
+			this->PrintRSSI(&result, WHITE);
 		}
 		else
 		{
@@ -220,6 +231,15 @@ namespace Display {
 		}
 
 		display.display();
+		previousResult = result;
+	}
+
+	void FeatherOLEDProxy::PrintRSSI(TXResult *result, uint16_t color)
+	{
+		display.setCursor(0, 24);
+		display.setTextColor(color);
+		display.print(F("RSSI: "));
+		display.print(result->RSSI);
 	}
 
 	void FeatherOLEDProxy::PrintHumidity(SensorData *data, uint16_t color)

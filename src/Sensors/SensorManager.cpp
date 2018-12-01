@@ -15,8 +15,8 @@ namespace Sensors {
 		if (this->enabledSensors & AvailableSensors::BME280)
 		{
 			// initialize the BME280
-			this->bmeR = this->climateProxy.Initialize();
-			if (!bmeR.IsSuccessful)
+			this->bmeInitializationResult = this->climateProxy.Initialize();
+			if (!bmeInitializationResult.IsSuccessful)
 			{
 				result.ErrorMessage = F("Failed to load the BME280 Sensor.");
 				return result;
@@ -26,8 +26,8 @@ namespace Sensors {
 		else if (this->enabledSensors & AvailableSensors::PMS5003)
 		{
 			// initialize the PMS5003
-			this->pms5003R = this->particleProxy.Initialize();
-			if (!pms5003R.IsSuccessful)
+			this->pmsInitializationResult = this->particleProxy.Initialize();
+			if (!pmsInitializationResult.IsSuccessful)
 			{
 				result.ErrorMessage = F("Failed to load the PMS5003 Sensor.");
 				return result;
@@ -42,21 +42,16 @@ namespace Sensors {
 	{
 		bool returnValue = true;
 
-		if (this->enabledSensors & AvailableSensors::BME280 && this->bmeR.IsSuccessful)
+		if (this->enabledSensors & AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
 		{
 			returnValue &= this->climateProxy.ReadSensor(data);
 		}
-		else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pms5003R.IsSuccessful)
+		else if (this->enabledSensors & AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
 		{
 			returnValue &= this->particleProxy.ReadSensor(data);
 		}
 
 		return returnValue;
-	}
-
-	void SensorManager::PrintDebug()
-	{
-
 	}
 
 	SensorManager::~SensorManager() {}

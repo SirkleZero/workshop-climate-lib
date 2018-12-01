@@ -24,15 +24,14 @@ namespace Sensors {
 
 		InitializationResult Initialize();
 		bool ReadSensors(SensorData *data);
-		void PrintDebug();
 	private:
 		AvailableSensors enabledSensors;
 		TemperatureUnit temperatureUnit;
 
 		BME280Proxy climateProxy;
-		InitializationResult bmeR;
+		InitializationResult bmeInitializationResult;
 		PMS5003Proxy particleProxy;
-		InitializationResult pms5003R;
+		InitializationResult pmsInitializationResult;
 	};
 }
 #endif
