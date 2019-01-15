@@ -96,12 +96,14 @@ namespace Configuration {
 
 	void SDCardProxy::LogMessage(const __FlashStringHelper *message)
 	{
-		File logfile = SD.open(SDCardProxy::LogFileName, FILE_WRITE);		
-		if (!SD.exists(SDCardProxy::LogFileName))
+		bool exists = SD.exists(SDCardProxy::LogFileName);
+
+		File logfile = SD.open(SDCardProxy::LogFileName, FILE_WRITE);
+		if (!exists)
 		{
 			// write out a header for the file.
 			logfile.print(F("millis\t")); logfile.println(F("message"));
-		}
+		}		
 
 		logfile.print(millis()); logfile.print("\t");  logfile.println(message);
 
