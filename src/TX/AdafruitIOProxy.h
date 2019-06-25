@@ -5,6 +5,8 @@ https://io.adafruit.com/api/docs/
 #ifndef AdafruitIOProxy_h
 #define AdafruitIOProxy_h
 
+#define USE_WINC1500
+
 #include <Arduino.h>
 #include <AdafruitIO_WiFi.h>
 #include <WiFi101.h>
