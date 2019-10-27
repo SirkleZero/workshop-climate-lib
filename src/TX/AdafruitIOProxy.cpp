@@ -26,12 +26,12 @@ namespace TX {
 		io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 
 		// set up the feeds for the climate information.
-		temperatureFeed = io->feed("workshop-climate.temperature");
-		humidityFeed = io->feed("workshop-climate.humidity");
-		pressureFeed = io->feed("workshop-climate.pressure");
+		//temperatureFeed = io->feed("workshop-climate.temperature");
+		humidityFeed = io->feed("climate-testing.humidity");
+		//pressureFeed = io->feed("workshop-climate.pressure");
 
 		// set up the feeds for the particulate information.
-		pm10_standard = io->feed("workshop-climate.pm10-standard");
+		/*pm10_standard = io->feed("workshop-climate.pm10-standard");
 		pm25_standard = io->feed("workshop-climate.pm25-standard");
 		pm100_standard = io->feed("workshop-climate.pm100-standard");
 		pm10_environment = io->feed("workshop-climate.pm10-environment");
@@ -42,7 +42,7 @@ namespace TX {
 		particles_10um = io->feed("workshop-climate.particles-10um");
 		particles_25um = io->feed("workshop-climate.particles-25um");
 		particles_50um = io->feed("workshop-climate.particles-50um");
-		particles_100um = io->feed("workshop-climate.particles-100um");
+		particles_100um = io->feed("workshop-climate.particles-100um");*/
 
 		result.IsSuccessful = true;
 		return result;
@@ -87,12 +87,12 @@ namespace TX {
 		}
 
 		// send climate information to Adafruit IO
-		temperatureFeed->save(data.Climate.Temperature);
+		//temperatureFeed->save(data.Climate.Temperature);
 		humidityFeed->save(data.Climate.Humidity);
-		pressureFeed->save(data.Climate.Pressure / 100); // send it in hPa
+		//pressureFeed->save(data.Climate.Pressure / 100); // send it in hPa
 
 		// send particulates information to Adafruit IO
-		pm10_standard->save(data.Particulates.pm10_standard);
+		/*pm10_standard->save(data.Particulates.pm10_standard);
 		pm25_standard->save(data.Particulates.pm25_standard);
 		pm100_standard->save(data.Particulates.pm100_standard);
 		pm10_environment->save(data.Particulates.pm10_env);
@@ -103,7 +103,7 @@ namespace TX {
 		particles_10um->save(data.Particulates.particles_10um);
 		particles_25um->save(data.Particulates.particles_25um);
 		particles_50um->save(data.Particulates.particles_50um);
-		particles_100um->save(data.Particulates.particles_100um);
+		particles_100um->save(data.Particulates.particles_100um);*/
 
 		Serial.println(F("sending data to Adafruit IO..."));
 
