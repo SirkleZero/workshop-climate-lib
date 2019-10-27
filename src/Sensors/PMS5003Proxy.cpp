@@ -17,8 +17,8 @@ namespace Sensors {
 	}
 
 	/// <summary>Reads data from the sensor.</summary>
-	/// <param name="data">The <see cref="SensorData"/> object to place the data into.</param>
-	bool PMS5003Proxy::ReadSensor(SensorData *data)
+	/// <param name="data">The <see cref="ParticleData"/> object to place the data into.</param>
+	bool PMS5003Proxy::ReadSensor(ParticleData *data)
 	{
 		// send data only when you receive data. This sensor communicates over the Serial1 interface based on how we have it hooked up to the microcontroller.
 		Serial1.begin(9600);
@@ -157,7 +157,7 @@ namespace Sensors {
 
 		if (calculatedChecksum == thisFrame.Checksum)
 		{
-			data->Particulates = thisFrame.Particulates;
+			data = &thisFrame.Particulates;
 			return true;
 		}
 

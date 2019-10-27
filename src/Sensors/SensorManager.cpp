@@ -66,11 +66,11 @@ namespace Sensors {
 			// for each enabled sensor, read its information.
 			if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
 			{
-				sensorsSucceeded &= this->climateProxy.ReadSensor(data);
+				sensorsSucceeded &= this->climateProxy.ReadSensor(&data->Climate);
 			}
 			if ((this->enabledSensors & AvailableSensors::PMS5003) == AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
 			{
-				sensorsSucceeded &= this->particleProxy.ReadSensor(data);
+				sensorsSucceeded &= this->particleProxy.ReadSensor(&data->Particulates);
 			}
 
 			returnValue = sensorsSucceeded;

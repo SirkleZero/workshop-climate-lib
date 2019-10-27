@@ -5,7 +5,7 @@
 
 #include "..\InitializationResult.h"
 #include "PMS5003Frame.h"
-#include "SensorData.h"
+#include "ParticleData.h"
 
 namespace Sensors {
 	/// <summary>Describes the maximum frame size of data from the sensor.</summary>
@@ -17,7 +17,7 @@ namespace Sensors {
 		PMS5003Proxy();
 
 		InitializationResult Initialize();
-		bool ReadSensor(SensorData *data);
+		bool ReadSensor(ParticleData *data);
 	private:
 		/// <summary>true if we are debugging; otherwise false.</summary>
 		const bool InDebugMode = false;

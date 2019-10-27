@@ -6,7 +6,7 @@
 #include <Adafruit_BME280.h>
 
 #include "..\InitializationResult.h"
-#include "SensorData.h"
+#include "ClimateData.h"
 
 namespace Sensors {
 	/// <summary>Specifies values that represent the various temperature units supported.</summary>
@@ -26,7 +26,7 @@ namespace Sensors {
 		BME280Proxy(TemperatureUnit units = TemperatureUnit::C);
 
 		InitializationResult Initialize();
-		bool ReadSensor(SensorData *data);
+		bool ReadSensor(ClimateData *data);
 		void PrintDebug();
 
 	private:

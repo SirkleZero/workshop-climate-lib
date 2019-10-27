@@ -34,8 +34,8 @@ namespace Sensors {
 	}
 
 	/// <summary>Reads data from the sensor.</summary>
-	/// <param name="data">The <see cref="SensorData"/> object to place the data into.</param>
-	bool BME280Proxy::ReadSensor(SensorData *data)
+	/// <param name="data">The <see cref="ClimateData"/> object to place the data into.</param>
+	bool BME280Proxy::ReadSensor(ClimateData *data)
 	{
 		// we are taking a forced measurement based on the setSampling settings we've specified. If those change, then this needs to be revisited according to the spec of the sensor.
 		bme.takeForcedMeasurement();
@@ -43,21 +43,21 @@ namespace Sensors {
 		switch (this->units)
 		{
 			case C:
-				data->Climate.Temperature = bme.readTemperature();
-				data->Climate.Units = 'C';
+				data->Temperature = bme.readTemperature();
+				data->Units = 'C';
 				break;
 			case F:
-				data->Climate.Temperature = ClimateData::ConvertCToF(bme.readTemperature());
-				data->Climate.Units = 'F';
+				data->Temperature = ClimateData::ConvertCToF(bme.readTemperature());
+				data->Units = 'F';
 				break;
 			default:
-				data->Climate.Temperature = bme.readTemperature();
-				data->Climate.Units = 'C';
+				data->Temperature = bme.readTemperature();
+				data->Units = 'C';
 				break;
 		}
 
-		data->Climate.Pressure = bme.readPressure();
-		data->Climate.Humidity = bme.readHumidity();
+		data->Pressure = bme.readPressure();
+		data->Humidity = bme.readHumidity();
 
 		return true;
 	}
@@ -65,13 +65,13 @@ namespace Sensors {
 	/// <summary>Prints a debug statement to Serial output.</summary>
 	void BME280Proxy::PrintDebug()
 	{
-		SensorData data;
+		ClimateData data;
 		this->ReadSensor(&data);
 
 		Serial.println(F("---------------------------------------"));
-		Serial.print(F("Temperature = ")); Serial.print(data.Climate.Temperature); Serial.print(F(" *")); Serial.println(this->units);
-		Serial.print(F("Pressure = ")); Serial.print(data.Climate.Pressure / 100.0F); Serial.println(F(" hPa"));
-		Serial.print(F("Humidity = ")); Serial.print(data.Climate.Humidity); Serial.println(F(" %"));
+		Serial.print(F("Temperature = ")); Serial.print(data.Temperature); Serial.print(F(" *")); Serial.println(this->units);
+		Serial.print(F("Pressure = ")); Serial.print(data.Pressure / 100.0F); Serial.println(F(" hPa"));
+		Serial.print(F("Humidity = ")); Serial.print(data.Humidity); Serial.println(F(" %"));
 		Serial.println(F("---------------------------------------"));
 		Serial.println();
 	}
