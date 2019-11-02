@@ -31,14 +31,14 @@ namespace Configuration {
 		// Allocate the memory pool on the stack.
 		// Don't forget to change the capacity to match your JSON document.
 		// Use arduinojson.org/assistant to compute the capacity.
-		StaticJsonBuffer<512> jsonBuffer;
+		StaticJsonDocument<512> jsonBuffer;
 
 		// Parse the root object
-		JsonObject &root = jsonBuffer.parseObject(file);
-
-		if (!root.success())
+		//JsonObject &root = jsonBuffer.parseObject(file);
+		DeserializationError error = deserializeJson(jsonBuffer, file);
+		if (error)
 		{
-			Serial.println(F("Failed to read file"));
+			Serial.println(F("Failed to read file, using default configuration"));
 			file.close();
 			return false;
 		}
@@ -46,10 +46,10 @@ namespace Configuration {
 		// Read the data from the json config file. In this case make sure
 		// we are using the set methods to copy our const char * values that
 		// come from the stream.
-		secrets->SetAdafruitIOUsername(root["adafruitio_username"]);
-		secrets->SetAdafruitIOAccessKey(root["adafruitio_key"]);
-		secrets->SetWifiSSID(root["wifi_ssid"]);
-		secrets->SetWifiPassword(root["wifi_password"]);
+		secrets->SetAdafruitIOUsername(jsonBuffer["adafruitio_username"]);
+		secrets->SetAdafruitIOAccessKey(jsonBuffer["adafruitio_key"]);
+		secrets->SetWifiSSID(jsonBuffer["wifi_ssid"]);
+		secrets->SetWifiPassword(jsonBuffer["wifi_password"]);
 
 		// Close the file (File's destructor doesn't close the file)
 		file.close();
@@ -67,27 +67,34 @@ namespace Configuration {
 		// Allocate the memory pool on the stack.
 		// Don't forget to change the capacity to match your JSON document.
 		// Use arduinojson.org/assistant to compute the capacity.
-		StaticJsonBuffer<512> jsonBuffer;
+		StaticJsonDocument<512> jsonBuffer;
 
 		// Parse the root object
-		JsonObject &root = jsonBuffer.parseObject(file);
-
-		if (!root.success())
+		//JsonObject &root = jsonBuffer.parseObject(file);
+		DeserializationError error = deserializeJson(jsonBuffer, file);
+		if (error)
 		{
-			Serial.println(F("Failed to read file"));
+			Serial.println(F("Failed to read file, using default configuration"));
 			file.close();
 			return false;
 		}
 
+		/*if (!root.success())
+		{
+			Serial.println(F("Failed to read file"));
+			file.close();
+			return false;
+		}*/
+
 		// Read the values from the config file. None of these are strings, 
 		// so we don't have to worry about making copies of the data into 
 		// the configuration object.
-		configuration->RunawayTimeLimit = root["RunawayTimeLimit"];
-		configuration->MinimumHumidity = root["MinimumHumidity"];
-		configuration->TargetHumidity = root["TargetHumidity"];
-		configuration->MaximumHumidity = root["MaximumHumidity"];
-		configuration->HumidifierOperationOffset = root["HumidifierOperationOffset"];
-		configuration->DeHumidifierOperationOffset = root["DeHumidifierOperationOffset"];
+		configuration->RunawayTimeLimit = jsonBuffer["RunawayTimeLimit"];
+		configuration->MinimumHumidity = jsonBuffer["MinimumHumidity"];
+		configuration->TargetHumidity = jsonBuffer["TargetHumidity"];
+		configuration->MaximumHumidity = jsonBuffer["MaximumHumidity"];
+		configuration->HumidifierOperationOffset = jsonBuffer["HumidifierOperationOffset"];
+		configuration->DeHumidifierOperationOffset = jsonBuffer["DeHumidifierOperationOffset"];
 
 		// Close the file (File's destructor doesn't close the file)
 		file.close();

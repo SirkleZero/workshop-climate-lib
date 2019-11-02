@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <SD.h>
 #include <SPI.h>
+#include <SD.h>
 
 #include "..\InitializationResult.h"
 #include "ControllerConfiguration.h"
