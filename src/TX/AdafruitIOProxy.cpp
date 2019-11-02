@@ -75,7 +75,7 @@ namespace TX {
 					break;
 				}
 			}
-			Serial.println("Theoretically connected...");
+			Serial.println("Timer ran out or we connected...?");
 			//if (!available)
 			if (!this->IsConnected)
 			{
@@ -140,6 +140,12 @@ namespace TX {
 		// send the queued up data points. "run" commits the transaction (essentially).
 		//io->run();
 		result.IsSuccess = true;
+
+		// print humidity and temperature:
+		Serial.print("Humidity: ");
+		Serial.println(data.Climate.Humidity);
+		Serial.print("Temperature: ");
+		Serial.println(data.Climate.Temperature);
 
 		// print the SSID of the network you're attached to:
 		Serial.print("SSID: ");
