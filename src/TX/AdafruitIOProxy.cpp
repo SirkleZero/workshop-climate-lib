@@ -10,7 +10,7 @@ namespace TX {
 	/// <summary>Destroys an existing instance of the <see cref="BME280Proxy"/> class.</summary>
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
-		delete io;
+		//delete io;
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -18,31 +18,76 @@ namespace TX {
 	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
 	InitializationResult AdafruitIOProxy::Initialize(Secrets *secrets)
 	{
-		InitializationResult result;
-
 		this->secrets = secrets;
 
 		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
-		io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
+		//io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 
 		// set up the feeds for the climate information.
-		//temperatureFeed = io->feed("workshop-climate.temperature");
-		humidityFeed = io->feed("climate-testing.humidity");
-		//pressureFeed = io->feed("workshop-climate.pressure");
+		/*temperatureFeed = io->feed("workshop-climate.temperature");
+		humidityFeed = io->feed("climate-testing.humidity");*/
 
-		// set up the feeds for the particulate information.
-		/*pm10_standard = io->feed("workshop-climate.pm10-standard");
-		pm25_standard = io->feed("workshop-climate.pm25-standard");
-		pm100_standard = io->feed("workshop-climate.pm100-standard");
-		pm10_environment = io->feed("workshop-climate.pm10-environment");
-		pm25_environment = io->feed("workshop-climate.pm25-environment");
-		pm100_environment = io->feed("workshop-climate.pm100-environment");
-		particles_03um = io->feed("workshop-climate.particles-03um");
-		particles_05um = io->feed("workshop-climate.particles-05um");
-		particles_10um = io->feed("workshop-climate.particles-10um");
-		particles_25um = io->feed("workshop-climate.particles-25um");
-		particles_50um = io->feed("workshop-climate.particles-50um");
-		particles_100um = io->feed("workshop-climate.particles-100um");*/
+		return this->Connect();
+	}
+
+	/// <summary>Connects to the WiFi network.</summary>
+	InitializationResult AdafruitIOProxy::Connect()
+	{
+		Serial.println("Entered wifi connect");
+		InitializationResult result;
+
+		// Configure the pins used for the ESP32 connection
+		#if !defined(SPIWIFI_SS)  // if the wifi definition isnt in the board variant
+			// Don't change the names of these #define's! they match the variant ones
+			#define SPIWIFI     SPI
+			#define SPIWIFI_SS    4  // Chip select pin
+			#define SPIWIFI_ACK   1   // a.k.a BUSY or READY pin
+			#define ESP32_RESETN  0   // Reset pin
+			#define ESP32_GPIO0   -1  // Not connected
+		#endif
+		
+		Serial.println("Defined pins...");
+
+		// check for the WiFi module:
+		WiFi.setPins(SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
+		Serial.println("Set Pins...");
+
+		if (WiFi.status() == WL_NO_MODULE)
+		{
+			result.ErrorMessage = F("Communication with WiFi module failed!");
+			Serial.println(result.ErrorMessage);
+			result.IsSuccessful = false;
+			return result;
+		}
+		else
+		{
+			// Connect to WPA/WPA2 network
+			//bool available = false;
+			Serial.println("connecting to WiFi...");
+			unsigned long starttime = millis();
+			while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
+			{
+				status = WiFi.begin(this->secrets->WiFiSSID, this->secrets->WiFiPassword);
+				if (status == WL_CONNECTED)
+				{
+					//available = true;
+					this->IsConnected = true;
+					break;
+				}
+			}
+			Serial.println("Theoretically connected...");
+			//if (!available)
+			if (!this->IsConnected)
+			{
+				// we exceeded our timeout period. return a failure.
+				result.ErrorMessage = F("Failed to connect to WiFi network.");
+				Serial.println(result.ErrorMessage);
+				this->Disconnect();
+				return result;
+			}
+
+			Serial.println(F("Connected to wifi"));
+		}
 
 		result.IsSuccessful = true;
 		return result;
@@ -61,55 +106,55 @@ namespace TX {
 	{
 		IoTUploadResult result;
 
-		Serial.println(F("connecting to wifi via Adafruit IO library"));
-		io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
+		//Serial.println(F("connecting to wifi via Adafruit IO library"));
+		//io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
 
 		// wait for a connection, but not forever yo! a few seconds should be good enough?
 		// calling io->status() actually does a lot behind the scenes, and can return
 		// quite a few different status's. We only care about being connected though.
-		bool available = false;
-		unsigned long starttime = millis();
-		while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
-		{
-			if (io->status() == AIO_CONNECTED)
-			{
-				available = true;
-				break;
-			}
-		}
+		//bool available = false;
+		//unsigned long starttime = millis();
+		//while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
+		//{
+		//	/*if (io->status() == AIO_CONNECTED)
+		//	{
+		//		available = true;
+		//		break;
+		//	}*/
+		//}
 
-		if (!available)
-		{
-			// we exceeded our timeout period. return a failure.
-			result.ErrorMessage = io->statusText();
-			this->Disconnect();
-			return result;
-		}
+		//if (!available)
+		//{
+		//	// we exceeded our timeout period. return a failure.
+		//	//result.ErrorMessage = io->statusText();
+		//	this->Disconnect();
+		//	return result;
+		//}
 
 		// send climate information to Adafruit IO
 		//temperatureFeed->save(data.Climate.Temperature);
-		humidityFeed->save(data.Climate.Humidity);
-		//pressureFeed->save(data.Climate.Pressure / 100); // send it in hPa
-
-		// send particulates information to Adafruit IO
-		/*pm10_standard->save(data.Particulates.pm10_standard);
-		pm25_standard->save(data.Particulates.pm25_standard);
-		pm100_standard->save(data.Particulates.pm100_standard);
-		pm10_environment->save(data.Particulates.pm10_env);
-		pm25_environment->save(data.Particulates.pm25_env);
-		pm100_environment->save(data.Particulates.pm100_env);
-		particles_03um->save(data.Particulates.particles_03um);
-		particles_05um->save(data.Particulates.particles_05um);
-		particles_10um->save(data.Particulates.particles_10um);
-		particles_25um->save(data.Particulates.particles_25um);
-		particles_50um->save(data.Particulates.particles_50um);
-		particles_100um->save(data.Particulates.particles_100um);*/
+		//humidityFeed->save(data.Climate.Humidity);
 
 		Serial.println(F("sending data to Adafruit IO..."));
 
 		// send the queued up data points. "run" commits the transaction (essentially).
-		io->run();
+		//io->run();
 		result.IsSuccess = true;
+
+		// print the SSID of the network you're attached to:
+		Serial.print("SSID: ");
+		Serial.println(WiFi.SSID());
+
+		// print your board's IP address:
+		IPAddress ip = WiFi.localIP();
+		Serial.print("IP Address: ");
+		Serial.println(ip);
+
+		// print the received signal strength:
+		long rssi = WiFi.RSSI();
+		Serial.print("signal strength (RSSI):");
+		Serial.print(rssi);
+		Serial.println(" dBm");
 
 		Serial.println(F("data sent to adafruit!"));
 
@@ -122,7 +167,7 @@ namespace TX {
 		result.ErrorMessage = F("");
 
 		// disconnect from WiFi.
-		this->Disconnect();
+		//this->Disconnect();
 
 		return result;
 	}

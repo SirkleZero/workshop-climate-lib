@@ -5,11 +5,14 @@ https://io.adafruit.com/api/docs/
 #ifndef AdafruitIOProxy_h
 #define AdafruitIOProxy_h
 
-#define USE_WINC1500
+//#define USE_WINC1500
+
+#include <SPI.h>
+#include <WiFiNINA.h>
 
 #include <Arduino.h>
-#include <AdafruitIO_WiFi.h>
-#include <WiFi101.h>
+//#include <AdafruitIO_WiFi.h>
+//#include <WiFi101.h>
 
 #include "..\Sensors\SensorData.h"
 #include "..\Configuration\Secrets.h"
@@ -26,32 +29,20 @@ namespace TX {
 		AdafruitIOProxy();
 		~AdafruitIOProxy();
 		InitializationResult Initialize(Secrets *secrets);
+		InitializationResult Connect();
+		void Disconnect();
+		bool IsConnected = false;
 		IoTUploadResult Transmit(SensorData data);
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
 		static const unsigned long NetworkTimeoutMS = 10000;
+		int status = WL_IDLE_STATUS;
 
 		Secrets *secrets;
-		AdafruitIO_WiFi *io;
+		/*AdafruitIO_WiFi *io;
 
 		AdafruitIO_Feed *temperatureFeed;
-		AdafruitIO_Feed *humidityFeed;
-		AdafruitIO_Feed *pressureFeed;
-
-		AdafruitIO_Feed *pm10_standard;
-		AdafruitIO_Feed *pm25_standard;
-		AdafruitIO_Feed *pm100_standard;
-		AdafruitIO_Feed *pm10_environment;
-		AdafruitIO_Feed *pm25_environment;
-		AdafruitIO_Feed *pm100_environment;
-		AdafruitIO_Feed *particles_03um;
-		AdafruitIO_Feed *particles_05um;
-		AdafruitIO_Feed *particles_10um;
-		AdafruitIO_Feed *particles_25um;
-		AdafruitIO_Feed *particles_50um;
-		AdafruitIO_Feed *particles_100um;
-
-		void Disconnect();
+		AdafruitIO_Feed *humidityFeed;*/
 	};
 }
 #endif

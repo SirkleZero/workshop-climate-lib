@@ -2,7 +2,8 @@
 #define IoTUploadResult_h
 
 #include <Arduino.h>
-#include <WiFi101.h>
+//#include <WiFi101.h>
+#include <WiFiNINA.h>
 
 namespace TX {
 	/// <summary>Represents the status of uploading data to the IoT provider.</summary>
@@ -10,7 +11,7 @@ namespace TX {
 		/// <summary>true if the upload was successful; otherwise false.</summary>
 		bool IsSuccess = false;
 		/// <summary>The SSID of the WiFi connection we are connected to.</summary>
-		char* SSID;
+		const char* SSID;
 		/// <summary>The signal strength of the WiFi connection.</summary>
 		int16_t RSSI;
 		/// <summary>The local area network IP address assigned to the microcontroller.</summary>
