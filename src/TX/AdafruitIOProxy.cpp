@@ -4,10 +4,10 @@ using namespace Sensors;
 using namespace Configuration;
 
 namespace TX {
-	/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
+	/// <summary>Initializes a new instance of the <see cref="AdafruitIOProxy"/> class.</summary>
 	AdafruitIOProxy::AdafruitIOProxy() {}
 
-	/// <summary>Destroys an existing instance of the <see cref="BME280Proxy"/> class.</summary>
+	/// <summary>Destroys an existing instance of the <see cref="AdafruitIOProxy"/> class.</summary>
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
 		delete io;
