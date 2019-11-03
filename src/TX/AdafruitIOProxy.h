@@ -35,7 +35,7 @@ namespace TX {
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
 		//static const unsigned long NetworkTimeoutMS = 14000;
-		static const unsigned long NetworkTimeoutMS = 10000;
+		static const unsigned long NetworkTimeoutMS = 8000;
 		static const unsigned long AdafruitIOTouchTimeoutMS = 5000;
 
 		AdafruitIO_WiFi *io;

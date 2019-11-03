@@ -101,17 +101,13 @@ namespace TX {
 			this->status = WiFi.begin(this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 			if (this->status == WL_CONNECTED)
 			{
-				// establish a connection to adafruit io
-				// TODO: handle the boolean return of this function
-				this->TouchAdafruitIO();
-
 				this->IsConnected = true;
-				Serial.println(F("Connected to wifi"));
+				Serial.println(F("Connected to wifi."));
 				return this->IsConnected;
 			}
 		}
 
-		Serial.println(F("Failed to connect to WiFi network."));
+		Serial.println(F("Failed to connect to WiFi network!"));
 		this->Disconnect();
 
 		return this->IsConnected;
@@ -132,18 +128,20 @@ namespace TX {
 
 		// TODO: Issue a pull request to add an overload to .run() that would accept a timeout value. Currently 
 		// .run() has the following line of code that can result in infinate loop: while(mqttStatus() != AIO_CONNECTED){}
+		Serial.println("Connecting to Adafruit IO...");
 		unsigned long starttime = millis();
 		while ((millis() - starttime) <= AdafruitIOProxy::AdafruitIOTouchTimeoutMS)
 		{
 			// once we establish connection using mqttStatus(), execute .run().
 			if (io->mqttStatus() == AIO_CONNECTED)
 			{
-				Serial.println("Executing .run()");
 				io->run();
+				Serial.println("Connected to Adafruit IO.");
 				return true;
 			}
 		}
 
+		Serial.println("Failed to connect to Adafruit IO.");
 		return false;
 	}
 
@@ -186,14 +184,19 @@ namespace TX {
 			}
 		}
 
+		// If we got to this point, we know we are connected to a WiFi network. Let's ensure our
+		// connection to Adafruit IO by executing our timer constrained call to .run().
 		bool touchSucceeded = this->TouchAdafruitIO();
 
 		// Queue the data that will be sent to Adafruit IO. If the connection is solid, then
 		// this will send directly; otherwise it will queue up and be sent when the connection
-		// returns.
+		// becomes available again.
 		bool queueSucceeded = this->QueueData(data);
 
 		result.IsSuccess = touchSucceeded && queueSucceeded;
+
+		Serial.print("Completed Successfully: ");
+		Serial.println(result.IsSuccess);
 
 		return result;
 	}
