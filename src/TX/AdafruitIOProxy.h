@@ -42,10 +42,10 @@ namespace TX {
 		int status = WL_IDLE_STATUS;
 		Secrets *secrets;
 
-		//AdafruitIO_Feed *temperatureFeed;
+		AdafruitIO_Feed *temperatureFeed;
 		AdafruitIO_Feed *humidityFeed;
 
-		void QueueData(SensorData data);
+		bool QueueData(SensorData data);
 		bool TouchAdafruitIO();
 	};
 }

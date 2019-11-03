@@ -56,6 +56,7 @@ namespace TX {
 
 		// set up the mqtt feeds we are publishing to
 		humidityFeed = io->feed("climate-testing.humidity");
+		temperatureFeed = io->feed("climate-testing.temperature");
 
 		// set the pins of our ESP32 Airlift
 		WiFi.setPins(SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
@@ -86,6 +87,7 @@ namespace TX {
 			if (this->status == WL_CONNECTED)
 			{
 				// establish a connection to adafruit io
+				// TODO: handle the boolean return of this function
 				this->TouchAdafruitIO();
 
 				this->IsConnected = true;
@@ -169,23 +171,21 @@ namespace TX {
 			}
 		}
 
-		this->TouchAdafruitIO();
+		bool touchSucceeded = this->TouchAdafruitIO();
 
 		// Queue the data that will be sent to Adafruit IO. If the connection is solid, then
 		// this will send directly; otherwise it will queue up and be sent when the connection
 		// returns.
-		this->QueueData(data);
+		bool queueSucceeded = this->QueueData(data);
 
-		/*Serial.print("mqtt is connected: ");
-		Serial.println(io->mqttStatus() == AIO_CONNECTED);
-		Serial.print("WiFi Status: ");
-		Serial.println(WiFi.status());*/
+		result.IsSuccess = touchSucceeded && queueSucceeded;
 
 		return result;
 	}
 
-	void AdafruitIOProxy::QueueData(SensorData data)
+	bool AdafruitIOProxy::QueueData(SensorData data)
 	{
-		humidityFeed->save(data.Climate.Humidity);
+		return humidityFeed->save(data.Climate.Humidity);
+		//&& temperatureFeed->save(data.Climate.Temperature);
 	}
 }
