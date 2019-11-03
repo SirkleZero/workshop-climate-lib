@@ -86,7 +86,7 @@ namespace TX {
 			if (this->status == WL_CONNECTED)
 			{
 				// establish a connection to adafruit io
-				io->run();
+				this->TouchAdafruitIO();
 
 				this->IsConnected = true;
 				Serial.println(F("Connected to wifi"));
@@ -100,10 +100,40 @@ namespace TX {
 		return this->IsConnected;
 	}
 
+	bool AdafruitIOProxy::TouchAdafruitIO()
+	{
+		// Calling mqttStatus() attempts to connect to the mqtt broker. Calling .run() uses the
+		// call to mqttStatus() as part of its logic, but unfortunately does so in a potentially infinate loop.
+		// So instead of letting .run() run away from us in that loop, we'll execute that same logic 
+		// inside a timer based loop to ensure connectivity. If we get a connection, we'll call .run()
+		// so it can continue doing what it does from a keep alive standpoint; otherwise we'll exit this
+		// function with a false value, indicating that we were unable to connect to the broker in
+		// the allowed time. This function is essentially a work-around to prevent us from having infinate
+		// loops in .run(). If we get an infinate loop, all processing will stop, hanging our device. If using
+		// a Watchdog timer like I do in this application, the device will ultimately reboot when the timer
+		// lapses.
+
+		// TODO: Issue a pull request to add an overload to .run() that would accept a timeout value. Currently 
+		// .run() has the following line of code that can result in infinate loop: while(mqttStatus() != AIO_CONNECTED){}
+		unsigned long starttime = millis();
+		while ((millis() - starttime) <= AdafruitIOProxy::AdafruitIOTouchTimeoutMS)
+		{
+			// once we establish connection using mqttStatus(), execute .run().
+			if (io->mqttStatus() == AIO_CONNECTED)
+			{
+				Serial.println("Executing .run()");
+				io->run();
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	/// <summary>Disconnects from the WiFi network.</summary>
 	void AdafruitIOProxy::Disconnect()
 	{
-		// TODO: Is this where I should kick the reset pin of the chip?
+		// TODO: Is this where I should kick the reset pin of the chip? Probably.
 		this->IsConnected = false;
 		WiFi.disconnect();
 		WiFi.end();
@@ -139,32 +169,17 @@ namespace TX {
 			}
 		}
 
-		// Queue the data that will be sent to Adafruit IO.
+		this->TouchAdafruitIO();
+
+		// Queue the data that will be sent to Adafruit IO. If the connection is solid, then
+		// this will send directly; otherwise it will queue up and be sent when the connection
+		// returns.
 		this->QueueData(data);
 
-		// send the queued up data points. "run" commits the transaction (essentially).
-		// here we are using our network timeout that is a value less than the watchdog
-		// timer that will restart the device once that timespan has elapsed.
-		// TODO: wrap run in a timer... if the time elapses, then immediate return so
-		// the arduino sketch can reset the watchdog timer. This should allow things to
-		// queue until a reliable connection is made.
-		Serial.print("Adafruit IO Status: ");
-		Serial.println(io->statusText());
+		/*Serial.print("mqtt is connected: ");
+		Serial.println(io->mqttStatus() == AIO_CONNECTED);
 		Serial.print("WiFi Status: ");
-		Serial.println(WiFi.status());
-
-		unsigned long starttime = millis();
-		while ((millis() - starttime) <= 5000)
-		{
-			if (io->status() == AIO_CONNECTED)
-			{
-				Serial.println(F("Sending data to Adafruit IO..."));
-				//io->run();
-				Serial.println(F("Data sent to adafruit!"));
-				result.IsSuccess = true;
-				break;
-			}
-		}
+		Serial.println(WiFi.status());*/
 
 		return result;
 	}

@@ -36,19 +36,17 @@ namespace TX {
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
 		//static const unsigned long NetworkTimeoutMS = 14000;
 		static const unsigned long NetworkTimeoutMS = 10000;
-		//static const unsigned long NetworkTimeoutMS = 6000;
-		const char* server = "io.adafruit.com";
-		static const unsigned long port = 8883;
-		int status = WL_IDLE_STATUS;
+		static const unsigned long AdafruitIOTouchTimeoutMS = 5000;
 
-		Secrets *secrets;
-		
 		AdafruitIO_WiFi *io;
+		int status = WL_IDLE_STATUS;
+		Secrets *secrets;
 
 		//AdafruitIO_Feed *temperatureFeed;
 		AdafruitIO_Feed *humidityFeed;
 
 		void QueueData(SensorData data);
+		bool TouchAdafruitIO();
 	};
 }
 #endif
