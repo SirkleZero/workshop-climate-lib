@@ -1,3 +1,19 @@
+// a few notes on .run() as published by abachman on the adafruit.com forums: https://forums.adafruit.com/viewtopic.php?f=56&t=156891&p=774110&hilit=timeout#p774110
+
+//.run() is where your sketch checks for new MQTT subscription messages and like brubell said, it's where your device pings the MQTT broker once every 60s to keep the connection alive.
+//
+//You've got a few options!
+//
+//1. If you have no MQTT subscriptions you can skip calling it on every loop and only call it once per minute.That will make sure the PING happens on time and avoid the 100ms - ish delays.
+//
+//2. If you're already publishing every 15 or so seconds and not subscribing to anything, you can leave it out entirely and the PUBLISH events happening when you call .save() will keep the connection alive. PING is the default, "I am active, but I have no new data to publish", but all the broker cares about is activity.
+//
+//3. If you're expecting data but don't need it instantly, you can call it on a longer interval than "once every loop()".Maybe just call it on loops where you publish ?
+//
+//4. Finally, the run() method in Adafruit IO Arduino takes an optional "busywait_timeout" argument which is the amount of time in ms to wait for new MQTT packets to come in.I'll let you guess what the default timeout is :D Sending a low value (e.g, 5) will make io.run() spend less time waiting, but might cause your sketch to miss some MQTT subscription messages.
+//
+//If you peek under the hood, Adafruit IO Arduino's .run() method is pretty much only calling Adafruit MQTT's processPackets method, so if you change libraries you'll end up with a similar problem but be a little closer to the truth of what's happening.
+
 #include "AdafruitIOProxy.h"
 
 using namespace Sensors;
@@ -10,7 +26,10 @@ namespace TX {
 	/// <summary>Destroys an existing instance of the <see cref="AdafruitIOProxy"/> class.</summary>
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
-		delete io;
+		if(io)
+		{
+			delete io;
+		}
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -34,12 +53,15 @@ namespace TX {
 		// NOTE: This was the only way I could figure out how to pass in non-hardcoded values to the Adafruit library. These values are read from a JSON document to make them easily configurable.
 		// Make sure to delete the io object in the destructor!
 		io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
+
+		// set up the mqtt feeds we are publishing to
 		humidityFeed = io->feed("climate-testing.humidity");
 
-		Serial.println("Define pins...");
+		// set the pins of our ESP32 Airlift
 		WiFi.setPins(SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
-		Serial.println("Pins are set...");
 
+		// check to make sure we have a WiFi module. If the pins aren't correctly wired up or configured
+		// our module won't be recognized and we won't be able to process anything WiFi related.
 		if (WiFi.status() == WL_NO_MODULE)
 		{
 			result.ErrorMessage = F("Communication with WiFi module failed!");
@@ -63,6 +85,9 @@ namespace TX {
 			this->status = WiFi.begin(this->secrets->WiFiSSID, this->secrets->WiFiPassword);
 			if (this->status == WL_CONNECTED)
 			{
+				// establish a connection to adafruit io
+				io->run();
+
 				this->IsConnected = true;
 				Serial.println(F("Connected to wifi"));
 				return this->IsConnected;
@@ -88,6 +113,12 @@ namespace TX {
 	/// <param name="data">The <see cref="SensorData" to send to Adafruit IO.</param>
 	IoTUploadResult AdafruitIOProxy::Transmit(SensorData data)
 	{
+		// print humidity and temperature:
+		Serial.print("Humidity: ");
+		Serial.println(data.Climate.Humidity);
+		Serial.print("Temperature: ");
+		Serial.println(data.Climate.Temperature);
+
 		IoTUploadResult result;
 
 		// double check that we are actually connected to wifi.
@@ -117,33 +148,29 @@ namespace TX {
 		// TODO: wrap run in a timer... if the time elapses, then immediate return so
 		// the arduino sketch can reset the watchdog timer. This should allow things to
 		// queue until a reliable connection is made.
-		Serial.println(F("Sending data to Adafruit IO..."));
-		io->run();
-		Serial.println(F("Data sent to adafruit!"));
-		result.IsSuccess = true;
+		Serial.print("Adafruit IO Status: ");
+		Serial.println(io->statusText());
+		Serial.print("WiFi Status: ");
+		Serial.println(WiFi.status());
 
 		unsigned long starttime = millis();
-		while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
+		while ((millis() - starttime) <= 5000)
 		{
 			if (io->status() == AIO_CONNECTED)
 			{
+				Serial.println(F("Sending data to Adafruit IO..."));
+				//io->run();
+				Serial.println(F("Data sent to adafruit!"));
+				result.IsSuccess = true;
 				break;
 			}
 		}
-
-		// print humidity and temperature:
-		Serial.print("Humidity: ");
-		Serial.println(data.Climate.Humidity);
-		Serial.print("Temperature: ");
-		Serial.println(data.Climate.Temperature);
 
 		return result;
 	}
 
 	void AdafruitIOProxy::QueueData(SensorData data)
 	{
-		// behind the scenes, these save methods actually queue data to be processed
-		// by mqtt.
 		humidityFeed->save(data.Climate.Humidity);
 	}
 }
