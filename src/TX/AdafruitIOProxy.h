@@ -5,13 +5,13 @@ https://io.adafruit.com/api/docs/
 #ifndef AdafruitIOProxy_h
 #define AdafruitIOProxy_h
 
-//#define USE_WINC1500
+#define USE_AIRLIFT
 
 #include <SPI.h>
 #include <WiFiNINA.h>
 
 #include <Arduino.h>
-//#include <AdafruitIO_WiFi.h>
+#include <AdafruitIO_WiFi.h>
 //#include <WiFi101.h>
 
 #include "..\Sensors\SensorData.h"
@@ -36,13 +36,16 @@ namespace TX {
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
 		static const unsigned long NetworkTimeoutMS = 14000;
+		const char* server = "io.adafruit.com";
+		static const unsigned long port = 8883;
 		int status = WL_IDLE_STATUS;
 
 		Secrets *secrets;
-		/*AdafruitIO_WiFi *io;
+		
+		AdafruitIO_WiFi *io;
 
-		AdafruitIO_Feed *temperatureFeed;
-		AdafruitIO_Feed *humidityFeed;*/
+		//AdafruitIO_Feed *temperatureFeed;
+		AdafruitIO_Feed *humidityFeed;
 	};
 }
 #endif

@@ -11,6 +11,7 @@ namespace TX {
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
 		//delete io;
+		//delete mqtt;
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -22,10 +23,12 @@ namespace TX {
 
 		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
 		//io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
+		//io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, NINA_ACK, NINA_RESETN, NINA_GPIO0, &SPIWIFI);
+		
 
 		// set up the feeds for the climate information.
-		/*temperatureFeed = io->feed("workshop-climate.temperature");
-		humidityFeed = io->feed("climate-testing.humidity");*/
+		//temperatureFeed = io->feed("workshop-climate.temperature");
+		////humidityFeed = io->feed("climate-testing.humidity");
 
 		return this->Connect();
 	}
@@ -45,7 +48,10 @@ namespace TX {
 			#define ESP32_RESETN  0   // Reset pin
 			#define ESP32_GPIO0   -1  // Not connected
 		#endif
-		
+
+		io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
+		humidityFeed = io->feed("climate-testing.humidity");
+
 		Serial.println("Defined pins...");
 
 		// check for the WiFi module:
@@ -75,7 +81,7 @@ namespace TX {
 					break;
 				}
 			}
-			Serial.println("Timer ran out or we connected...?");
+
 			//if (!available)
 			if (!this->IsConnected)
 			{
@@ -88,7 +94,7 @@ namespace TX {
 
 			Serial.println(F("Connected to wifi"));
 		}
-
+		
 		result.IsSuccessful = true;
 		return result;
 	}
@@ -133,12 +139,12 @@ namespace TX {
 
 		// send climate information to Adafruit IO
 		//temperatureFeed->save(data.Climate.Temperature);
-		//humidityFeed->save(data.Climate.Humidity);
+		humidityFeed->save(data.Climate.Humidity);
 
 		Serial.println(F("sending data to Adafruit IO..."));
 
 		// send the queued up data points. "run" commits the transaction (essentially).
-		//io->run();
+		io->run();
 		result.IsSuccess = true;
 
 		// print humidity and temperature:
