@@ -21,7 +21,6 @@ namespace TX {
 		InitializationResult result;
 		this->secrets = secrets;
 
-		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
 		// Configure the pins used for the ESP32 connection
 		#if !defined(SPIWIFI_SS)  // if the wifi definition isnt in the board variant
 			// Don't change the names of these #define's! they match the variant ones
@@ -32,6 +31,8 @@ namespace TX {
 			#define ESP32_GPIO0   -1  // Not connected
 		#endif
 
+		// NOTE: This was the only way I could figure out how to pass in non-hardcoded values to the Adafruit library. These values are read from a JSON document to make them easily configurable.
+		// Make sure to delete the io object in the destructor!
 		io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
 		humidityFeed = io->feed("climate-testing.humidity");
 
