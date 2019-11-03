@@ -12,7 +12,6 @@ https://io.adafruit.com/api/docs/
 
 #include <Arduino.h>
 #include <AdafruitIO_WiFi.h>
-//#include <WiFi101.h>
 
 #include "..\Sensors\SensorData.h"
 #include "..\Configuration\Secrets.h"
@@ -29,13 +28,15 @@ namespace TX {
 		AdafruitIOProxy();
 		~AdafruitIOProxy();
 		InitializationResult Initialize(Secrets *secrets);
-		InitializationResult Connect();
+		bool Connect();
 		void Disconnect();
 		bool IsConnected = false;
 		IoTUploadResult Transmit(SensorData data);
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
-		static const unsigned long NetworkTimeoutMS = 14000;
+		//static const unsigned long NetworkTimeoutMS = 14000;
+		static const unsigned long NetworkTimeoutMS = 10000;
+		//static const unsigned long NetworkTimeoutMS = 6000;
 		const char* server = "io.adafruit.com";
 		static const unsigned long port = 8883;
 		int status = WL_IDLE_STATUS;
@@ -46,6 +47,8 @@ namespace TX {
 
 		//AdafruitIO_Feed *temperatureFeed;
 		AdafruitIO_Feed *humidityFeed;
+
+		void QueueData(SensorData data);
 	};
 }
 #endif

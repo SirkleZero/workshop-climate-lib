@@ -10,8 +10,7 @@ namespace TX {
 	/// <summary>Destroys an existing instance of the <see cref="BME280Proxy"/> class.</summary>
 	AdafruitIOProxy::~AdafruitIOProxy()
 	{
-		//delete io;
-		//delete mqtt;
+		delete io;
 	}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -19,26 +18,10 @@ namespace TX {
 	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
 	InitializationResult AdafruitIOProxy::Initialize(Secrets *secrets)
 	{
+		InitializationResult result;
 		this->secrets = secrets;
 
 		// NOTE: this really was the only way I could actually get this to work. Make sure to delete the io object in the destructor!
-		//io = new AdafruitIO_WINC1500(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword);
-		//io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, NINA_ACK, NINA_RESETN, NINA_GPIO0, &SPIWIFI);
-		
-
-		// set up the feeds for the climate information.
-		//temperatureFeed = io->feed("workshop-climate.temperature");
-		////humidityFeed = io->feed("climate-testing.humidity");
-
-		return this->Connect();
-	}
-
-	/// <summary>Connects to the WiFi network.</summary>
-	InitializationResult AdafruitIOProxy::Connect()
-	{
-		Serial.println("Entered wifi connect");
-		InitializationResult result;
-
 		// Configure the pins used for the ESP32 connection
 		#if !defined(SPIWIFI_SS)  // if the wifi definition isnt in the board variant
 			// Don't change the names of these #define's! they match the variant ones
@@ -52,11 +35,9 @@ namespace TX {
 		io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
 		humidityFeed = io->feed("climate-testing.humidity");
 
-		Serial.println("Defined pins...");
-
-		// check for the WiFi module:
+		Serial.println("Define pins...");
 		WiFi.setPins(SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
-		Serial.println("Set Pins...");
+		Serial.println("Pins are set...");
 
 		if (WiFi.status() == WL_NO_MODULE)
 		{
@@ -65,43 +46,39 @@ namespace TX {
 			result.IsSuccessful = false;
 			return result;
 		}
-		else
-		{
-			// Connect to WPA/WPA2 network
-			//bool available = false;
-			Serial.println("connecting to WiFi...");
-			unsigned long starttime = millis();
-			while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
-			{
-				status = WiFi.begin(this->secrets->WiFiSSID, this->secrets->WiFiPassword);
-				if (status == WL_CONNECTED)
-				{
-					//available = true;
-					this->IsConnected = true;
-					break;
-				}
-			}
 
-			//if (!available)
-			if (!this->IsConnected)
-			{
-				// we exceeded our timeout period. return a failure.
-				result.ErrorMessage = F("Failed to connect to WiFi network.");
-				Serial.println(result.ErrorMessage);
-				this->Disconnect();
-				return result;
-			}
-
-			Serial.println(F("Connected to wifi"));
-		}
-		
 		result.IsSuccessful = true;
 		return result;
+	}
+
+	/// <summary>Connects to the WiFi network.</summary>
+	bool AdafruitIOProxy::Connect()
+	{
+		// Connect to WPA/WPA2 network
+		Serial.println("Connecting to WiFi...");
+		unsigned long starttime = millis();
+		while ((millis() - starttime) <= AdafruitIOProxy::NetworkTimeoutMS)
+		{
+			this->status = WiFi.begin(this->secrets->WiFiSSID, this->secrets->WiFiPassword);
+			if (this->status == WL_CONNECTED)
+			{
+				this->IsConnected = true;
+				Serial.println(F("Connected to wifi"));
+				return this->IsConnected;
+			}
+		}
+
+		Serial.println(F("Failed to connect to WiFi network."));
+		this->Disconnect();
+
+		return this->IsConnected;
 	}
 
 	/// <summary>Disconnects from the WiFi network.</summary>
 	void AdafruitIOProxy::Disconnect()
 	{
+		// TODO: Is this where I should kick the reset pin of the chip?
+		this->IsConnected = false;
 		WiFi.disconnect();
 		WiFi.end();
 	}
@@ -114,6 +91,36 @@ namespace TX {
 
 		//Serial.println(F("connecting to wifi via Adafruit IO library"));
 		//io->connect(); // this is just connecting to the wifi. it's just a wrapper to the underlying wifi system.
+		//this->Connect();
+
+		// double check that we are actually connected to wifi.
+		this->status = WiFi.status();
+		if (this->status != WL_CONNECTED)
+		{
+			// we are unable to connect to wifi. fail gracefully.
+			if (!this->Connect())
+			{
+				// queue the data for when the connection comes back.
+				this->QueueData(data);
+
+				result.IsSuccess = false;
+				result.ErrorMessage = F("Failed to reconnect to WiFi, exiting Transmit().");
+				//result.ErrorMessage = io->statusText();
+				this->Disconnect();
+				return result;
+			}
+		}
+
+		/*Serial.print("WiFi.status() = ");
+		Serial.println(WiFi.status());
+		Serial.print("io.status() = ");
+		Serial.println(io->status());*/
+
+
+		/*if (io->status() != AIO_CONNECTED)
+		{
+			this->Connect();
+		}*/
 
 		// wait for a connection, but not forever yo! a few seconds should be good enough?
 		// calling io->status() actually does a lot behind the scenes, and can return
@@ -137,14 +144,18 @@ namespace TX {
 		//	return result;
 		//}
 
-		// send climate information to Adafruit IO
-		//temperatureFeed->save(data.Climate.Temperature);
-		humidityFeed->save(data.Climate.Humidity);
-
-		Serial.println(F("sending data to Adafruit IO..."));
+		// Queue the data that will be sent to Adafruit IO.
+		this->QueueData(data);
 
 		// send the queued up data points. "run" commits the transaction (essentially).
+		// here we are using our network timeout that is a value less than the watchdog
+		// timer that will restart the device once that timespan has elapsed.
+		// TODO: wrap run in a timer... if the time elapses, then immediate return so
+		// the arduino sketch can reset the watchdog timer. This should allow things to
+		// queue until a reliable connection is made.
+		Serial.println(F("Sending data to Adafruit IO..."));
 		io->run();
+		Serial.println(F("Data sent to adafruit!"));
 		result.IsSuccess = true;
 
 		// print humidity and temperature:
@@ -168,19 +179,24 @@ namespace TX {
 		Serial.print(rssi);
 		Serial.println(" dBm");
 
-		Serial.println(F("data sent to adafruit!"));
-
 		// get information about the wifi connection for use on the display
-		result.SSID = WiFi.SSID();
+		/*result.SSID = WiFi.SSID();
 		result.RSSI = WiFi.RSSI();
 		result.LocalIP = WiFi.localIP();
 		result.GatewayIP = WiFi.gatewayIP();
 		result.SubnetMask = WiFi.subnetMask();
-		result.ErrorMessage = F("");
+		result.ErrorMessage = F("");*/
 
 		// disconnect from WiFi.
 		//this->Disconnect();
 
 		return result;
+	}
+
+	void AdafruitIOProxy::QueueData(SensorData data)
+	{
+		// behind the scenes, these save methods actually queue data to be processed
+		// by mqtt.
+		humidityFeed->save(data.Climate.Humidity);
 	}
 }
