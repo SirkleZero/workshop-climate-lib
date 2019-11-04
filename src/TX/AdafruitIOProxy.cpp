@@ -58,23 +58,41 @@ namespace TX {
 		// Configure the pins used for the ESP32 connection
 		#if !defined(SPIWIFI_SS)  // if the wifi definition isnt in the board variant
 			// Don't change the names of these #define's! they match the variant ones
-			#define SPIWIFI     SPI
-			#define SPIWIFI_SS    4  // Chip select pin
-			#define SPIWIFI_ACK   1   // a.k.a BUSY or READY pin
-			#define ESP32_RESETN  0   // Reset pin
-			#define ESP32_GPIO0   -1  // Not connected
+			#define SPIWIFI			SPI
+			#define SPIWIFI_SS		4  // Chip select pin
+			#define SPIWIFI_ACK		1   // a.k.a BUSY or READY pin
+			#define ESP32_RESETN	0   // Reset pin
+			#define ESP32_GPIO0		-1  // Not connected
 		#endif
 
 		// NOTE: This was the only way I could figure out how to pass in non-hardcoded values to the Adafruit library. These values are read from a JSON document to make them easily configurable.
 		// Make sure to delete the io object in the destructor!
-		io = new AdafruitIO_AIRLIFT(this->secrets->AdafruitIOUsername, this->secrets->AdafruitIOAccessKey, this->secrets->WiFiSSID, this->secrets->WiFiPassword, SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
+		io = new AdafruitIO_AIRLIFT
+		(
+			this->secrets->AdafruitIOUsername, 
+			this->secrets->AdafruitIOAccessKey, 
+			this->secrets->WiFiSSID, 
+			this->secrets->WiFiPassword, 
+			SPIWIFI_SS, 
+			SPIWIFI_ACK, 
+			ESP32_RESETN, 
+			ESP32_GPIO0, 
+			&SPIWIFI
+		);
 
 		// set up the mqtt feeds we are publishing to
 		humidityFeed = io->feed("climate-testing.humidity");
 		temperatureFeed = io->feed("climate-testing.temperature");
 
 		// set the pins of our ESP32 Airlift
-		WiFi.setPins(SPIWIFI_SS, SPIWIFI_ACK, ESP32_RESETN, ESP32_GPIO0, &SPIWIFI);
+		WiFi.setPins
+		(
+			SPIWIFI_SS, 
+			SPIWIFI_ACK, 
+			ESP32_RESETN, 
+			ESP32_GPIO0, 
+			&SPIWIFI
+		);
 
 		// check to make sure we have a WiFi module. If the pins aren't correctly wired up or configured
 		// our module won't be recognized and we won't be able to process anything WiFi related.
