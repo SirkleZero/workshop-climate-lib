@@ -8,7 +8,8 @@ enum Devices : uint8_t
 	ClimateSensorArray = 1u << 1,
 	ParticulateSensorArray = 1u << 2,
 	SystemMonitor = 1u << 3,
-	AllListeners = ClimateController | SystemMonitor
+	AllListeners = ClimateController | SystemMonitor,
+	AllTransmitters = ClimateSensorArray | ParticulateSensorArray
 };
 
 #endif
