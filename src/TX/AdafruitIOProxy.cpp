@@ -215,7 +215,14 @@ namespace TX {
 		// setting an error message, so we don't know what failed. According to the logs, we connected
 		// to Adafruit IO in our touch step, so that should be a "true" value. That leaves us with
 		// our QueueData method experiencing some kind of issue, and returning a "false" value.
-		// Do some digging here and see where the truth lies.
+		// Do some digging here and see where the truth lies. Based on the log messages, it doesn't look
+		// like the data was queued either. The record doesn't seem to have been retransmitted, and 
+		// we simply processed the next record of data. This proves that the system can think it's
+		// connected to WiFi, and it can think it is connected to Adafruit IO and it still fails for
+		// some, currently unknown reason. According to the logs however, the system did not shut 
+		// down or crash or anything like that, so this did fail gracefully.
+
+		// Maybe this failed due to throttling?
 		result.IsSuccess = touchSucceeded && queueSucceeded;
 
 		Serial.print("Completed Successfully: ");
