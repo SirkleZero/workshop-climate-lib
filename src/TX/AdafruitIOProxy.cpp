@@ -211,6 +211,11 @@ namespace TX {
 		// becomes available again.
 		bool queueSucceeded = this->QueueData(data);
 
+		// TODO: This here can fail. Well, we can get a false value at this point, but we're not
+		// setting an error message, so we don't know what failed. According to the logs, we connected
+		// to Adafruit IO in our touch step, so that should be a "true" value. That leaves us with
+		// our QueueData method experiencing some kind of issue, and returning a "false" value.
+		// Do some digging here and see where the truth lies.
 		result.IsSuccess = touchSucceeded && queueSucceeded;
 
 		Serial.print("Completed Successfully: ");
