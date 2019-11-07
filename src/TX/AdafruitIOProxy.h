@@ -44,7 +44,7 @@ namespace TX {
 		AdafruitIO_Feed *temperatureFeed;
 		AdafruitIO_Feed *humidityFeed;
 
-		bool QueueData(SensorData data);
+		bool SaveData(SensorData data);
 		bool TouchAdafruitIO();
 	};
 }

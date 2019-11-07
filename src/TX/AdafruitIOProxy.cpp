@@ -194,12 +194,10 @@ namespace TX {
 			// we are unable to connect to wifi. fail gracefully.
 			if (!this->Connect())
 			{
-				// queue the data for when the connection comes back.
-				this->QueueData(data);
+				// save the data for when the connection comes back.
+				this->SaveData(data);
 
-				result.IsSuccess = false;
 				result.ErrorMessage = F("Failed to reconnect to WiFi, exiting Transmit().");
-				//result.ErrorMessage = io->statusText();
 				this->Disconnect();
 				return result;
 			}
@@ -207,35 +205,30 @@ namespace TX {
 
 		// If we got to this point, we know we are connected to a WiFi network. Let's ensure our
 		// connection to Adafruit IO by executing our timer constrained call to .run().
-		bool touchSucceeded = this->TouchAdafruitIO();
+		if (!this->TouchAdafruitIO())
+		{
+			result.ErrorMessage = F("Failed to successfully ping Adafruit IO.");
+			return result;
+		}
 
-		// Queue the data that will be sent to Adafruit IO. If the connection is solid, then
-		// this will send directly; otherwise it will queue up and be sent when the connection
-		// becomes available again.
-		bool queueSucceeded = this->QueueData(data);
+		// Send the data to Adafruit IO. If the connection is solid, then this will send directly; 
+		// otherwise it will queue up and be sent when the connection becomes available again.
+		if (!this->SaveData(data))
+		{
+			result.ErrorMessage = F("Failed to queue or otherwise save data to Adafruit IO.");
+			return result;
+		}
 
-		// TODO: This here can fail. Well, we can get a false value at this point, but we're not
-		// setting an error message, so we don't know what failed. According to the logs, we connected
-		// to Adafruit IO in our touch step, so that should be a "true" value. That leaves us with
-		// our QueueData method experiencing some kind of issue, and returning a "false" value.
-		// Do some digging here and see where the truth lies. Based on the log messages, it doesn't look
-		// like the data was queued either. The record doesn't seem to have been retransmitted, and 
-		// we simply processed the next record of data. This proves that the system can think it's
-		// connected to WiFi, and it can think it is connected to Adafruit IO and it still fails for
-		// some, currently unknown reason. According to the logs however, the system did not shut 
-		// down or crash or anything like that, so this did fail gracefully.
-
-		// Maybe this failed due to throttling?
-		result.IsSuccess = touchSucceeded && queueSucceeded;
-
-		Serial.print("Completed Successfully: ");
-		Serial.println(result.IsSuccess);
-
+		result.IsSuccess = true;
 		return result;
 	}
 
-	bool AdafruitIOProxy::QueueData(SensorData data)
+	bool AdafruitIOProxy::SaveData(SensorData data)
 	{
+		// TODO: Queue up our data, just in case we aren't connected, then
+		// send it once we are. For now, what we have here is good enough for
+		// us to reliably send data. The queue will make it just a bit more
+		// robust.
 		return humidityFeed->save(data.Climate.Humidity);
 		//&& temperatureFeed->save(data.Climate.Temperature);
 	}
