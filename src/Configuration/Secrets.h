@@ -17,6 +17,8 @@ namespace Configuration {
 		const char *WiFiSSID;
 		/// <summary>The password for the WiFi network.</summary>
 		const char *WiFiPassword;
+		/// <summary>The network hostname to assign to the device.</summary>
+		const char *Hostname;
 
 		Secrets();
 
@@ -24,6 +26,7 @@ namespace Configuration {
 		void SetAdafruitIOAccessKey(const char * adafruitIOAccessKey);
 		void SetWifiSSID(const char * wifiSSID);
 		void SetWifiPassword(const char * wifiPassword);
+		void SetHostname(const char * hostname);
 		void PrintDebug();
 	private:
 		/*
@@ -41,6 +44,7 @@ namespace Configuration {
 		String adafruitIOAccessKey;
 		String wiFiSSID;
 		String wiFiPassword;
+		String hostname;
 	};
 }
 #endif

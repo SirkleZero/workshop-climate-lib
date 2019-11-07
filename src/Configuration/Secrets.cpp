@@ -39,6 +39,14 @@ namespace Configuration {
 		this->WiFiPassword = this->wiFiPassword.c_str();
 	}
 
+	/// <summary>Sets the hostname for the device on the network.</summary>
+	/// <param name="SetHostname">The hostname for the device on the network.</param>
+	void Secrets::SetHostname(const char * hostname)
+	{
+		this->hostname = String(hostname);
+		this->Hostname = this->hostname.c_str();
+	}
+
 	///<summary>Prints a debug statement to Serial output.</summary>
 	void Secrets::PrintDebug()
 	{
@@ -47,6 +55,7 @@ namespace Configuration {
 		Serial.print(F("adafruitio_key = ")); Serial.println(this->AdafruitIOAccessKey);
 		Serial.print(F("wifi_ssid = ")); Serial.println(this->WiFiSSID);
 		Serial.print(F("wifi_password = ")); Serial.println(this->WiFiPassword);
+		Serial.print(F("hostname = ")); Serial.println(this->Hostname);
 		Serial.println(F("---------------------------------------"));
 		Serial.println();
 	}

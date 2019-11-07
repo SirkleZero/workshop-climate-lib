@@ -104,6 +104,9 @@ namespace TX {
 			return result;
 		}
 
+		// set the network hostname for the monitor
+		WiFi.setHostname(this->secrets->Hostname);
+
 		result.IsSuccessful = true;
 		return result;
 	}
