@@ -123,7 +123,7 @@ namespace TX {
 			if (this->status == WL_CONNECTED)
 			{
 				this->IsConnected = true;
-				Serial.println(F("Connected to wifi."));
+				Serial.println(F("Connected to WiFi."));
 				return this->IsConnected;
 			}
 		}
@@ -219,6 +219,7 @@ namespace TX {
 			return result;
 		}
 
+		Serial.println(F("Data transmission complete."));
 		result.IsSuccess = true;
 		return result;
 	}
