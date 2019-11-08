@@ -59,10 +59,10 @@ namespace TX {
 		#if !defined(SPIWIFI_SS)  // if the wifi definition isnt in the board variant
 			// Don't change the names of these #define's! they match the variant ones
 			#define SPIWIFI			SPI
-			#define SPIWIFI_SS		4  // Chip select pin
-			#define SPIWIFI_ACK		1   // a.k.a BUSY or READY pin
-			#define ESP32_RESETN	0   // Reset pin
-			#define ESP32_GPIO0		-1  // Not connected
+			#define SPIWIFI_SS		AdafruitIOProxy::ChipSelectPin  // Chip select pin
+			#define SPIWIFI_ACK		AdafruitIOProxy::BusyPin   // a.k.a BUSY or READY pin
+			#define ESP32_RESETN	AdafruitIOProxy::ResetPin   // Reset pin
+			#define ESP32_GPIO0		AdafruitIOProxy::GPIOPin  // Not connected
 		#endif
 
 		// NOTE: This was the only way I could figure out how to pass in non-hardcoded values to the Adafruit library. These values are read from a JSON document to make them easily configurable.
@@ -73,7 +73,7 @@ namespace TX {
 			this->secrets->AdafruitIOAccessKey, 
 			this->secrets->WiFiSSID, 
 			this->secrets->WiFiPassword, 
-			SPIWIFI_SS, 
+			SPIWIFI_SS,
 			SPIWIFI_ACK, 
 			ESP32_RESETN, 
 			ESP32_GPIO0, 
@@ -169,10 +169,18 @@ namespace TX {
 	/// <summary>Disconnects from the WiFi network.</summary>
 	void AdafruitIOProxy::Disconnect()
 	{
-		// TODO: Is this where I should kick the reset pin of the chip? Probably.
 		this->IsConnected = false;
 		WiFi.disconnect();
 		WiFi.end();
+	}
+
+	/// <summary></summary>
+	void AdafruitIOProxy::Reset()
+	{
+		// TODO: This needs to be fully tested!
+		digitalWrite(AdafruitIOProxy::ResetPin, LOW);
+		delay(AdafruitIOProxy::ResetChipDelayMS);
+		digitalWrite(AdafruitIOProxy::ResetPin, HIGH);
 	}
 
 	/// <summary>Connects to the WiFi network and transmits data to Adafruit IO.</summary>
