@@ -18,7 +18,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.cpp" />
@@ -37,7 +37,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB565.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h" />

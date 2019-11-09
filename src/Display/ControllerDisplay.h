@@ -1,5 +1,5 @@
-#ifndef RXTFTFeatherwingProxy_h
-#define RXTFTFeatherwingProxy_h
+#ifndef ControllerDisplay_h
+#define ControllerDisplay_h
 
 // external dependencies
 #include <Arduino.h>
@@ -20,9 +20,10 @@ using namespace Sensors;
 
 namespace Display {
 	/// <summary>Defines a class that controls the display of the controller unit.</summary>
-	class RXTFTFeatherwingProxy {
+	class ControllerDisplay
+	{
 	public:
-		RXTFTFeatherwingProxy();
+		ControllerDisplay();
 		InitializationResult Initialize();
 		void PrintError(const __FlashStringHelper *message);
 		void PrintSensors(BME280Data data);
