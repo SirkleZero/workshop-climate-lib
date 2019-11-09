@@ -27,6 +27,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\TouchScreenRegion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\InitializationResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />

@@ -73,6 +73,8 @@ namespace Display {
 		this->height = tft.height();
 		this->width = tft.width();
 
+		this->touchscreenExists = ts.begin();
+
 		result.IsSuccessful = true;
 		return result;
 	}

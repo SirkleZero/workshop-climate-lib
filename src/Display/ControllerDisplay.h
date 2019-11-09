@@ -18,6 +18,7 @@
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
 #include "..\Rectangle.h"
+#include "TouchScreenRegion.h"
 
 using namespace Sensors;
 
@@ -59,6 +60,13 @@ namespace Display {
 		BME280Data previousData;
 		int previousFreeMemory = 0;
 		char *previousError;
+
+		// constants and variables for the touchscreen
+		bool touchscreenExists = false;
+		static const uint16_t TSMinX = 150;
+		static const uint16_t TSMinY = 130;
+		static const uint16_t TSMaxX = 3800;
+		static const uint16_t TSMaxY = 4000;
 
 		// Define the rectangles that are used to draw the screen layout elements
 		Rectangle humidityArea;
