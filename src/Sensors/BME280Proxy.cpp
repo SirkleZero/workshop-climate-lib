@@ -80,16 +80,12 @@ namespace Sensors {
 		return returnValue;
 	}
 
-	/// <summary>Prints a debug statement to Serial output.</summary>
+	/// <summary>Reads data from the sensor and prints a debug statement to Serial output.</summary>
 	void BME280Proxy::PrintDebug()
 	{
-		BME280Data data;
-		this->ReadSensor(&data);
-
 		Serial.println(F("---------------------------------------"));
-		Serial.print(F("Temperature = ")); Serial.print(data.Temperature); Serial.print(F(" *")); Serial.println(this->units);
-		Serial.print(F("Pressure = ")); Serial.print(data.Pressure / 100.0F); Serial.println(F(" hPa"));
-		Serial.print(F("Humidity = ")); Serial.print(data.Humidity); Serial.println(F(" %"));
+		Serial.print(F("Units: ")); Serial.println(this->units);
+		Serial.print(F("Interval: ")); Serial.println(this->updateInterval);
 		Serial.println(F("---------------------------------------"));
 		Serial.println();
 	}
