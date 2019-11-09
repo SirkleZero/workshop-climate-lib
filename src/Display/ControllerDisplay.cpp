@@ -87,6 +87,22 @@ namespace Display {
 		interrupts();
 	}
 
+	/// <summary></summary>
+	TouchScreenRegion ControllerDisplay::Touched()
+	{
+		if (!ts.bufferEmpty())
+		{
+			TS_Point p = ts.getPoint();
+			p.x = map(p.x, ControllerDisplay::TSMinX, ControllerDisplay::TSMaxX, 0, tft.width());
+			p.y = map(p.y, ControllerDisplay::TSMinY, ControllerDisplay::TSMaxY, 0, tft.height());
+
+			Serial.print(F("x: ")); Serial.println(p.x);
+			Serial.print(F("y: ")); Serial.println(p.y);
+		}
+
+		return TouchScreenRegion::None;
+	}
+
 	/// <summary>Draws the initial static elements of the display.</summary>
 	void ControllerDisplay::DrawLayout()
 	{

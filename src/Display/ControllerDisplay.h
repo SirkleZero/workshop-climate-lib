@@ -34,6 +34,7 @@ namespace Display {
 		void PrintFreeMemory(int freeMemory);
 		void DrawLayout();
 		void Clear();
+		TouchScreenRegion Touched();
 	private:
 		// a constant that defines the rotational position of the display.
 		// this could become dynamic if we used an accelerometer to determine
