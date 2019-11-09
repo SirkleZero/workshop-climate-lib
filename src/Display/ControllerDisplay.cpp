@@ -53,6 +53,7 @@ namespace Display {
 	/// <summary>Initializes a new instance of the <see cref="ControllerDisplay"/> class.</summary>
 	ControllerDisplay::ControllerDisplay() :
 		tft(TFT_CS, TFT_DC),
+		ts(STMPE_CS),
 		humidityArea(0, 0, 150, 106),
 		temperatureArea(0, 106, 150, 106)
 	{}

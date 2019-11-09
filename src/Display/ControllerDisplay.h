@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
+#include <Adafruit_STMPE610.h>
 
 // include some fonts
 #include <Fonts\FreeSansBold24pt7b.h>
@@ -48,6 +49,7 @@ namespace Display {
 
 		// Display unit variables
 		Adafruit_ILI9341 tft;
+		Adafruit_STMPE610 ts;
 		uint16_t height;
 		uint16_t width;
 		
