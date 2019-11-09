@@ -246,7 +246,7 @@ namespace Display {
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *humidity = ClimateData::ConvertFloatToString(data->Climate.Humidity, 4, 2);
+		char *humidity = BME280Data::ConvertFloatToString(data->Climate.Humidity, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, 0, 70, 150);
 		tft.setCursor(centeredTextXPosition, 70);
 		tft.setTextColor(color);
@@ -257,7 +257,7 @@ namespace Display {
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *temperature = ClimateData::ConvertFloatToString(data->Climate.Temperature, 4, 2);
+		char *temperature = BME280Data::ConvertFloatToString(data->Climate.Temperature, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, 0, 176, 150);
 		tft.setCursor(centeredTextXPosition, 176);
 		tft.setTextColor(color);

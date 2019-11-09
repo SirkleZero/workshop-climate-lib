@@ -41,7 +41,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ClimateData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ParticleData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.h" />

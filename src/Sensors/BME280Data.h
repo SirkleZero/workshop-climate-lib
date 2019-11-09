@@ -1,12 +1,12 @@
-#ifndef ClimateData_h
-#define ClimateData_h
+#ifndef BME280Data_h
+#define BME280Data_h
 
 #include <Arduino.h>
 #include <avr/dtostrf.h>
 
 namespace Sensors {
 	/// <summary>Represents data related to the climate.</summary>
-	struct ClimateData {
+	struct BME280Data {
 		/// <summary>The temperature of the environment.</summary>
 		float Temperature;
 		/// <summary>The units that the temperature is represented in.</summary>

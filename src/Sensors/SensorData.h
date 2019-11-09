@@ -3,14 +3,14 @@
 
 #include <Arduino.h>
 
-#include "ClimateData.h"
+#include "BME280Data.h"
 #include "ParticleData.h"
 
 namespace Sensors {
 	/// <summary>Represents data that is collected by the sensor module.</summary>
 	struct SensorData {
 		/// <summary>Data that represents climate information.</summary>
-		ClimateData Climate;
+		BME280Data Climate;
 		/// <summary>Data that represents airborn particulates.</summary>
 		ParticleData Particulates;
 

@@ -34,8 +34,8 @@ namespace Sensors {
 	}
 
 	/// <summary>Reads data from the sensor.</summary>
-	/// <param name="data">The <see cref="ClimateData"/> object to place the data into.</param>
-	bool BME280Proxy::ReadSensor(ClimateData *data)
+	/// <param name="data">The <see cref="BME280Data"/> object to place the data into.</param>
+	bool BME280Proxy::ReadSensor(BME280Data *data)
 	{
 		// we are taking a forced measurement based on the setSampling settings we've specified. If 
 		// those change, then this needs to be revisited according to the spec of the sensor.
@@ -48,7 +48,7 @@ namespace Sensors {
 				data->Units = 'C';
 				break;
 			case F:
-				data->Temperature = ClimateData::ConvertCToF(bme.readTemperature());
+				data->Temperature = BME280Data::ConvertCToF(bme.readTemperature());
 				data->Units = 'F';
 				break;
 			default:
@@ -66,7 +66,7 @@ namespace Sensors {
 	/// <summary>Prints a debug statement to Serial output.</summary>
 	void BME280Proxy::PrintDebug()
 	{
-		ClimateData data;
+		BME280Data data;
 		this->ReadSensor(&data);
 
 		Serial.println(F("---------------------------------------"));
