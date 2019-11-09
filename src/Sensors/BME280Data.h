@@ -40,11 +40,9 @@ namespace Sensors {
 		void PrintDebug()
 		{
 			Serial.println(F("---------------------------------------"));
-			Serial.print(F("Temperature: ")); Serial.print(Temperature); Serial.print(F(" *")); Serial.println(Units);
-
-			Serial.print(F("Pressure: ")); Serial.print(Pressure / 100.0F); Serial.println(F(" hPa")); // pressure in pascals
-
 			Serial.print(F("Humidity: ")); Serial.print(Humidity); Serial.println(F(" %"));
+			Serial.print(F("Temperature: ")); Serial.print(Temperature); Serial.print(F(" *")); Serial.println(Units);
+			Serial.print(F("Pressure: ")); Serial.print(Pressure / 100.0F); Serial.println(F(" hPa")); // pressure in pascals
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}
