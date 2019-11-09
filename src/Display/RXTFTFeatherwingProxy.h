@@ -13,7 +13,7 @@
 #include <Fonts\FreeSans9pt7b.h>
 
 #include "..\InitializationResult.h"
-#include "..\Sensors\SensorData.h"
+#include "..\Sensors\BME280Data.h"
 #include "..\Rectangle.h"
 
 using namespace Sensors;
@@ -25,7 +25,7 @@ namespace Display {
 		RXTFTFeatherwingProxy();
 		InitializationResult Initialize();
 		void PrintError(const __FlashStringHelper *message);
-		void PrintSensors(SensorData data);
+		void PrintSensors(BME280Data data);
 		void PrintFreeMemory(int freeMemory);
 		void DrawLayout();
 		void Clear();
@@ -65,7 +65,7 @@ namespace Display {
 		static const uint8_t ScreenOrientation = 1;
 		
 		// variables used for display state management
-		SensorData previousData;
+		BME280Data previousData;
 		int previousFreeMemory = 0;
 		char *previousError;
 
@@ -84,12 +84,12 @@ namespace Display {
 		Rectangle aqiScaleStrokeArea;
 
 		// private functions
-		void PrintTemperature(SensorData *data, uint16_t color);
-		void PrintHumidity(SensorData *data, uint16_t color);
-		void PrintParticulates(SensorData *data, uint16_t color);
+		void PrintTemperature(BME280Data *data, uint16_t color);
+		void PrintHumidity(BME280Data *data, uint16_t color);
+		//void PrintParticulates(SensorData *data, uint16_t color);
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
-		void DrawAirQualityIndicator(SensorData *data, bool overwritting);
+		//void DrawAirQualityIndicator(SensorData *data, bool overwritting);
 	};
 }
 

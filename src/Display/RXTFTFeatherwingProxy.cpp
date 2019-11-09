@@ -218,8 +218,8 @@ namespace Display {
 	}
 
 	/// <summary>Prints sensor information to the screen.</summary>
-	/// <param name="data">The <see cref="SensorData"> containing readings from the sensors.</param>
-	void RXTFTFeatherwingProxy::PrintSensors(SensorData data)
+	/// <param name="data">The <see cref="BME280Data"> containing readings from the sensors.</param>
+	void RXTFTFeatherwingProxy::PrintSensors(BME280Data data)
 	{
 		noInterrupts();
 
@@ -231,161 +231,161 @@ namespace Display {
 		this->PrintTemperature(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
 		this->PrintTemperature(&data, RXTFTFeatherwingProxy::ReadingsTextColor);
 
-		this->PrintParticulates(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
+		/*this->PrintParticulates(&this->previousData, RXTFTFeatherwingProxy::BackgroundColor);
 		this->PrintParticulates(&data, RXTFTFeatherwingProxy::ReadingsTextColor);
 
 		this->DrawAirQualityIndicator(&this->previousData, true);
-		this->DrawAirQualityIndicator(&data, false);
+		this->DrawAirQualityIndicator(&data, false);*/
 
 		interrupts();
 
 		this->previousData = data;
 	}
 
-	void RXTFTFeatherwingProxy::PrintHumidity(SensorData *data, uint16_t color)
+	void RXTFTFeatherwingProxy::PrintHumidity(BME280Data *data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *humidity = BME280Data::ConvertFloatToString(data->Climate.Humidity, 4, 2);
+		char *humidity = BME280Data::ConvertFloatToString(data->Humidity, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, 0, 70, 150);
 		tft.setCursor(centeredTextXPosition, 70);
 		tft.setTextColor(color);
 		tft.print(humidity);
 	}
 
-	void RXTFTFeatherwingProxy::PrintTemperature(SensorData *data, uint16_t color)
+	void RXTFTFeatherwingProxy::PrintTemperature(BME280Data *data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(1);
-		char *temperature = BME280Data::ConvertFloatToString(data->Climate.Temperature, 4, 2);
+		char *temperature = BME280Data::ConvertFloatToString(data->Temperature, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, 0, 176, 150);
 		tft.setCursor(centeredTextXPosition, 176);
 		tft.setTextColor(color);
 		tft.print(temperature);
 	}
 
-	void RXTFTFeatherwingProxy::PrintParticulates(SensorData *data, uint16_t color)
-	{
-		//tft.setFont(&FreeSans9pt7b);
-		tft.setFont();
-		tft.setTextSize(1);
+	//void RXTFTFeatherwingProxy::PrintParticulates(SensorData *data, uint16_t color)
+	//{
+	//	//tft.setFont(&FreeSans9pt7b);
+	//	tft.setFont();
+	//	tft.setTextSize(1);
 
-		// TODO: break this apart into a portion that will go into the layout method
-		// and a portion (here) responsible for drawing out the values of the sensor.
+	//	// TODO: break this apart into a portion that will go into the layout method
+	//	// and a portion (here) responsible for drawing out the values of the sensor.
 
-		tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
-		tft.setCursor(156, 40);
-		tft.print("Standard");
+	//	tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
+	//	tft.setCursor(156, 40);
+	//	tft.print("Standard");
 
-		tft.setTextColor(color);
-		tft.setCursor(156, 53);
-		tft.print("PM1.0:");
-		tft.setCursor(200, 53);
-		tft.print(data->Particulates.pm10_standard);
+	//	tft.setTextColor(color);
+	//	tft.setCursor(156, 53);
+	//	tft.print("PM1.0:");
+	//	tft.setCursor(200, 53);
+	//	tft.print(data->Particulates.pm10_standard);
 
-		tft.setCursor(156, 68);
-		tft.print("PM2.5:");
-		tft.setCursor(200, 68);
-		tft.print(data->Particulates.pm25_standard);
+	//	tft.setCursor(156, 68);
+	//	tft.print("PM2.5:");
+	//	tft.setCursor(200, 68);
+	//	tft.print(data->Particulates.pm25_standard);
 
-		tft.setCursor(156, 83);
-		tft.print("PM10.0:");
-		tft.setCursor(200, 83);
-		tft.print(data->Particulates.pm100_standard);
+	//	tft.setCursor(156, 83);
+	//	tft.print("PM10.0:");
+	//	tft.setCursor(200, 83);
+	//	tft.print(data->Particulates.pm100_standard);
 
-		tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
-		tft.setCursor(235, 40);
-		tft.print("Environmental");
+	//	tft.setTextColor(RXTFTFeatherwingProxy::LayoutTextColor);
+	//	tft.setCursor(235, 40);
+	//	tft.print("Environmental");
 
-		tft.setTextColor(color);
-		tft.setCursor(235, 53);
-		tft.print("PM1.0:");
-		tft.setCursor(279, 53);
-		tft.print(data->Particulates.pm10_env);
+	//	tft.setTextColor(color);
+	//	tft.setCursor(235, 53);
+	//	tft.print("PM1.0:");
+	//	tft.setCursor(279, 53);
+	//	tft.print(data->Particulates.pm10_env);
 
-		tft.setCursor(235, 68);
-		tft.print("PM2.5:");
-		tft.setCursor(279, 68);
-		tft.print(data->Particulates.pm25_env);
+	//	tft.setCursor(235, 68);
+	//	tft.print("PM2.5:");
+	//	tft.setCursor(279, 68);
+	//	tft.print(data->Particulates.pm25_env);
 
-		tft.setCursor(235, 83);
-		tft.print("PM10.0:");
-		tft.setCursor(279, 83);
-		tft.print(data->Particulates.pm100_env);
-	}
+	//	tft.setCursor(235, 83);
+	//	tft.print("PM10.0:");
+	//	tft.setCursor(279, 83);
+	//	tft.print(data->Particulates.pm100_env);
+	//}
 
-	void RXTFTFeatherwingProxy::DrawAirQualityIndicator(SensorData *data, bool overwritting)
-	{
-		uint16_t aqi = data->Particulates.pm25_standard;
-		uint16_t color;
-		uint16_t indicatorColor; // the color of the verticle indicator
-		int16_t indicatorXPosition = 0; // the verticle indicator line's x position
-		int16_t centeredTextXPosition; // for centering
+	//void RXTFTFeatherwingProxy::DrawAirQualityIndicator(SensorData *data, bool overwritting)
+	//{
+	//	uint16_t aqi = data->Particulates.pm25_standard;
+	//	uint16_t color;
+	//	uint16_t indicatorColor; // the color of the verticle indicator
+	//	int16_t indicatorXPosition = 0; // the verticle indicator line's x position
+	//	int16_t centeredTextXPosition; // for centering
 
-		AqiScaleRectangle *tempScaleArea;
+	//	AqiScaleRectangle *tempScaleArea;
 
-		// if the aqi is greater than 500, set it to 500. The AQI scale only goes to 500 so having it be larger would be pretty much meaningless. If the scale of the index where to change, then the settings for all of this would need to change to compensate for the new scale.
-		if (aqi > RXTFTFeatherwingProxy::AqiScaleMaximum)
-		{
-			aqi = RXTFTFeatherwingProxy::AqiScaleMaximum;
-		}
+	//	// if the aqi is greater than 500, set it to 500. The AQI scale only goes to 500 so having it be larger would be pretty much meaningless. If the scale of the index where to change, then the settings for all of this would need to change to compensate for the new scale.
+	//	if (aqi > RXTFTFeatherwingProxy::AqiScaleMaximum)
+	//	{
+	//		aqi = RXTFTFeatherwingProxy::AqiScaleMaximum;
+	//	}
 
-		if (aqiScaleGoodArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleGoodArea;
-		}
-		else if (aqiScaleModerateArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleModerateArea;
-		}
-		else if (aqiScaleUnhealthySensitiveArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleUnhealthySensitiveArea;
-		}
-		else if (aqiScaleUnhealthyArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleUnhealthyArea;
-		}
-		else if (aqiScaleVeryUnhealthyArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleVeryUnhealthyArea;
-		}
-		else if (aqiScaleHazardousArea.IsAqiRectangleFor(aqi))
-		{
-			tempScaleArea = &aqiScaleHazardousArea;
-		}
-		else
-		{
-			tempScaleArea = &aqiScaleHazardousArea;
-		}
+	//	if (aqiScaleGoodArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleGoodArea;
+	//	}
+	//	else if (aqiScaleModerateArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleModerateArea;
+	//	}
+	//	else if (aqiScaleUnhealthySensitiveArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleUnhealthySensitiveArea;
+	//	}
+	//	else if (aqiScaleUnhealthyArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleUnhealthyArea;
+	//	}
+	//	else if (aqiScaleVeryUnhealthyArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleVeryUnhealthyArea;
+	//	}
+	//	else if (aqiScaleHazardousArea.IsAqiRectangleFor(aqi))
+	//	{
+	//		tempScaleArea = &aqiScaleHazardousArea;
+	//	}
+	//	else
+	//	{
+	//		tempScaleArea = &aqiScaleHazardousArea;
+	//	}
 
-		color = tempScaleArea->Color;
-		indicatorXPosition = tempScaleArea->GetVerticalIndicatorLocation(aqi);
+	//	color = tempScaleArea->Color;
+	//	indicatorXPosition = tempScaleArea->GetVerticalIndicatorLocation(aqi);
 
-		if (overwritting)
-		{
-			indicatorColor = color;
-			color = BackgroundColor;
-		}
-		else
-		{
-			indicatorColor = BackgroundColor;
-		}
+	//	if (overwritting)
+	//	{
+	//		indicatorColor = color;
+	//		color = BackgroundColor;
+	//	}
+	//	else
+	//	{
+	//		indicatorColor = BackgroundColor;
+	//	}
 
-		// print out the friendly AQI index name
-		tft.setFont(&FreeSans9pt7b);
-		tft.setTextSize(1);
-		tft.setTextColor(color);
-		centeredTextXPosition = GetCenteredPosition(tempScaleArea->Label, 0, 231, 160);
-		tft.setCursor(centeredTextXPosition, 231);
-		tft.println(tempScaleArea->Label);
+	//	// print out the friendly AQI index name
+	//	tft.setFont(&FreeSans9pt7b);
+	//	tft.setTextSize(1);
+	//	tft.setTextColor(color);
+	//	centeredTextXPosition = GetCenteredPosition(tempScaleArea->Label, 0, 231, 160);
+	//	tft.setCursor(centeredTextXPosition, 231);
+	//	tft.println(tempScaleArea->Label);
 
-		// draw an indicator line on the scale. 160 is the beginning of the scale, and we increment up from that. Only draw the indicator line if we fit within our aqi scale of 0 to 500.
-		if (aqi > 0 && aqi <= 500)
-		{
-			tft.drawFastVLine(indicatorXPosition, 217, 18, indicatorColor);
-		}
-	}
+	//	// draw an indicator line on the scale. 160 is the beginning of the scale, and we increment up from that. Only draw the indicator line if we fit within our aqi scale of 0 to 500.
+	//	if (aqi > 0 && aqi <= 500)
+	//	{
+	//		tft.drawFastVLine(indicatorXPosition, 217, 18, indicatorColor);
+	//	}
+	//}
 
 	int16_t RXTFTFeatherwingProxy::GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth)
 	{

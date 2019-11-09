@@ -36,6 +36,17 @@ namespace Sensors {
 			Serial.println();
 		}
 
+		/// <summary>Factory method to create a <see cref="BME280Data"/> that contains no data.</summary>
+		static BME280Data EmptyData()
+		{
+			BME280Data data;
+			data.Temperature = 0;
+			data.Humidity = 0;
+			data.Pressure = 0;
+
+			return data;
+		}
+
 		/// <summary>Converts a celsius temperature to Fahrenheit.</summary>
 		static float ConvertCToF(float c)
 		{
