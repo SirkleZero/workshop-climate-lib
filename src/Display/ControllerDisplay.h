@@ -8,9 +8,9 @@
 
 // include some fonts
 #include <Fonts\FreeSansBold24pt7b.h>
-#include <Fonts\FreeSansBold12pt7b.h>
+//#include <Fonts\FreeSansBold12pt7b.h>
 #include <Fonts\FreeSansBold9pt7b.h>
-#include <Fonts\FreeSans9pt7b.h>
+//#include <Fonts\FreeSans9pt7b.h>
 
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
@@ -42,12 +42,6 @@ namespace Display {
 		static const uint16_t ErrorTextColor = ILI9341_YELLOW;
 		static const uint16_t LayoutLineColor = ILI9341_WHITE;
 		static const uint16_t BackgroundColor = ILI9341_BLACK;
-		static const uint16_t AqiGood = ILI9341_GREEN;
-		static const uint16_t AqiModerate = ILI9341_YELLOW;
-		static const uint16_t AqiUnhealthySensitive = ILI9341_ORANGE;
-		static const uint16_t AqiUnhealthy = ILI9341_RED;
-		static const uint16_t AqiVeryUnhealthy = 0xB800;
-		static const uint16_t AqiHazardous = 0x8000;
 
 		// Interface label constants
 		static const char *ExampleOfALabel;
