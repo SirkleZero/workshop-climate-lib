@@ -48,28 +48,13 @@ using namespace Sensors;
 #endif
 
 namespace Display {
-	const char *ControllerDisplay::AqiScaleGoodLabel = "Good";
-	const char *ControllerDisplay::AqiScaleModerateLabel = "Moderate";
-	const char *ControllerDisplay::AqiScaleUnhealthySensitiveLabel = "Sensitive";
-	const char *ControllerDisplay::AqiScaleUnhealthyLabel = "Unhealthy";
-	const char *ControllerDisplay::AqiScaleVeryUnhealthyLabel = "Very Unhealthy";
-	const char *ControllerDisplay::AqiScaleHazardousLabel = "Hazardous";
+	const char *ControllerDisplay::ExampleOfALabel = "My Label";
 
 	/// <summary>Initializes a new instance of the <see cref="ControllerDisplay"/> class.</summary>
 	ControllerDisplay::ControllerDisplay() :
 		tft(TFT_CS, TFT_DC),
 		humidityArea(0, 0, 150, 106),
-		temperatureArea(0, 106, 150, 106),
-		particulateArea(150, 28, 170, 184),
-		aqiLabelArea(150, 0, 170, 28),
-		aqiIndicatorArea(0, 212, 320, 28),
-		aqiScaleGoodArea(160, 216, 25, 20, ControllerDisplay::AqiScaleGoodLabel, ControllerDisplay::AqiGood, 0, 50),
-		aqiScaleModerateArea(185, 216, 25, 20, ControllerDisplay::AqiScaleModerateLabel, ControllerDisplay::AqiModerate, 51, 100),
-		aqiScaleUnhealthySensitiveArea(210, 216, 25, 20, ControllerDisplay::AqiScaleUnhealthySensitiveLabel, ControllerDisplay::AqiUnhealthySensitive, 101, 150),
-		aqiScaleUnhealthyArea(235, 216, 25, 20, ControllerDisplay::AqiScaleUnhealthyLabel, ControllerDisplay::AqiUnhealthy, 151, 200),
-		aqiScaleVeryUnhealthyArea(260, 216, 25, 20, ControllerDisplay::AqiScaleVeryUnhealthyLabel, ControllerDisplay::AqiVeryUnhealthy, 201, 300),
-		aqiScaleHazardousArea(285, 216, 25, 20, ControllerDisplay::AqiScaleHazardousLabel, ControllerDisplay::AqiHazardous, 301, 500),
-		aqiScaleStrokeArea(159, 216, 152, 20)
+		temperatureArea(0, 106, 150, 106)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -124,32 +109,6 @@ namespace Display {
 		centeredTextXPosition = GetCenteredPosition(temperatureLabel, 0, 196, 150);
 		tft.setCursor(centeredTextXPosition, 196);
 		tft.println(temperatureLabel);
-
-		// for AQI Label
-		char *AQILabel = "AQI (ug/m3)";
-		tft.drawRect(aqiLabelArea.x, aqiLabelArea.y, aqiLabelArea.width, aqiLabelArea.height, ControllerDisplay::LayoutLineColor);
-		tft.setFont(&FreeSansBold9pt7b);
-		tft.setTextSize(1);
-		centeredTextXPosition = GetCenteredPosition(AQILabel, 150, 18, 170);
-		tft.setCursor(centeredTextXPosition, 18);
-		tft.println(AQILabel);
-
-		// for particulates area
-		tft.drawRect(particulateArea.x, particulateArea.y, particulateArea.width, particulateArea.height, ControllerDisplay::LayoutLineColor);
-
-		// for AQI Indicator
-		tft.drawRect(aqiIndicatorArea.x, aqiIndicatorArea.y, aqiIndicatorArea.width, aqiIndicatorArea.height, ControllerDisplay::LayoutLineColor);
-
-		// air quality scale
-		tft.fillRect(aqiScaleGoodArea.x, aqiScaleGoodArea.y, aqiScaleGoodArea.width, aqiScaleGoodArea.height, ControllerDisplay::AqiGood);
-		tft.fillRect(aqiScaleModerateArea.x, aqiScaleModerateArea.y, aqiScaleModerateArea.width, aqiScaleModerateArea.height, ControllerDisplay::AqiModerate);
-		tft.fillRect(aqiScaleUnhealthySensitiveArea.x, aqiScaleUnhealthySensitiveArea.y, aqiScaleUnhealthySensitiveArea.width, aqiScaleUnhealthySensitiveArea.height, ControllerDisplay::AqiUnhealthySensitive);
-		tft.fillRect(aqiScaleUnhealthyArea.x, aqiScaleUnhealthyArea.y, aqiScaleUnhealthyArea.width, aqiScaleUnhealthyArea.height, ControllerDisplay::AqiUnhealthy);
-		tft.fillRect(aqiScaleVeryUnhealthyArea.x, aqiScaleVeryUnhealthyArea.y, aqiScaleVeryUnhealthyArea.width, aqiScaleVeryUnhealthyArea.height, ControllerDisplay::AqiVeryUnhealthy);
-		tft.fillRect(aqiScaleHazardousArea.x, aqiScaleHazardousArea.y, aqiScaleHazardousArea.width, aqiScaleHazardousArea.height, ControllerDisplay::AqiHazardous);
-
-		// stroke the scale
-		tft.drawRect(aqiScaleStrokeArea.x, aqiScaleStrokeArea.y, aqiScaleStrokeArea.width, aqiScaleStrokeArea.height, ControllerDisplay::LayoutLineColor);
 
 		interrupts();
 	}
@@ -231,12 +190,6 @@ namespace Display {
 		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
 		this->PrintTemperature(&data, ControllerDisplay::ReadingsTextColor);
 
-		/*this->PrintParticulates(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintParticulates(&data, ControllerDisplay::ReadingsTextColor);
-
-		this->DrawAirQualityIndicator(&this->previousData, true);
-		this->DrawAirQualityIndicator(&data, false);*/
-
 		interrupts();
 
 		this->previousData = data;
@@ -263,129 +216,6 @@ namespace Display {
 		tft.setTextColor(color);
 		tft.print(temperature);
 	}
-
-	//void ControllerDisplay::PrintParticulates(SensorData *data, uint16_t color)
-	//{
-	//	//tft.setFont(&FreeSans9pt7b);
-	//	tft.setFont();
-	//	tft.setTextSize(1);
-
-	//	// TODO: break this apart into a portion that will go into the layout method
-	//	// and a portion (here) responsible for drawing out the values of the sensor.
-
-	//	tft.setTextColor(ControllerDisplay::LayoutTextColor);
-	//	tft.setCursor(156, 40);
-	//	tft.print("Standard");
-
-	//	tft.setTextColor(color);
-	//	tft.setCursor(156, 53);
-	//	tft.print("PM1.0:");
-	//	tft.setCursor(200, 53);
-	//	tft.print(data->Particulates.pm10_standard);
-
-	//	tft.setCursor(156, 68);
-	//	tft.print("PM2.5:");
-	//	tft.setCursor(200, 68);
-	//	tft.print(data->Particulates.pm25_standard);
-
-	//	tft.setCursor(156, 83);
-	//	tft.print("PM10.0:");
-	//	tft.setCursor(200, 83);
-	//	tft.print(data->Particulates.pm100_standard);
-
-	//	tft.setTextColor(ControllerDisplay::LayoutTextColor);
-	//	tft.setCursor(235, 40);
-	//	tft.print("Environmental");
-
-	//	tft.setTextColor(color);
-	//	tft.setCursor(235, 53);
-	//	tft.print("PM1.0:");
-	//	tft.setCursor(279, 53);
-	//	tft.print(data->Particulates.pm10_env);
-
-	//	tft.setCursor(235, 68);
-	//	tft.print("PM2.5:");
-	//	tft.setCursor(279, 68);
-	//	tft.print(data->Particulates.pm25_env);
-
-	//	tft.setCursor(235, 83);
-	//	tft.print("PM10.0:");
-	//	tft.setCursor(279, 83);
-	//	tft.print(data->Particulates.pm100_env);
-	//}
-
-	//void ControllerDisplay::DrawAirQualityIndicator(SensorData *data, bool overwritting)
-	//{
-	//	uint16_t aqi = data->Particulates.pm25_standard;
-	//	uint16_t color;
-	//	uint16_t indicatorColor; // the color of the verticle indicator
-	//	int16_t indicatorXPosition = 0; // the verticle indicator line's x position
-	//	int16_t centeredTextXPosition; // for centering
-
-	//	AqiScaleRectangle *tempScaleArea;
-
-	//	// if the aqi is greater than 500, set it to 500. The AQI scale only goes to 500 so having it be larger would be pretty much meaningless. If the scale of the index where to change, then the settings for all of this would need to change to compensate for the new scale.
-	//	if (aqi > ControllerDisplay::AqiScaleMaximum)
-	//	{
-	//		aqi = ControllerDisplay::AqiScaleMaximum;
-	//	}
-
-	//	if (aqiScaleGoodArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleGoodArea;
-	//	}
-	//	else if (aqiScaleModerateArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleModerateArea;
-	//	}
-	//	else if (aqiScaleUnhealthySensitiveArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleUnhealthySensitiveArea;
-	//	}
-	//	else if (aqiScaleUnhealthyArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleUnhealthyArea;
-	//	}
-	//	else if (aqiScaleVeryUnhealthyArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleVeryUnhealthyArea;
-	//	}
-	//	else if (aqiScaleHazardousArea.IsAqiRectangleFor(aqi))
-	//	{
-	//		tempScaleArea = &aqiScaleHazardousArea;
-	//	}
-	//	else
-	//	{
-	//		tempScaleArea = &aqiScaleHazardousArea;
-	//	}
-
-	//	color = tempScaleArea->Color;
-	//	indicatorXPosition = tempScaleArea->GetVerticalIndicatorLocation(aqi);
-
-	//	if (overwritting)
-	//	{
-	//		indicatorColor = color;
-	//		color = BackgroundColor;
-	//	}
-	//	else
-	//	{
-	//		indicatorColor = BackgroundColor;
-	//	}
-
-	//	// print out the friendly AQI index name
-	//	tft.setFont(&FreeSans9pt7b);
-	//	tft.setTextSize(1);
-	//	tft.setTextColor(color);
-	//	centeredTextXPosition = GetCenteredPosition(tempScaleArea->Label, 0, 231, 160);
-	//	tft.setCursor(centeredTextXPosition, 231);
-	//	tft.println(tempScaleArea->Label);
-
-	//	// draw an indicator line on the scale. 160 is the beginning of the scale, and we increment up from that. Only draw the indicator line if we fit within our aqi scale of 0 to 500.
-	//	if (aqi > 0 && aqi <= 500)
-	//	{
-	//		tft.drawFastVLine(indicatorXPosition, 217, 18, indicatorColor);
-	//	}
-	//}
 
 	int16_t ControllerDisplay::GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth)
 	{

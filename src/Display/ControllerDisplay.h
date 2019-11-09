@@ -31,8 +31,10 @@ namespace Display {
 		void DrawLayout();
 		void Clear();
 	private:
-		// Constants
-		static const int AqiScaleMaximum = 500;
+		// a constant that defines the rotational position of the display.
+		// this could become dynamic if we used an accelerometer to determine
+		// the position of the display unit.
+		static const uint8_t ScreenOrientation = 1;
 
 		// Interface color constants
 		static const uint16_t ReadingsTextColor = 0x5DDF;
@@ -48,22 +50,12 @@ namespace Display {
 		static const uint16_t AqiHazardous = 0x8000;
 
 		// Interface label constants
-		static const char *AqiScaleGoodLabel;
-		static const char *AqiScaleModerateLabel;
-		static const char *AqiScaleUnhealthySensitiveLabel;
-		static const char *AqiScaleUnhealthyLabel;
-		static const char *AqiScaleVeryUnhealthyLabel;
-		static const char *AqiScaleHazardousLabel;
+		static const char *ExampleOfALabel;
 
 		// Display unit variables
 		Adafruit_ILI9341 tft;
 		uint16_t height;
 		uint16_t width;
-
-		// a constant that defines the rotational position of the display.
-		// this could become dynamic if we used an accelerometer to determine
-		// the position of the display unit.
-		static const uint8_t ScreenOrientation = 1;
 		
 		// variables used for display state management
 		BME280Data previousData;
@@ -73,24 +65,12 @@ namespace Display {
 		// Define the rectangles that are used to draw the screen layout elements
 		Rectangle humidityArea;
 		Rectangle temperatureArea;
-		Rectangle particulateArea;
-		Rectangle aqiLabelArea;
-		Rectangle aqiIndicatorArea;
-		AqiScaleRectangle aqiScaleGoodArea;
-		AqiScaleRectangle aqiScaleModerateArea;
-		AqiScaleRectangle aqiScaleUnhealthySensitiveArea;
-		AqiScaleRectangle aqiScaleUnhealthyArea;
-		AqiScaleRectangle aqiScaleVeryUnhealthyArea;
-		AqiScaleRectangle aqiScaleHazardousArea;
-		Rectangle aqiScaleStrokeArea;
 
 		// private functions
 		void PrintTemperature(BME280Data *data, uint16_t color);
 		void PrintHumidity(BME280Data *data, uint16_t color);
-		//void PrintParticulates(SensorData *data, uint16_t color);
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
-		//void DrawAirQualityIndicator(SensorData *data, bool overwritting);
 	};
 }
 
