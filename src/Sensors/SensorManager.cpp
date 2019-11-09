@@ -5,8 +5,7 @@ namespace Sensors {
 	/// <param name="enabledSensors">Specifies which sensors should be enabled.</param>
 	/// <param name="temperatureUnit">Specifies the temperature unit that will be used by the temperature sensor.</param>
 	/// <param name="updateInterval">Specifies how often in milliseconds the timer interrupt will trigger.</param>
-	SensorManager::SensorManager(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit, unsigned long updateInterval) :
-		climateProxy(temperatureUnit)
+	SensorManager::SensorManager(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit, unsigned long updateInterval)
 	{
 		this->enabledSensors = enabledSensors;
 		this->temperatureUnit = temperatureUnit;
@@ -24,7 +23,7 @@ namespace Sensors {
 		if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280)
 		{
 			// initialize the BME280
-			this->bmeInitializationResult = this->climateProxy.Initialize();
+			this->bmeInitializationResult = this->bme280Proxy.Initialize();
 			if (!bmeInitializationResult.IsSuccessful)
 			{
 				result.ErrorMessage = F("Failed to load the BME280 Sensor.");
@@ -36,7 +35,7 @@ namespace Sensors {
 		{
 			Serial.println("Loading the pms5003");
 			// initialize the PMS5003
-			this->pmsInitializationResult = this->particleProxy.Initialize();
+			this->pmsInitializationResult = this->pms5003Proxy.Initialize();
 			if (!pmsInitializationResult.IsSuccessful)
 			{
 				result.ErrorMessage = F("Failed to load the PMS5003 Sensor.");
@@ -46,6 +45,18 @@ namespace Sensors {
 
 		result.IsSuccessful = true;
 		return result;
+	}
+
+	/// <summary>Executes initialization logic for the object.</summary>
+	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
+	InitializationResult SensorManager::Initialize(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit, unsigned long updateInterval)
+	{
+		this->enabledSensors = enabledSensors;
+		this->temperatureUnit = temperatureUnit;
+		this->bme280Proxy.SetUnit(temperatureUnit);
+		this->updateInterval = updateInterval;
+
+		this->Initialize();
 	}
 
 	/// <summary>Reads information from the enabled sensors.</summary>
@@ -65,11 +76,11 @@ namespace Sensors {
 			// for each enabled sensor, read its information.
 			if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280 && this->bmeInitializationResult.IsSuccessful)
 			{
-				sensorsSucceeded &= this->climateProxy.ReadSensor(&data->Climate);
+				sensorsSucceeded &= this->bme280Proxy.ReadSensor(&data->Climate);
 			}
 			if ((this->enabledSensors & AvailableSensors::PMS5003) == AvailableSensors::PMS5003 && this->pmsInitializationResult.IsSuccessful)
 			{
-				sensorsSucceeded &= this->particleProxy.ReadSensor(&data->Particulates);
+				sensorsSucceeded &= this->pms5003Proxy.ReadSensor(&data->Particulates);
 			}
 
 			returnValue = sensorsSucceeded;

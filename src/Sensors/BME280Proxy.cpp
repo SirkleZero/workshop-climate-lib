@@ -4,16 +4,15 @@ namespace Sensors {
 	static const float SeaLevelPressure_hPa = 1013.25;
 
 	/// <summary>Initializes a new instance of the <see cref="BME280Proxy"/> class.</summary>
-	BME280Proxy::BME280Proxy(TemperatureUnit units)
-	{
-		this->units = units;
-	}
+	BME280Proxy::BME280Proxy() {}
 
 	/// <summary>Executes initialization logic for the object.</summary>
 	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
-	InitializationResult BME280Proxy::Initialize()
+	InitializationResult BME280Proxy::Initialize(TemperatureUnit units, unsigned long updateInterval)
 	{
 		InitializationResult result;
+		this->units = units;
+		this->updateInterval = updateInterval;
 
 		// initialize the BME280 sensor          
 		if (!bme.begin(&Wire))
@@ -33,34 +32,52 @@ namespace Sensors {
 		return result;
 	}
 
+	void BME280Proxy::SetUnit(TemperatureUnit units)
+	{
+		this->units = units;
+	}
+
 	/// <summary>Reads data from the sensor.</summary>
 	/// <param name="data">The <see cref="BME280Data"/> object to place the data into.</param>
 	bool BME280Proxy::ReadSensor(BME280Data *data)
 	{
-		// we are taking a forced measurement based on the setSampling settings we've specified. If 
-		// those change, then this needs to be revisited according to the spec of the sensor.
-		bme.takeForcedMeasurement();
+		bool returnValue = false;
+		this->currentMillis = millis();
 
-		switch (this->units)
+		// simple timer implementation.
+		if (((this->currentMillis - this->lastUpdate) > this->updateInterval) || this->isFirstIteration)
 		{
-			case C:
-				data->Temperature = bme.readTemperature();
-				data->Units = 'C';
-				break;
-			case F:
-				data->Temperature = BME280Data::ConvertCToF(bme.readTemperature());
-				data->Units = 'F';
-				break;
-			default:
-				data->Temperature = bme.readTemperature();
-				data->Units = 'C';
-				break;
+			this->lastUpdate = millis();
+			this->isFirstIteration = false;
+
+			// we are taking a forced measurement based on the setSampling settings we've 
+			// specified. If those change, then this needs to be revisited according to 
+			// the spec of the sensor.
+			bme.takeForcedMeasurement();
+
+			switch (this->units)
+			{
+				case C:
+					data->Temperature = bme.readTemperature();
+					data->Units = 'C';
+					break;
+				case F:
+					data->Temperature = BME280Data::ConvertCToF(bme.readTemperature());
+					data->Units = 'F';
+					break;
+				default:
+					data->Temperature = bme.readTemperature();
+					data->Units = 'C';
+					break;
+			}
+
+			data->Pressure = bme.readPressure();
+			data->Humidity = bme.readHumidity();
+
+			returnValue = true;
 		}
 
-		data->Pressure = bme.readPressure();
-		data->Humidity = bme.readHumidity();
-
-		return true;
+		return returnValue;
 	}
 
 	/// <summary>Prints a debug statement to Serial output.</summary>

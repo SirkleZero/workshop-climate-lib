@@ -28,10 +28,11 @@ namespace Sensors {
 		~SensorManager();
 
 		InitializationResult Initialize();
+		InitializationResult Initialize(AvailableSensors enabledSensors, TemperatureUnit temperatureUnit, unsigned long updateInterval);
 		bool ReadSensors(SensorData *data);
 	private:
 		AvailableSensors enabledSensors;
-		TemperatureUnit temperatureUnit;
+		TemperatureUnit temperatureUnit = TemperatureUnit::C;
 
 		// timer - used for controlling when we take sensor readings and transmit them
 		unsigned long currentMillis = 0; // stores the current value of millis()
@@ -39,9 +40,9 @@ namespace Sensors {
 		unsigned long updateInterval = 0;
 		bool isFirstIteration = true;
 
-		BME280Proxy climateProxy;
+		BME280Proxy bme280Proxy;
 		InitializationResult bmeInitializationResult;
-		PMS5003Proxy particleProxy;
+		PMS5003Proxy pms5003Proxy;
 		InitializationResult pmsInitializationResult;
 	};
 }
