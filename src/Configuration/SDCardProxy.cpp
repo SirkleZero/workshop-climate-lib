@@ -95,6 +95,7 @@ namespace Configuration {
 		configuration->MaximumHumidity = jsonBuffer["MaximumHumidity"];
 		configuration->HumidifierOperationOffset = jsonBuffer["HumidifierOperationOffset"];
 		configuration->DeHumidifierOperationOffset = jsonBuffer["DeHumidifierOperationOffset"];
+		configuration->PollIntervalMS = jsonBuffer["PollIntervalMS"];
 
 		// Close the file (File's destructor doesn't close the file)
 		file.close();

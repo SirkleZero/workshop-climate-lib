@@ -23,7 +23,6 @@ namespace Sensors {
 		// check to see if the BME 280 is enabled to run.
 		if ((this->enabledSensors & AvailableSensors::BME280) == AvailableSensors::BME280)
 		{
-			Serial.println("Loading the bme280");
 			// initialize the BME280
 			this->bmeInitializationResult = this->climateProxy.Initialize();
 			if (!bmeInitializationResult.IsSuccessful)

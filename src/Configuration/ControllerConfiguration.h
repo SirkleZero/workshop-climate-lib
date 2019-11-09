@@ -21,6 +21,8 @@ namespace Configuration {
 		float HumidifierOperationOffset;
 		/// <summary>Specifies the offset to be used to compensate for de-humidification over/under run.</summary>
 		float DeHumidifierOperationOffset;
+		/// <summary>Specifies how often in milliseconds the controller will poll its sensors for readings.</summary>
+		float PollIntervalMS;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
@@ -32,6 +34,7 @@ namespace Configuration {
 			Serial.print(F("Maximum Humidity = ")); Serial.println(this->MaximumHumidity);
 			Serial.print(F("Humidifier Operation Offset = ")); Serial.println(this->HumidifierOperationOffset);
 			Serial.print(F("De-Humidifier Operation Offset = ")); Serial.println(this->DeHumidifierOperationOffset);
+			Serial.print(F("Poll Interval = ")); Serial.println(this->PollIntervalMS);
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
 		}

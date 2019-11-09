@@ -43,6 +43,7 @@ namespace Sensors {
 		}
 
 		/// <summary>Converts a float value to a string.</summary>
+		/// <remarks>https://forum.arduino.cc/index.php?topic=368720.0</remarks>
 		static char* ConvertFloatToString(float f, signed char width, unsigned char precision)
 		{
 			char buff[10];

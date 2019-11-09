@@ -4,5 +4,6 @@
   "TargetHumidity": 45.0,
   "MaximumHumidity": 47.0,
   "HumidifierOperationOffset": -1.2,
-  "DeHumidifierOperationOffset": -0.5
+  "DeHumidifierOperationOffset": -0.5,
+  "PollIntervalMS": 15000
 }

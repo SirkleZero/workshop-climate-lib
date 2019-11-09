@@ -37,7 +37,8 @@ namespace Sensors {
 	/// <param name="data">The <see cref="ClimateData"/> object to place the data into.</param>
 	bool BME280Proxy::ReadSensor(ClimateData *data)
 	{
-		// we are taking a forced measurement based on the setSampling settings we've specified. If those change, then this needs to be revisited according to the spec of the sensor.
+		// we are taking a forced measurement based on the setSampling settings we've specified. If 
+		// those change, then this needs to be revisited according to the spec of the sensor.
 		bme.takeForcedMeasurement();
 
 		switch (this->units)
