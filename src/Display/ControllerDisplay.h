@@ -3,6 +3,8 @@
 
 // external dependencies
 #include <Arduino.h>
+#include <SPI.h>
+#include <Wire.h>      // this is needed even tho we aren't using it
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 #include <Adafruit_STMPE610.h>
