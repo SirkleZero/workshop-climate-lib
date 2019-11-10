@@ -88,6 +88,52 @@ namespace Display {
 		interrupts();
 	}
 
+	void ControllerDisplay::Display()
+	{
+		// something changed, set up the display as appropriate.
+		// Working through how to handle screen click events within the loop.
+		this->selectedRegion = this->Touched();
+		if (this->selectedRegion != TouchScreenRegion::None && this->selectedRegion != this->activeRegion)
+		{
+			this->activeRegion = this->selectedRegion;
+
+			switch (this->selectedRegion)
+			{
+				case TouchScreenRegion::BackToHome:
+					Serial.println(F("Home screen showing"));
+					this->DisplayHomeScreen();
+					break;
+				case TouchScreenRegion::Home:
+					Serial.println(F("Home screen showing"));
+					this->DisplayHomeScreen();
+					break;
+				case TouchScreenRegion::Humidity:
+					Serial.println(F("Humidity showing"));
+					this->DisplayHumidityScreen();
+					break;
+				case TouchScreenRegion::Settings:
+					Serial.println(F("Settings showing"));
+					break;
+				case TouchScreenRegion::Temperature:
+					Serial.println(F("Temperature showing"));
+					this->DisplayTemperatureScreen();
+					break;
+				default:
+					Serial.println(F("Home showing"));
+					break;
+			}
+		}
+
+		// only update the display if the data or the mode of the display has changed.
+		if (this->dataChanged || this->regionChanged)
+		{
+			// once the display has been updated, reset the state variables that track change
+			// status
+			this->dataChanged = false;
+			this->regionChanged = false;
+		}
+	}
+
 	/// <summary></summary>
 	TouchScreenRegion ControllerDisplay::Touched()
 	{
@@ -181,7 +227,7 @@ namespace Display {
 
 	/// <summary>Prints an error message to the display.</summary>
 	/// <param name="message">The message to display as an error.</param>
-	void ControllerDisplay::PrintError(const __FlashStringHelper *message)
+	void ControllerDisplay::LoadError(const __FlashStringHelper *message)
 	{
 		noInterrupts();
 
@@ -216,21 +262,28 @@ namespace Display {
 
 	/// <summary>Prints sensor information to the screen.</summary>
 	/// <param name="data">The <see cref="BME280Data"> containing readings from the sensors.</param>
-	void ControllerDisplay::PrintSensors(BME280Data data)
+	void ControllerDisplay::LoadData(BME280Data data)
+	{
+		this->dataChanged = true;
+		this->currentData = data;
+	}
+
+	void ControllerDisplay::DisplayHomeScreen()
 	{
 		noInterrupts();
+		tft.fillScreen(ILI9341_ORANGE);
 
 		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
 
-		this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+		/*this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
 		this->PrintHumidity(&data, ControllerDisplay::ReadingsTextColor);
 
 		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintTemperature(&data, ControllerDisplay::ReadingsTextColor);
+		this->PrintTemperature(&data, ControllerDisplay::ReadingsTextColor);*/
 
 		interrupts();
 
-		this->previousData = data;
+		this->previousData = this->currentData;
 	}
 
 	void ControllerDisplay::DisplayHumidityScreen()

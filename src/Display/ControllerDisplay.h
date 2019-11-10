@@ -29,13 +29,10 @@ namespace Display {
 	public:
 		ControllerDisplay();
 		InitializationResult Initialize();
-		void PrintError(const __FlashStringHelper *message);
-		void PrintSensors(BME280Data data);
-		void PrintFreeMemory(int freeMemory);
-		void DrawLayout();
+		void LoadError(const __FlashStringHelper *message);
+		void LoadData(BME280Data data);
+		void Display();
 		void Clear();
-		void DisplayHumidityScreen();
-		void DisplayTemperatureScreen();
 		TouchScreenRegion Touched();
 	private:
 		// a constant that defines the rotational position of the display.
@@ -58,12 +55,17 @@ namespace Display {
 		uint16_t width;
 		
 		// variables used for display state management
+		bool dataChanged = false;
+		bool regionChanged = false;
+		BME280Data currentData;
 		BME280Data previousData;
 		int previousFreeMemory = 0;
 		char *previousError;
 
 		// constants and variables for the touchscreen
 		bool touchscreenExists = false;
+		TouchScreenRegion selectedRegion = TouchScreenRegion::Home;
+		TouchScreenRegion activeRegion = TouchScreenRegion::Home;
 		static const uint16_t TSMinX = 150;
 		static const uint16_t TSMinY = 130;
 		static const uint16_t TSMaxX = 3800;
@@ -75,8 +77,13 @@ namespace Display {
 		Rectangle backToHomeArea;
 
 		// private functions
+		void DrawLayout();
+		void PrintFreeMemory(int freeMemory);
 		void PrintTemperature(BME280Data *data, uint16_t color);
 		void PrintHumidity(BME280Data *data, uint16_t color);
+		void DisplayHomeScreen();
+		void DisplayHumidityScreen();
+		void DisplayTemperatureScreen();
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
 	};
