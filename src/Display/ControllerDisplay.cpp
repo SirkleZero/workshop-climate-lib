@@ -107,9 +107,14 @@ namespace Display {
 		this->regionChanged = this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion;
 		if (this->DisplayUpdatable())
 		{
-			this->activeRegion = this->selectedRegion;
+			// nothing was actually clicked on, stay on the view we are currently rendering
+			if (region != ScreenRegion::None)
+			{
+				this->activeRegion = this->selectedRegion;
+			}
 
-			switch (this->selectedRegion)
+			// TODO: consolidate / clean up these case statements as needed
+			switch (this->activeRegion)
 			{
 				case ScreenRegion::BackToHome:
 					Serial.println(F("ScreenRegion::BackToHome"));
@@ -135,6 +140,9 @@ namespace Display {
 					this->DisplayHomeScreen();
 					break;
 			}
+
+			// once the display has been updated, reset the state variables that track change status
+			this->DisplayUpdated();
 		}
 	}
 
@@ -299,9 +307,6 @@ namespace Display {
 		interrupts();
 
 		this->previousData = this->currentData;
-
-		// once the display has been updated, reset the state variables that track change status
-		this->DisplayUpdated();
 	}
 
 	void ControllerDisplay::DisplayHumidityScreen()
