@@ -90,54 +90,57 @@ namespace Display {
 
 	void ControllerDisplay::Display()
 	{
-		// something changed, set up the display as appropriate.
-		// Working through how to handle screen click events within the loop.
+		// use the Touched() function to determine if a screen area has been pressed, and if so, where.
 		this->Display(this->Touched());
 	}
 
 	void ControllerDisplay::Display(ScreenRegion region)
 	{
+		// depending on which screen region needs to be displayed, update the display.
 		this->selectedRegion = region;
 		if (this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion)
 		{
+			this->regionChanged = true;
 			this->activeRegion = this->selectedRegion;
 
 			switch (this->selectedRegion)
 			{
 				case ScreenRegion::BackToHome:
-					Serial.println(F("Home screen showing"));
+					Serial.println(F("ScreenRegion::BackToHome"));
 					this->DisplayHomeScreen();
 					break;
 				case ScreenRegion::Home:
-					Serial.println(F("Home screen showing"));
+					Serial.println(F("ScreenRegion::Home"));
 					this->DisplayHomeScreen();
 					break;
 				case ScreenRegion::Humidity:
-					Serial.println(F("Humidity showing"));
+					Serial.println(F("ScreenRegion::Humidity"));
 					this->DisplayHumidityScreen();
 					break;
 				case ScreenRegion::Settings:
-					Serial.println(F("Settings showing"));
+					Serial.println(F("ScreenRegion::Settings"));
 					break;
 				case ScreenRegion::Temperature:
-					Serial.println(F("Temperature showing"));
+					Serial.println(F("ScreenRegion::Temperature"));
 					this->DisplayTemperatureScreen();
 					break;
 				default:
-					Serial.println(F("Home showing"));
+					Serial.println(F("default"));
 					this->DisplayHomeScreen();
 					break;
 			}
 		}
+	}
 
-		// only update the display if the data or the mode of the display has changed.
-		if (this->dataChanged || this->regionChanged)
-		{
-			// once the display has been updated, reset the state variables that track change
-			// status
-			this->dataChanged = false;
-			this->regionChanged = false;
-		}
+	bool ControllerDisplay::DisplayUpdatable()
+	{
+		return this->dataChanged || this->regionChanged;
+	}
+
+	void ControllerDisplay::DisplayUpdated()
+	{
+		this->dataChanged = false;
+		this->regionChanged = false;
 	}
 
 	/// <summary></summary>
@@ -276,20 +279,26 @@ namespace Display {
 
 	void ControllerDisplay::DisplayHomeScreen()
 	{
-		noInterrupts();
-		tft.fillScreen(ILI9341_ORANGE);
+		if (this->DisplayUpdatable())
+		{
+			noInterrupts();
 
-		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
+			tft.fillScreen(ControllerDisplay::BackgroundColor);
 
-		/*this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintHumidity(&data, ControllerDisplay::ReadingsTextColor);
+			// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
+			this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+			this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
-		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintTemperature(&data, ControllerDisplay::ReadingsTextColor);*/
+			this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
+			this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
-		interrupts();
+			interrupts();
 
-		this->previousData = this->currentData;
+			this->previousData = this->currentData;
+
+			// once the display has been updated, reset the state variables that track change status
+			this->DisplayUpdated();
+		}
 	}
 
 	void ControllerDisplay::DisplayHumidityScreen()

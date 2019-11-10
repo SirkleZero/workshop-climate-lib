@@ -85,6 +85,10 @@ namespace Display {
 		void DisplayHomeScreen();
 		void DisplayHumidityScreen();
 		void DisplayTemperatureScreen();
+
+		bool DisplayUpdatable();
+		void DisplayUpdated();
+
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);
 	};
