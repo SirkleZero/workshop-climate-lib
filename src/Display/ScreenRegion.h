@@ -1,9 +1,9 @@
-#ifndef TouchScreenRegion_h
-#define TouchScreenRegion_h
+#ifndef ScreenRegion_h
+#define ScreenRegion_h
 
 namespace Display {
 	/// <summary>Specifies the touch screen regions of the system.</summary>
-	enum TouchScreenRegion
+	enum ScreenRegion
 	{
 		/// <summary>Represents the screen not being touched in a defined region.</summary>
 		None = 1u << 0,

@@ -92,34 +92,40 @@ namespace Display {
 	{
 		// something changed, set up the display as appropriate.
 		// Working through how to handle screen click events within the loop.
-		this->selectedRegion = this->Touched();
-		if (this->selectedRegion != TouchScreenRegion::None && this->selectedRegion != this->activeRegion)
+		this->Display(this->Touched());
+	}
+
+	void ControllerDisplay::Display(ScreenRegion region)
+	{
+		this->selectedRegion = region;
+		if (this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion)
 		{
 			this->activeRegion = this->selectedRegion;
 
 			switch (this->selectedRegion)
 			{
-				case TouchScreenRegion::BackToHome:
+				case ScreenRegion::BackToHome:
 					Serial.println(F("Home screen showing"));
 					this->DisplayHomeScreen();
 					break;
-				case TouchScreenRegion::Home:
+				case ScreenRegion::Home:
 					Serial.println(F("Home screen showing"));
 					this->DisplayHomeScreen();
 					break;
-				case TouchScreenRegion::Humidity:
+				case ScreenRegion::Humidity:
 					Serial.println(F("Humidity showing"));
 					this->DisplayHumidityScreen();
 					break;
-				case TouchScreenRegion::Settings:
+				case ScreenRegion::Settings:
 					Serial.println(F("Settings showing"));
 					break;
-				case TouchScreenRegion::Temperature:
+				case ScreenRegion::Temperature:
 					Serial.println(F("Temperature showing"));
 					this->DisplayTemperatureScreen();
 					break;
 				default:
 					Serial.println(F("Home showing"));
+					this->DisplayHomeScreen();
 					break;
 			}
 		}
@@ -135,7 +141,7 @@ namespace Display {
 	}
 
 	/// <summary></summary>
-	TouchScreenRegion ControllerDisplay::Touched()
+	ScreenRegion ControllerDisplay::Touched()
 	{
 		if (!this->ts.bufferEmpty())
 		{
@@ -151,21 +157,21 @@ namespace Display {
 			if (this->humidityArea.Contains(x, y))
 			{
 				//Serial.println(F("Humidity Clicked"));
-				return TouchScreenRegion::Humidity;
+				return ScreenRegion::Humidity;
 			}
 			if (this->temperatureArea.Contains(x, y))
 			{
 				//Serial.println(F("Temperature Clicked"));
-				return TouchScreenRegion::Temperature;
+				return ScreenRegion::Temperature;
 			}
 			if (this->backToHomeArea.Contains(x, y))
 			{
 				//Serial.println(F("Back to Home Clicked"));
-				return TouchScreenRegion::BackToHome;
+				return ScreenRegion::BackToHome;
 			}
 		}
 
-		return TouchScreenRegion::None;
+		return ScreenRegion::None;
 	}
 
 	/// <summary>Draws the initial static elements of the display.</summary>

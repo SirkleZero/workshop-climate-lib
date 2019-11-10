@@ -18,7 +18,7 @@
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
 #include "..\Rectangle.h"
-#include "TouchScreenRegion.h"
+#include "ScreenRegion.h"
 
 using namespace Sensors;
 
@@ -32,8 +32,9 @@ namespace Display {
 		void LoadError(const __FlashStringHelper *message);
 		void LoadData(BME280Data data);
 		void Display();
+		void Display(ScreenRegion region);
 		void Clear();
-		TouchScreenRegion Touched();
+		ScreenRegion Touched();
 	private:
 		// a constant that defines the rotational position of the display.
 		static const uint8_t ScreenOrientation = 1;
@@ -64,8 +65,8 @@ namespace Display {
 
 		// constants and variables for the touchscreen
 		bool touchscreenExists = false;
-		TouchScreenRegion selectedRegion = TouchScreenRegion::Home;
-		TouchScreenRegion activeRegion = TouchScreenRegion::Home;
+		ScreenRegion selectedRegion = ScreenRegion::None;
+		ScreenRegion activeRegion = ScreenRegion::None;
 		static const uint16_t TSMinX = 150;
 		static const uint16_t TSMinY = 130;
 		static const uint16_t TSMaxX = 3800;
