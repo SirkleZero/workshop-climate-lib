@@ -34,6 +34,8 @@ namespace Display {
 		void PrintFreeMemory(int freeMemory);
 		void DrawLayout();
 		void Clear();
+		void DisplayHumidityScreen();
+		void DisplayTemperatureScreen();
 		TouchScreenRegion Touched();
 	private:
 		// a constant that defines the rotational position of the display.
@@ -70,6 +72,7 @@ namespace Display {
 		// Define the rectangles that are used to draw the screen layout elements
 		Rectangle humidityArea;
 		Rectangle temperatureArea;
+		Rectangle backToHomeArea;
 
 		// private functions
 		void PrintTemperature(BME280Data *data, uint16_t color);

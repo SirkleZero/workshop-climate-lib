@@ -55,7 +55,8 @@ namespace Display {
 		tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS),
 		humidityArea(0, 0, 150, 106),
-		temperatureArea(0, 106, 150, 106)
+		temperatureArea(0, 106, 150, 106),
+		backToHomeArea(150, 0, 170, 240)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -110,6 +111,11 @@ namespace Display {
 			{
 				//Serial.println(F("Temperature Clicked"));
 				return TouchScreenRegion::Temperature;
+			}
+			if (this->backToHomeArea.Contains(x, y))
+			{
+				//Serial.println(F("Back to Home Clicked"));
+				return TouchScreenRegion::BackToHome;
 			}
 		}
 
@@ -225,6 +231,20 @@ namespace Display {
 		interrupts();
 
 		this->previousData = data;
+	}
+
+	void ControllerDisplay::DisplayHumidityScreen()
+	{
+		noInterrupts();
+		tft.fillScreen(ILI9341_BLUE);
+		interrupts();
+	}
+
+	void ControllerDisplay::DisplayTemperatureScreen()
+	{
+		noInterrupts();
+		tft.fillScreen(ILI9341_RED);
+		interrupts();
 	}
 
 	void ControllerDisplay::PrintHumidity(BME280Data *data, uint16_t color)
