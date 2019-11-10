@@ -22,9 +22,14 @@ namespace Sensors {
 		}
 
 		// configure the BME280 sensor, // suggested rate is 1/60Hz (1s)
-		bme.setSampling(Adafruit_BME280::MODE_FORCED,
+		// https://cdn-shop.adafruit.com/datasheets/BST-BME280_DS001-10.pdf
+		// We are currently using Humidity Mode (normal) rather than forced.
+		// If we changed this to use forced mode, which synchronizes the readings (we don't need?)
+		// then we have to take a forced measurement using bme.takeForcedMeasurement(); which
+		// I've commented out below.
+		bme.setSampling(Adafruit_BME280::MODE_NORMAL,
 			Adafruit_BME280::SAMPLING_X1,   // temperature
-			Adafruit_BME280::SAMPLING_X1, // pressure
+			Adafruit_BME280::SAMPLING_NONE, // pressure
 			Adafruit_BME280::SAMPLING_X1,   // humidity
 			Adafruit_BME280::FILTER_OFF);
 
@@ -50,10 +55,8 @@ namespace Sensors {
 			this->lastUpdate = millis();
 			this->isFirstIteration = false;
 
-			// we are taking a forced measurement based on the setSampling settings we've 
-			// specified. If those change, then this needs to be revisited according to 
-			// the spec of the sensor.
-			bme.takeForcedMeasurement();
+			// we are taking a forced measurement based on the setSampling settings we've specified.
+			// bme.takeForcedMeasurement();
 
 			switch (this->units)
 			{
@@ -71,8 +74,11 @@ namespace Sensors {
 					break;
 			}
 
-			data->Pressure = bme.readPressure();
 			data->Humidity = bme.readHumidity();
+			// we don't actually read pressure from the sensor in humidity sensing mode.
+			// sampling is never set, so it just returns NaN anyway. If we want pressure
+			// then we need to change how the sensor is configured.
+			data->Pressure = 0;
 
 			returnValue = true;
 		}

@@ -96,11 +96,17 @@ namespace Display {
 
 	void ControllerDisplay::Display(ScreenRegion region)
 	{
-		// depending on which screen region needs to be displayed, update the display.
+		// Depending on which screen region needs to be displayed, update the display.
+		// the call to touched will return ScreenRegion "none" as its default, since if
+		// nothing was clicked on, well, that would make sense right? But, we don't want 
+		// this Display() method to perpetually update the display, so we ignore values
+		// of none, instead only focusing on if something was actually clicked in a
+		// valid area.
+		// We also check that actual data was updated which requires a redraw of the screen.
 		this->selectedRegion = region;
-		if (this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion)
+		this->regionChanged = this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion;
+		if (this->DisplayUpdatable())
 		{
-			this->regionChanged = true;
 			this->activeRegion = this->selectedRegion;
 
 			switch (this->selectedRegion)
@@ -273,32 +279,29 @@ namespace Display {
 	/// <param name="data">The <see cref="BME280Data"> containing readings from the sensors.</param>
 	void ControllerDisplay::LoadData(BME280Data data)
 	{
-		this->dataChanged = true;
 		this->currentData = data;
+		this->dataChanged = true;
 	}
 
 	void ControllerDisplay::DisplayHomeScreen()
 	{
-		if (this->DisplayUpdatable())
-		{
-			noInterrupts();
+		noInterrupts();
 
-			tft.fillScreen(ControllerDisplay::BackgroundColor);
+		tft.fillScreen(ControllerDisplay::BackgroundColor);
 
-			// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
-			this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
-			this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
+		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
+		this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+		this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
-			this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
-			this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
+		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
+		this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
-			interrupts();
+		interrupts();
 
-			this->previousData = this->currentData;
+		this->previousData = this->currentData;
 
-			// once the display has been updated, reset the state variables that track change status
-			this->DisplayUpdated();
-		}
+		// once the display has been updated, reset the state variables that track change status
+		this->DisplayUpdated();
 	}
 
 	void ControllerDisplay::DisplayHumidityScreen()
