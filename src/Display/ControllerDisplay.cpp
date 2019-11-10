@@ -90,14 +90,27 @@ namespace Display {
 	/// <summary></summary>
 	TouchScreenRegion ControllerDisplay::Touched()
 	{
-		if (!ts.bufferEmpty())
+		if (!this->ts.bufferEmpty())
 		{
-			TS_Point p = ts.getPoint();
-			p.x = map(p.x, ControllerDisplay::TSMinX, ControllerDisplay::TSMaxX, 0, tft.width());
-			p.y = map(p.y, ControllerDisplay::TSMinY, ControllerDisplay::TSMaxY, 0, tft.height());
+			// Convert the point that was clicked to compensate for the screen orientation. While
+			// the display knows it's orientation, the touchscreen does not.
+			TS_Point p = this->ts.getPoint();
+			int y = map(p.x, ControllerDisplay::TSMinY, ControllerDisplay::TSMaxY, 0, tft.height());
+			int x = map(p.y, ControllerDisplay::TSMinX, ControllerDisplay::TSMaxX, 0, tft.width());
 
-			Serial.print(F("x: ")); Serial.println(p.x);
-			Serial.print(F("y: ")); Serial.println(p.y);
+			Serial.print(F("x: ")); Serial.println(x);
+			Serial.print(F("y: ")); Serial.println(y);
+
+			if (this->humidityArea.Contains(x, y))
+			{
+				//Serial.println(F("Humidity Clicked"));
+				return TouchScreenRegion::Humidity;
+			}
+			if (this->temperatureArea.Contains(x, y))
+			{
+				//Serial.println(F("Temperature Clicked"));
+				return TouchScreenRegion::Temperature;
+			}
 		}
 
 		return TouchScreenRegion::None;
@@ -122,7 +135,7 @@ namespace Display {
 
 		// for temperature
 		char *temperatureLabel = "Fahrenheit";
-		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
+		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::ErrorTextColor);
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 		centeredTextXPosition = GetCenteredPosition(temperatureLabel, 0, 196, 150);

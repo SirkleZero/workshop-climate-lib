@@ -23,21 +23,26 @@ struct Rectangle {
 	///<summary>The height of the rectangle.</summary>
 	int16_t height;
 
+	/// <summary>
+	///	Calculates if a point is contained by the rectangle, inclusive of its borders.
+	/// </summary>
+	/// <param name = "x">The x coordinate of the point.</param>
+	/// <param name = "y">The y coordinate of the point.</param>
+	bool Contains(int16_t x, int16_t y)
+	{
+		return 
+			x >= this->x && x <= this->x + this->width &&
+			y >= this->y && y <= this->y + this->height;
+	}
+
 	///<summary>Prints a debug statement to Serial output.</summary>
 	virtual void PrintDebug()
 	{
 		Serial.println(F("---------------------------------------"));
-		Serial.print(F("x: "));
-		Serial.println(x);
-
-		Serial.print(F("y: "));
-		Serial.println(y);
-
-		Serial.print(F("height: "));
-		Serial.println(height);
-
-		Serial.print(F("width: "));
-		Serial.println(width);
+		Serial.print(F("x: ")); Serial.println(x);
+		Serial.print(F("y: ")); Serial.println(y);
+		Serial.print(F("height: ")); Serial.println(height);
+		Serial.print(F("width: ")); Serial.println(width);
 		Serial.println(F("---------------------------------------"));
 		Serial.println();
 	}

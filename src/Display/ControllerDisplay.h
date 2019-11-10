@@ -37,8 +37,6 @@ namespace Display {
 		TouchScreenRegion Touched();
 	private:
 		// a constant that defines the rotational position of the display.
-		// this could become dynamic if we used an accelerometer to determine
-		// the position of the display unit.
 		static const uint8_t ScreenOrientation = 1;
 
 		// Interface color constants
