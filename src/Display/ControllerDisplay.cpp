@@ -298,10 +298,12 @@ namespace Display {
 		tft.fillScreen(ControllerDisplay::BackgroundColor);
 
 		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
-		this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+		// TODO: do a bunch of testing here to see how background color affects how fonts are rendered. So far things that didn't work with background color in the past are working, or I just never really knew how it worked to begin with ;)
+
+		//this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
 		this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
-		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
+		//this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
 		this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
 		interrupts();
@@ -330,7 +332,7 @@ namespace Display {
 		char *humidity = BME280Data::ConvertFloatToString(data->Humidity, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, 0, 70, 150);
 		tft.setCursor(centeredTextXPosition, 70);
-		tft.setTextColor(color);
+		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(humidity);
 	}
 
@@ -341,7 +343,7 @@ namespace Display {
 		char *temperature = BME280Data::ConvertFloatToString(data->Temperature, 4, 2);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, 0, 176, 150);
 		tft.setCursor(centeredTextXPosition, 176);
-		tft.setTextColor(color);
+		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(temperature);
 	}
 
