@@ -14,11 +14,12 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.cpp" />
@@ -27,7 +28,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Devices.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ScreenRegion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\InitializationResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />
@@ -38,11 +42,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\FeatherOLEDProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RGB565.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\RXTFTFeatherwingProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Relay\HumidityRelayManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\RX\RFM69RXProxy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Proxy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ClimateData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ParticleData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Frame.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\PMS5003Proxy.h" />
