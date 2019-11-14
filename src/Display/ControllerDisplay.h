@@ -3,6 +3,7 @@
 
 // external dependencies
 #include <Arduino.h>
+#include <math.h>
 #include <SPI.h>
 #include <Wire.h>      // this is needed even tho we aren't using it
 #include <Adafruit_GFX.h>
@@ -11,9 +12,9 @@
 
 // include some fonts
 #include <Fonts\FreeSansBold24pt7b.h>
-//#include <Fonts\FreeSansBold12pt7b.h>
+#include <Fonts\FreeSansBold12pt7b.h>
 #include <Fonts\FreeSansBold9pt7b.h>
-//#include <Fonts\FreeSans9pt7b.h>
+#include <Fonts\FreeSans9pt7b.h>
 
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
@@ -58,6 +59,7 @@ namespace Display {
 		// variables used for display state management
 		bool dataChanged = false;
 		bool regionChanged = false;
+		bool renderLayout = true;
 		BME280Data currentData;
 		BME280Data previousData;
 		int previousFreeMemory = 0;
@@ -67,6 +69,7 @@ namespace Display {
 		bool touchscreenExists = false;
 		ScreenRegion selectedRegion = ScreenRegion::None;
 		ScreenRegion activeRegion = ScreenRegion::None;
+		// these constants are used to calculate the offsets of the touchscreen
 		static const uint16_t TSMinX = 150;
 		static const uint16_t TSMinY = 130;
 		static const uint16_t TSMaxX = 3800;
@@ -78,7 +81,7 @@ namespace Display {
 		Rectangle backToHomeArea;
 
 		// private functions
-		void DrawLayout();
+		void LayoutHomeScreen();
 		void PrintFreeMemory(int freeMemory);
 		void PrintTemperature(BME280Data *data, uint16_t color);
 		void PrintHumidity(BME280Data *data, uint16_t color);

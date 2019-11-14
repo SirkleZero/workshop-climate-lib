@@ -54,9 +54,9 @@ namespace Display {
 	ControllerDisplay::ControllerDisplay() :
 		tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS),
-		humidityArea(0, 0, 150, 106),
-		temperatureArea(0, 106, 150, 106),
-		backToHomeArea(150, 0, 170, 240)
+		humidityArea(160, 50, 160, 125),
+		temperatureArea(0, 50, 160, 125),
+		backToHomeArea(290, 0, 30, 30)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -191,35 +191,6 @@ namespace Display {
 		return ScreenRegion::None;
 	}
 
-	/// <summary>Draws the initial static elements of the display.</summary>
-	void ControllerDisplay::DrawLayout()
-	{
-		noInterrupts();
-
-		// for centering
-		int16_t centeredTextXPosition;
-
-		// for Humidity
-		char *humidityLabel = "% Humidity";
-		tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
-		tft.setFont(&FreeSansBold9pt7b);
-		tft.setTextSize(1);
-		centeredTextXPosition = GetCenteredPosition(humidityLabel, 0, 90, 150);
-		tft.setCursor(centeredTextXPosition, 90);
-		tft.println(humidityLabel);
-
-		// for temperature
-		char *temperatureLabel = "Fahrenheit";
-		tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::ErrorTextColor);
-		tft.setFont(&FreeSansBold9pt7b);
-		tft.setTextSize(1);
-		centeredTextXPosition = GetCenteredPosition(temperatureLabel, 0, 196, 150);
-		tft.setCursor(centeredTextXPosition, 196);
-		tft.println(temperatureLabel);
-
-		interrupts();
-	}
-
 	/// <summary>Prints the amount of free memory in bytes to the screen.</summary>
 	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
 	void ControllerDisplay::PrintFreeMemory(int freeMemory)
@@ -291,20 +262,67 @@ namespace Display {
 		this->dataChanged = true;
 	}
 
+	/// <summary>Draws the initial static elements of the display.</summary>
+	void ControllerDisplay::LayoutHomeScreen()
+	{
+		if (this->renderLayout)
+		{
+			noInterrupts();
+
+			tft.fillScreen(ControllerDisplay::BackgroundColor);
+
+			// for centering
+			int16_t centeredTextXPosition;
+
+			// draw our centerline
+			tft.drawFastVLine(160, 30, 180, ControllerDisplay::LayoutLineColor);
+			//tft.drawFastHLine(10, 120, 300, ControllerDisplay::LayoutLineColor);
+
+			// for temperature
+			char* temperatureLabel = "Fahrenheit";
+			//tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
+			tft.setFont(&FreeSansBold9pt7b);
+			tft.setTextSize(1);
+			centeredTextXPosition = GetCenteredPosition(temperatureLabel, temperatureArea.x, temperatureArea.y, temperatureArea.width);
+			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
+			tft.println(temperatureLabel);
+
+			
+
+			// for Humidity
+			char* humidityLabel = "% Humidity";
+			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
+			tft.setFont(&FreeSansBold9pt7b);
+			tft.setTextSize(1);
+			centeredTextXPosition = GetCenteredPosition(humidityLabel, humidityArea.x, humidityArea.y, humidityArea.width);
+			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
+			tft.println(humidityLabel);
+
+			
+
+			// draw the box for the back to home button
+			tft.drawRect(backToHomeArea.x, backToHomeArea.y, backToHomeArea.width, backToHomeArea.height, ControllerDisplay::LayoutLineColor);
+
+			interrupts();
+
+			this->renderLayout = false;
+		}
+	}
+
 	void ControllerDisplay::DisplayHomeScreen()
 	{
-		noInterrupts();
+		this->LayoutHomeScreen();
 
-		tft.fillScreen(ControllerDisplay::BackgroundColor);
+		noInterrupts();
 
 		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
 		// TODO: do a bunch of testing here to see how background color affects how fonts are rendered. So far things that didn't work with background color in the past are working, or I just never really knew how it worked to begin with ;)
 
-		//this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
-
-		//this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
+		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
 		this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
+
+		this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+		this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
 
 		interrupts();
 
@@ -328,21 +346,25 @@ namespace Display {
 	void ControllerDisplay::PrintHumidity(BME280Data *data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(1);
-		char *humidity = BME280Data::ConvertFloatToString(data->Humidity, 4, 2);
-		int16_t centeredTextXPosition = GetCenteredPosition(humidity, 0, 70, 150);
-		tft.setCursor(centeredTextXPosition, 70);
+		tft.setTextSize(2);
+		char *humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
+		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width);
+		tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(humidity);
 	}
 
 	void ControllerDisplay::PrintTemperature(BME280Data *data, uint16_t color)
 	{
+		double fractpart, intpart;
+
+		fractpart = modf(data->Temperature, &intpart);
+
 		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(1);
-		char *temperature = BME280Data::ConvertFloatToString(data->Temperature, 4, 2);
-		int16_t centeredTextXPosition = GetCenteredPosition(temperature, 0, 176, 150);
-		tft.setCursor(centeredTextXPosition, 176);
+		tft.setTextSize(2);
+		char *temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
+		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width);
+		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(temperature);
 	}
