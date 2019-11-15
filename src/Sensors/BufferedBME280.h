@@ -25,8 +25,8 @@ namespace Sensors {
 
 		void Add(BME280Data data)
 		{
-			this->temperatureBuffer.Add(data.Temperature);
-			this->humidityBuffer.Add(data.Humidity);
+			this->temperatureBuffer.Append(data.Temperature);
+			this->humidityBuffer.Append(data.Humidity);
 
 			this->Temperature = this->temperatureBuffer.Average();
 			this->Humidity = this->humidityBuffer.Average();

@@ -14,7 +14,7 @@ public:
 	CircularBuffer(int size = 10);
 	~CircularBuffer();
 
-	void Add(T value);
+	void Append(T value);
 	float Average();
 	void Clear();
 private:
@@ -47,29 +47,13 @@ CircularBuffer<T>::~CircularBuffer()
 }
 
 template <typename T>
-void CircularBuffer<T>::Add(T value)
+void CircularBuffer<T>::Append(T value)
 {
 	if (this->data == NULL)
 	{
 		return;
 	}
-	/*
-	old way
-	this->total = this->total - this->data[this->currentIndex];
-	this->data[this->currentIndex] = value;
-	this->total = this->total + this->data[this->currentIndex];
-	this->currentIndex = this->currentIndex + 1;
 
-	if (this->currentIndex >= arraySize)
-	{
-		this->currentIndex = 0;
-	}
-	if (this->count < arraySize)
-	{
-		this->count = this->count + 1;
-	}*/
-
-	// simpler / less verbose
 	this->total -= this->data[this->currentIndex];
 	this->data[this->currentIndex] = value;
 	this->total += this->data[this->currentIndex];
