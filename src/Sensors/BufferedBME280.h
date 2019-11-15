@@ -19,17 +19,17 @@ namespace Sensors {
 
 		~BufferedBME280()
 		{
-			temperatureBuffer.~CircularBuffer();
-			humidityBuffer.~CircularBuffer();
+			this->temperatureBuffer.~CircularBuffer();
+			this->humidityBuffer.~CircularBuffer();
 		}
 
 		void Add(BME280Data data)
 		{
-			temperatureBuffer.Add(data.Temperature);
-			humidityBuffer.Add(data.Humidity);
+			this->temperatureBuffer.Add(data.Temperature);
+			this->humidityBuffer.Add(data.Humidity);
 
-			this->Temperature = temperatureBuffer.Average();
-			this->Humidity = humidityBuffer.Average();
+			this->Temperature = this->temperatureBuffer.Average();
+			this->Humidity = this->humidityBuffer.Average();
 		}
 	private:
 		int arraySize = 0;
