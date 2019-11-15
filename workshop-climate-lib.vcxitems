@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\ArrayThing.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
@@ -29,11 +28,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\ArrayThing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\CircularBuffer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Devices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ScreenRegion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BufferedBME280.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\InitializationResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Rectangle.h" />
