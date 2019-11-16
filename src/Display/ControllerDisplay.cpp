@@ -380,8 +380,8 @@ namespace Display {
 		return intpart1 != intpart2;*/
 		char* f = BME280Data::ConvertFloatToString(first, 2, 0);
 		char* s = BME280Data::ConvertFloatToString(second, 2, 0);
-		bool ret = strcmp(f, s) != 0;
-		return ret;
+
+		return strcmp(f, s) != 0;
 	}
 
 	int16_t ControllerDisplay::GetCenteredPosition(char* text, int16_t x, int16_t y, int16_t areaWidth)
