@@ -91,6 +91,7 @@ namespace Display {
 
 		bool DisplayUpdatable();
 		void DisplayUpdated();
+		bool IntegerPartChanged(float first, float second);
 
 		int16_t GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth);

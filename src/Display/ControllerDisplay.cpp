@@ -48,7 +48,7 @@ using namespace Sensors;
 #endif
 
 namespace Display {
-	const char *ControllerDisplay::ExampleOfALabel = "My Label";
+	const char* ControllerDisplay::ExampleOfALabel = "My Label";
 
 	/// <summary>Initializes a new instance of the <see cref="ControllerDisplay"/> class.</summary>
 	ControllerDisplay::ControllerDisplay() :
@@ -200,7 +200,7 @@ namespace Display {
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 
-		char *memoryLabel = "Free SRAM: ";
+		char* memoryLabel = "Free SRAM: ";
 
 		// overwrite
 		tft.setCursor(156, 120);
@@ -221,14 +221,14 @@ namespace Display {
 
 	/// <summary>Prints an error message to the display.</summary>
 	/// <param name="message">The message to display as an error.</param>
-	void ControllerDisplay::LoadError(const __FlashStringHelper *message)
+	void ControllerDisplay::LoadError(const __FlashStringHelper* message)
 	{
 		noInterrupts();
 
 		tft.setFont();
 		tft.setTextSize(1);
 
-		char *errorLabel = "Error Happened!: ";
+		char* errorLabel = "Error Happened!: ";
 
 		// print the label
 		tft.setCursor(156, 136);
@@ -287,7 +287,7 @@ namespace Display {
 			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
 			tft.println(temperatureLabel);
 
-			
+
 
 			// for Humidity
 			char* humidityLabel = "% Humidity";
@@ -298,7 +298,7 @@ namespace Display {
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
 			tft.println(humidityLabel);
 
-			
+
 
 			// draw the box for the back to home button
 			tft.drawRect(backToHomeArea.x, backToHomeArea.y, backToHomeArea.width, backToHomeArea.height, ControllerDisplay::LayoutLineColor);
@@ -315,14 +315,19 @@ namespace Display {
 
 		noInterrupts();
 
-		// NOTE: each of the method calls here first over-write the previous value with the background, and then the current value in the defined color for readings.
-		// TODO: do a bunch of testing here to see how background color affects how fonts are rendered. So far things that didn't work with background color in the past are working, or I just never really knew how it worked to begin with ;)
+		// NOTE: each of the method calls here first over-write the previous value with the background, and 
+		// then the current value in the defined color for readings.
+		if (this->IntegerPartChanged(this->previousData.Temperature, this->currentData.Temperature))
+		{
+			this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
+			this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
+		}
 
-		this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
-
-		this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
-		this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
+		if (this->IntegerPartChanged(this->previousData.Humidity, this->currentData.Humidity))
+		{
+			this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
+			this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
+		}
 
 		interrupts();
 
@@ -343,33 +348,43 @@ namespace Display {
 		interrupts();
 	}
 
-	void ControllerDisplay::PrintHumidity(BME280Data *data, uint16_t color)
+	void ControllerDisplay::PrintHumidity(BME280Data* data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(2);
-		char *humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
+		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width);
 		tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(humidity);
 	}
 
-	void ControllerDisplay::PrintTemperature(BME280Data *data, uint16_t color)
+	void ControllerDisplay::PrintTemperature(BME280Data* data, uint16_t color)
 	{
-		double fractpart, intpart;
-
-		fractpart = modf(data->Temperature, &intpart);
-
 		tft.setFont(&FreeSansBold24pt7b);
 		tft.setTextSize(2);
-		char *temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
+		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width);
 		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(temperature);
 	}
 
-	int16_t ControllerDisplay::GetCenteredPosition(char *text, int16_t x, int16_t y, int16_t areaWidth)
+	bool ControllerDisplay::IntegerPartChanged(float first, float second)
+	{
+		/*double fractpart1, intpart1, fractpart2, intpart2;
+
+		fractpart1 = modf(first, &intpart1);
+		fractpart2 = modf(second, &intpart2);
+
+		return intpart1 != intpart2;*/
+		char* f = BME280Data::ConvertFloatToString(first, 2, 0);
+		char* s = BME280Data::ConvertFloatToString(second, 2, 0);
+		bool ret = strcmp(f, s) != 0;
+		return ret;
+	}
+
+	int16_t ControllerDisplay::GetCenteredPosition(char* text, int16_t x, int16_t y, int16_t areaWidth)
 	{
 		// values used for centering text in display areas (rectangles)
 		int16_t  x1, y1;
@@ -379,7 +394,7 @@ namespace Display {
 		return ((areaWidth - textWidth) / 2) + x;
 	}
 
-	int16_t ControllerDisplay::GetCenteredPosition(const char *text, int16_t x, int16_t y, int16_t areaWidth)
+	int16_t ControllerDisplay::GetCenteredPosition(const char* text, int16_t x, int16_t y, int16_t areaWidth)
 	{
 		// values used for centering text in display areas (rectangles)
 		int16_t  x1, y1;
