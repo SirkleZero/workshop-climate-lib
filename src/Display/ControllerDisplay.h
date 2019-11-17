@@ -20,7 +20,7 @@
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
 #include "..\Rectangle.h"
-#include "..\ButtonRectangle.h"
+#include "ButtonRectangle.h"
 #include "ScreenRegion.h"
 
 using namespace Sensors;
@@ -80,10 +80,6 @@ namespace Display {
 		ButtonRectangle humidityArea;
 		ButtonRectangle temperatureArea;
 		ButtonRectangle settingsButton;
-
-		/*humidityArea(160, 50, 160, 125),
-			temperatureArea(0, 50, 160, 125),
-			settingsButton(290, 0, 30, 30)*/
 		ButtonRectangle homeButton;
 
 		// private functions

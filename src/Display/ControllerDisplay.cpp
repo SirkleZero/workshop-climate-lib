@@ -54,11 +54,11 @@ namespace Display {
 	ControllerDisplay::ControllerDisplay() :
 		tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS),
-		humidityArea(160, 50, 160, 125),
-		temperatureArea(0, 50, 160, 125),
-		settingsButton(275, 0, 45, 45),
-		homeButton(0, 0, 45, 45)
-	{}
+		humidityArea(160, 50, 160, 125, ScreenRegion::Home),
+		temperatureArea(0, 50, 160, 125, ScreenRegion::Home),
+		settingsButton(275, 0, 45, 45, ScreenRegion::Home),
+		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature))
+	{ }
 
 	/// <summary>Executes initialization logic for the object.</summary>
 	/// <returns>An <see cref="InitializationResult"/> that describes the result of initialization.</returns>
