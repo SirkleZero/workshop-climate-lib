@@ -56,7 +56,8 @@ namespace Display {
 		ts(STMPE_CS),
 		humidityArea(160, 50, 160, 125),
 		temperatureArea(0, 50, 160, 125),
-		backToHomeArea(290, 0, 30, 30)
+		settingsButton(290, 0, 30, 30),
+		homeButton(290, 0, 30, 30)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -173,18 +174,19 @@ namespace Display {
 
 			if (this->humidityArea.Contains(x, y))
 			{
-				//Serial.println(F("Humidity Clicked"));
 				return ScreenRegion::Humidity;
 			}
 			if (this->temperatureArea.Contains(x, y))
 			{
-				//Serial.println(F("Temperature Clicked"));
 				return ScreenRegion::Temperature;
 			}
-			if (this->backToHomeArea.Contains(x, y))
+			if (this->settingsButton.Contains(x, y))
 			{
-				//Serial.println(F("Back to Home Clicked"));
-				return ScreenRegion::BackToHome;
+				return ScreenRegion::Settings;
+			}
+			if (this->homeButton.Contains(x, y))
+			{
+				return ScreenRegion::Home;
 			}
 		}
 
@@ -276,7 +278,6 @@ namespace Display {
 
 			// draw our centerline
 			tft.drawFastVLine(160, 30, 180, ControllerDisplay::LayoutLineColor);
-			//tft.drawFastHLine(10, 120, 300, ControllerDisplay::LayoutLineColor);
 
 			// for temperature
 			char* temperatureLabel = "Fahrenheit";
@@ -287,8 +288,6 @@ namespace Display {
 			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
 			tft.println(temperatureLabel);
 
-
-
 			// for Humidity
 			char* humidityLabel = "% Humidity";
 			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
@@ -298,10 +297,8 @@ namespace Display {
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
 			tft.println(humidityLabel);
 
-
-
 			// draw the box for the back to home button
-			tft.drawRect(backToHomeArea.x, backToHomeArea.y, backToHomeArea.width, backToHomeArea.height, ControllerDisplay::LayoutLineColor);
+			tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, ControllerDisplay::LayoutLineColor);
 
 			interrupts();
 

@@ -28,10 +28,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)src\TX\RFM69TXProxy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\ButtonRectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\CircularBuffer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Devices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ScreenRegion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\AqiScaleRectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BufferedBME280.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.h" />

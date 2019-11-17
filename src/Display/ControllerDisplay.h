@@ -19,6 +19,7 @@
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
 #include "..\Rectangle.h"
+#include "..\ButtonRectangle.h"
 #include "ScreenRegion.h"
 
 using namespace Sensors;
@@ -76,9 +77,14 @@ namespace Display {
 		static const uint16_t TSMaxY = 4000;
 
 		// Define the rectangles that are used to draw the screen layout elements
-		Rectangle humidityArea;
-		Rectangle temperatureArea;
-		Rectangle backToHomeArea;
+		ButtonRectangle humidityArea;
+		ButtonRectangle temperatureArea;
+		ButtonRectangle settingsButton;
+
+		/*humidityArea(160, 50, 160, 125),
+			temperatureArea(0, 50, 160, 125),
+			settingsButton(290, 0, 30, 30)*/
+		ButtonRectangle homeButton;
 
 		// private functions
 		void LayoutHomeScreen();
