@@ -106,7 +106,6 @@ namespace Display {
 		// We also check that actual data was updated which requires a redraw of the screen.
 		this->selectedRegion = region;
 		this->regionChanged = this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion;
-		this->renderLayout = this->regionChanged; // TODO: render layout might be replaceable by region changed?
 		if (this->DisplayUpdatable())
 		{
 			// nothing was actually clicked on, stay on the view we are currently rendering
@@ -236,8 +235,9 @@ namespace Display {
 	/// <summary>Draws the initial static elements of the display.</summary>
 	void ControllerDisplay::LayoutHomeScreen()
 	{
-		if (this->renderLayout)
+		if (this->regionChanged)
 		{
+			Serial.println(F("laying out home screen"));
 			noInterrupts();
 
 			tft.fillScreen(ControllerDisplay::BackgroundColor);
@@ -270,38 +270,33 @@ namespace Display {
 			tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, ControllerDisplay::LayoutLineColor);
 
 			interrupts();
-
-			this->renderLayout = false;
 		}
 	}
 
 	void ControllerDisplay::LayoutHumidityScreen()
 	{
-		if (this->renderLayout)
+		if (this->regionChanged)
 		{
+			Serial.println(F("laying out humidity screen"));
 			tft.fillScreen(ILI9341_BLUE);
-
-			this->renderLayout = false;
 		}
 	}
 
 	void ControllerDisplay::LayoutTemperatureScreen()
 	{
-		if (this->renderLayout)
+		if (this->regionChanged)
 		{
+			Serial.println(F("laying out temperature screen"));
 			tft.fillScreen(ILI9341_RED);
-
-			this->renderLayout = false;
 		}
 	}
 
 	void ControllerDisplay::LayoutSettingsScreen()
 	{
-		if (this->renderLayout)
+		if (this->regionChanged)
 		{
+			Serial.println(F("laying out settings screen"));
 			tft.fillScreen(ILI9341_GREEN);
-
-			this->renderLayout = false;
 		}
 	}
 

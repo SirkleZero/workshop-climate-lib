@@ -60,7 +60,6 @@ namespace Display {
 		// variables used for display state management
 		bool dataChanged = false;
 		bool regionChanged = false;
-		bool renderLayout = true;
 		BME280Data currentData;
 		BME280Data previousData;
 		int previousFreeMemory = 0;
