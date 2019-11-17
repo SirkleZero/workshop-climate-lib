@@ -9,6 +9,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 #include <Adafruit_STMPE610.h>
+#include <MemoryFree.h>
 
 // include some fonts
 #include <Fonts\FreeSansBold24pt7b.h>

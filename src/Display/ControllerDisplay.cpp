@@ -250,8 +250,9 @@ namespace Display {
 
 			// for temperature
 			char* temperatureLabel = "Fahrenheit";
-			tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
+			//tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
 			tft.setFont(&FreeSansBold9pt7b);
+			tft.setTextColor(ControllerDisplay::LayoutTextColor);
 			tft.setTextSize(1);
 			centeredTextXPosition = GetCenteredPosition(temperatureLabel, temperatureArea.x, temperatureArea.y, temperatureArea.width);
 			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
@@ -259,18 +260,18 @@ namespace Display {
 
 			// for Humidity
 			char* humidityLabel = "% Humidity";
-			tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
-			tft.setFont(&FreeSansBold9pt7b);
-			tft.setTextSize(1);
+			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
+			//tft.setFont(&FreeSansBold9pt7b);
+			//tft.setTextSize(1);
 			centeredTextXPosition = GetCenteredPosition(humidityLabel, humidityArea.x, humidityArea.y, humidityArea.width);
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
 			tft.println(humidityLabel);
 
 			// draw the box for the settings screen
-			tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, ControllerDisplay::LayoutLineColor);
+			//tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, ControllerDisplay::LayoutLineColor);
 
 			// draw the box for the home screen
-			tft.drawRect(homeButton.x, homeButton.y, homeButton.width, homeButton.height, ControllerDisplay::LayoutLineColor);
+			//tft.drawRect(homeButton.x, homeButton.y, homeButton.width, homeButton.height, ControllerDisplay::LayoutLineColor);
 
 			interrupts();
 		}
@@ -299,7 +300,14 @@ namespace Display {
 		if (this->regionChanged)
 		{
 			Serial.println(F("laying out settings screen"));
-			tft.fillScreen(ILI9341_GREEN);
+
+			noInterrupts();
+
+			tft.fillScreen(ControllerDisplay::BackgroundColor);
+
+			tft.drawFastHLine(70, 123, 177, ControllerDisplay::LayoutLineColor);
+
+			interrupts();
 		}
 	}
 
@@ -350,7 +358,15 @@ namespace Display {
 	{
 		this->LayoutSettingsScreen();
 
+		int fm = freeMemory();
+		Serial.print(F("Free Memory:	")); Serial.println(fm);
+
 		noInterrupts();
+		
+		if (this->previousFreeMemory != fm || this->regionChanged)
+		{
+			this->PrintFreeMemory(fm);
+		}
 		
 		interrupts();
 	}
@@ -381,28 +397,28 @@ namespace Display {
 	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
 	void ControllerDisplay::PrintFreeMemory(int freeMemory)
 	{
+		char* memoryLabel = "Free SRAM: ";
+
 		noInterrupts();
 
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 
-		char* memoryLabel = "Free SRAM: ";
-
 		// overwrite
-		tft.setCursor(156, 120);
+		tft.setCursor(80, 120);
 		tft.setTextColor(ControllerDisplay::BackgroundColor);
 		tft.print(memoryLabel);
 		tft.print(previousFreeMemory);
 
 		// print the value
-		tft.setCursor(156, 120);
+		tft.setCursor(80, 120);
 		tft.setTextColor(ControllerDisplay::ReadingsTextColor);
 		tft.print(memoryLabel);
 		tft.print(freeMemory);
 
-		this->previousFreeMemory = freeMemory;
-
 		interrupts();
+
+		this->previousFreeMemory = freeMemory;
 	}
 
 	bool ControllerDisplay::IntegerPartChanged(float first, float second)
