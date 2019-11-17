@@ -6,7 +6,7 @@
 #include <RHReliableDatagram.h>
 
 #include "..\Configuration\Secrets.h"
-#include "..\Sensors\SensorData.h"
+#include "..\Sensors\BME280Data.h"
 #include "..\InitializationResult.h"
 #include "TXResult.h"
 
@@ -28,7 +28,7 @@ namespace TX {
 		RFM69TXProxy();
 
 		InitializationResult Initialize();
-		TXResult Transmit(SensorData data);
+		TXResult Transmit(BME280Data data);
 	private:
 		static const byte CSPin = 8;
 		/// <summary>The interrupt pin address.</summary>

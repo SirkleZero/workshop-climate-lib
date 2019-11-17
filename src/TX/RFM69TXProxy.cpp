@@ -56,9 +56,9 @@ namespace TX {
 	// dumb on me.
 	uint8_t data[] = "  OK";
 
-	/// <summary>Transmits the <see cref="SensorData"/> data via the radio.</summary>
-	/// <param name="data">The <see cref="SensorData"/> to send.</param>
-	TXResult RFM69TXProxy::Transmit(SensorData data)
+	/// <summary>Transmits the <see cref="BME280Data"/> data via the radio.</summary>
+	/// <param name="data">The <see cref="BME280Data"/> to send.</param>
+	TXResult RFM69TXProxy::Transmit(BME280Data data)
 	{
 		TXResult result;
 		result.TransmitSuccessful = false;
@@ -66,6 +66,7 @@ namespace TX {
 		// copy the sensor data into a buffer that can be used to transmit the data to the server.
 		byte transmissionBuffer[sizeof(data)] = { 0 };
 		memcpy(transmissionBuffer, &data, sizeof(data));
+
 		byte dataSize = sizeof(data);
 
 		// Send a message to the node designated as the server
