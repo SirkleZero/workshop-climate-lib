@@ -20,6 +20,21 @@ namespace Display {
 			Rectangle(x, y, width, height), enabledScreens(enabledScreens)
 		{}
 
+		void Enable()
+		{
+			this->enabled = true;
+		}
+
+		void Enable(ScreenRegion region)
+		{
+			this->enabled = this->EnabledForScreen(region);
+		}
+
+		void Disable()
+		{
+			this->enabled = false;
+		}
+
 		bool EnabledForScreen(ScreenRegion region)
 		{
 			return (this->enabledScreens & region) != 0;
@@ -34,7 +49,8 @@ namespace Display {
 		{
 			return
 				x >= this->x && x <= this->x + this->width &&
-				y >= this->y && y <= this->y + this->height;
+				y >= this->y && y <= this->y + this->height &&
+				this->enabled;
 		}
 
 		///<summary>Prints a debug statement to Serial output.</summary>
@@ -51,6 +67,7 @@ namespace Display {
 		}
 
 	private:
+		bool enabled = true;
 		ScreenRegion enabledScreens = ScreenRegion::None;
 	};
 }

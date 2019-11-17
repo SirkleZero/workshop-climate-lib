@@ -99,6 +99,7 @@ namespace Display {
 
 		void PrintFreeMemory(int freeMemory);
 
+		void ConfigureButtons(ScreenRegion region);
 		bool DisplayUpdatable();
 		void DisplayUpdated();
 		bool IntegerPartChanged(float first, float second);

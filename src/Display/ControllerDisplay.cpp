@@ -138,9 +138,20 @@ namespace Display {
 					break;
 			}
 
+			// configure the button areas per the region we've clicked on / screen we are displaying.
+			this->ConfigureButtons(this->activeRegion);
+
 			// once the display has been updated, reset the state variables that track change status
 			this->DisplayUpdated();
 		}
+	}
+
+	void ControllerDisplay::ConfigureButtons(ScreenRegion region)
+	{
+		this->humidityArea.Enable(region);
+		this->temperatureArea.Enable(region);
+		this->settingsButton.Enable(region);
+		this->homeButton.Enable(region);
 	}
 
 	bool ControllerDisplay::DisplayUpdatable()
