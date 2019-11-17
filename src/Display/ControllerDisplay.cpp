@@ -56,8 +56,8 @@ namespace Display {
 		ts(STMPE_CS),
 		humidityArea(160, 50, 160, 125),
 		temperatureArea(0, 50, 160, 125),
-		settingsButton(290, 0, 30, 30),
-		homeButton(0, 0, 30, 30)
+		settingsButton(275, 0, 45, 45),
+		homeButton(0, 0, 45, 45)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -250,7 +250,7 @@ namespace Display {
 
 			// for temperature
 			char* temperatureLabel = "Fahrenheit";
-			//tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
+			tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, ControllerDisplay::LayoutLineColor);
 			tft.setFont(&FreeSansBold9pt7b);
 			tft.setTextSize(1);
 			centeredTextXPosition = GetCenteredPosition(temperatureLabel, temperatureArea.x, temperatureArea.y, temperatureArea.width);
@@ -259,7 +259,7 @@ namespace Display {
 
 			// for Humidity
 			char* humidityLabel = "% Humidity";
-			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
+			tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, ControllerDisplay::LayoutLineColor);
 			tft.setFont(&FreeSansBold9pt7b);
 			tft.setTextSize(1);
 			centeredTextXPosition = GetCenteredPosition(humidityLabel, humidityArea.x, humidityArea.y, humidityArea.width);
