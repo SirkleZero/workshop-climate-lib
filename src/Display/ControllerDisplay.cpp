@@ -57,7 +57,7 @@ namespace Display {
 		humidityArea(160, 50, 160, 125),
 		temperatureArea(0, 50, 160, 125),
 		settingsButton(290, 0, 30, 30),
-		homeButton(290, 0, 30, 30)
+		homeButton(0, 0, 30, 30)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -178,7 +178,7 @@ namespace Display {
 			}
 			if (this->settingsButton.Contains(x, y))
 			{
-				return ScreenRegion::Home; // for testing only!
+				return ScreenRegion::Settings;
 			}
 			if (this->homeButton.Contains(x, y))
 			{
@@ -266,8 +266,11 @@ namespace Display {
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
 			tft.println(humidityLabel);
 
-			// draw the box for the back to home button
+			// draw the box for the settings screen
 			tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, ControllerDisplay::LayoutLineColor);
+
+			// draw the box for the home screen
+			tft.drawRect(homeButton.x, homeButton.y, homeButton.width, homeButton.height, ControllerDisplay::LayoutLineColor);
 
 			interrupts();
 		}
