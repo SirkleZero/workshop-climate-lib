@@ -13,7 +13,7 @@ https://io.adafruit.com/api/docs/
 #include <Arduino.h>
 #include <AdafruitIO_WiFi.h>
 
-#include "..\Sensors\SensorData.h"
+#include "..\Sensors\BME280Data.h"
 #include "..\Configuration\Secrets.h"
 #include "..\InitializationResult.h"
 #include "IoTUploadResult.h"
@@ -32,7 +32,7 @@ namespace TX {
 		void Disconnect();
 		void Reset();
 		bool IsConnected = false;
-		IoTUploadResult Transmit(SensorData data);
+		IoTUploadResult Transmit(BME280Data data);
 	private:
 		/// <summary>The number of milliseconds we should wait for an internet connection to Adafruit IO.</summary>
 		static const unsigned long NetworkTimeoutMS = 12000;
@@ -56,7 +56,7 @@ namespace TX {
 		AdafruitIO_Feed *temperatureFeed;
 		AdafruitIO_Feed *humidityFeed;
 
-		bool SaveData(SensorData data);
+		bool SaveData(BME280Data data);
 		bool TouchAdafruitIO();
 	};
 }

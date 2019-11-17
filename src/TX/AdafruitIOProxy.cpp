@@ -185,13 +185,13 @@ namespace TX {
 
 	/// <summary>Connects to the WiFi network and transmits data to Adafruit IO.</summary>
 	/// <param name="data">The <see cref="SensorData" to send to Adafruit IO.</param>
-	IoTUploadResult AdafruitIOProxy::Transmit(SensorData data)
+	IoTUploadResult AdafruitIOProxy::Transmit(BME280Data data)
 	{
 		// print humidity and temperature:
 		Serial.print("Humidity: ");
-		Serial.println(data.Climate.Humidity);
+		Serial.println(data.Humidity);
 		Serial.print("Temperature: ");
-		Serial.println(data.Climate.Temperature);
+		Serial.println(data.Temperature);
 
 		IoTUploadResult result;
 
@@ -232,13 +232,13 @@ namespace TX {
 		return result;
 	}
 
-	bool AdafruitIOProxy::SaveData(SensorData data)
+	bool AdafruitIOProxy::SaveData(BME280Data data)
 	{
 		// TODO: Queue up our data, just in case we aren't connected, then
 		// send it once we are. For now, what we have here is good enough for
 		// us to reliably send data. The queue will make it just a bit more
 		// robust.
-		return humidityFeed->save(data.Climate.Humidity);
+		return humidityFeed->save(data.Humidity);
 		//&& temperatureFeed->save(data.Climate.Temperature);
 	}
 }

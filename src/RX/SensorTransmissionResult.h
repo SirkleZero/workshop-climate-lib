@@ -2,7 +2,7 @@
 #define SensorTransmissionResult_h
 
 #include <Arduino.h>
-#include "Sensors\SensorData.h"
+#include "Sensors\BME280Data.h"
 
 using namespace Sensors;
 
@@ -10,7 +10,7 @@ namespace RX {
 	///<summary>Represents the results of sensor information being recieved after having been transmitted.</summary>
 	struct SensorTransmissionResult {
 		///<summary>The sensor data.</summary>
-		SensorData Data;
+		BME280Data Data;
 		///<summary>A value that indicates if the transmission was successful.</summary>
 		bool HasResult = false;
 		///<summary>A value that indicates the source of the transmission.</summary>

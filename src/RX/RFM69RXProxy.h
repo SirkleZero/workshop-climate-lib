@@ -7,7 +7,7 @@
 #include "SensorTransmissionResult.h"
 #include "..\Configuration\Secrets.h"
 #include "..\InitializationResult.h"
-#include "..\Sensors\SensorData.h"
+#include "..\Sensors\BME280Data.h"
 
 using namespace Configuration;
 using namespace Sensors;

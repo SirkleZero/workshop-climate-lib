@@ -76,7 +76,7 @@ namespace RX {
 				this->messageBuffer[messageBufferLength] = 0; // ensure that the string is null terminated.
 
 				// deserialize the message sent into our common data structure
-				SensorData messageData;
+				BME280Data messageData;
 				memcpy(&messageData, this->messageBuffer, sizeof(messageData));
 				result.Data = messageData;
 				result.TransmissionSource = from;
