@@ -61,6 +61,7 @@ namespace Display {
 			Serial.print(F("y: ")); Serial.println(this->y);
 			Serial.print(F("height: ")); Serial.println(this->height);
 			Serial.print(F("width: ")); Serial.println(this->width);
+			Serial.print(F("enabled: ")); Serial.println(this->enabled);
 			Serial.print(F("configured screens: ")); Serial.println(this->enabledScreens);
 			Serial.println(F("---------------------------------------"));
 			Serial.println();
