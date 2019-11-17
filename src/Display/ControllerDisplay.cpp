@@ -367,7 +367,7 @@ namespace Display {
 
 		noInterrupts();
 
-		this->PrintCommingSoon();
+		this->PrintComingSoon();
 
 		interrupts();
 	}
@@ -378,7 +378,7 @@ namespace Display {
 
 		noInterrupts();
 
-		this->PrintCommingSoon();
+		this->PrintComingSoon();
 
 		interrupts();
 	}
@@ -450,19 +450,19 @@ namespace Display {
 		this->previousFreeMemory = freeMemory;
 	}
 
-	void ControllerDisplay::PrintCommingSoon()
+	void ControllerDisplay::PrintComingSoon()
 	{
 		// TESTING: ultimately this will need to move to a print method, but for now we are fine.
-		char* commingSoonLabel = "Comming Soon!";
+		char* comingSoonLabel = "Coming Soon!";
 
 		tft.setFont(&FreeSansBold9pt7b);
 		tft.setTextSize(1);
 
 		// print the temporary message
-		int centeredLocation = GetCenteredPosition(commingSoonLabel, 0, 120, 320);
+		int centeredLocation = GetCenteredPosition(comingSoonLabel, 0, 120, 320);
 		tft.setCursor(centeredLocation, 120);
 		tft.setTextColor(ControllerDisplay::ReadingsTextColor);
-		tft.print(commingSoonLabel);
+		tft.print(comingSoonLabel);
 	}
 
 	bool ControllerDisplay::IntegerPartChanged(float first, float second)
