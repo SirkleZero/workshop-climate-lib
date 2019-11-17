@@ -54,8 +54,8 @@ namespace Display {
 	MonitorDisplay::MonitorDisplay() :
 		tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS),
-		humidityArea(240, 96, 240, 125, ScreenRegion::Home),
-		temperatureArea(0, 96, 240, 125, ScreenRegion::Home),
+		humidityArea(240, 90, 240, 150, ScreenRegion::Home),
+		temperatureArea(0, 90, 240, 150, ScreenRegion::Home),
 		settingsButton(435, 0, 45, 45, ScreenRegion::Home),
 		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature))
 	{}
@@ -173,14 +173,12 @@ namespace Display {
 			// Convert the point that was clicked to compensate for the screen orientation. While
 			// the display knows it's orientation, the touchscreen does not.
 			TS_Point p = this->ts.getPoint();
-			/*Serial.print(F("p.x: ")); Serial.println(p.x);
-			Serial.print(F("p.y: ")); Serial.println(p.y);*/
 
-			int y = map(p.x, MonitorDisplay::TSMinY, MonitorDisplay::TSMaxY, 0, tft.height());
+			// NOTE: this 3.5" calculation is different than the one for the 2.4" display
+			// not entirely sure why the larger display version behaves differently than the
+			// smaller version.
+			int y = map(p.x, MonitorDisplay::TSMaxY, MonitorDisplay::TSMinY, 0, tft.height());
 			int x = map(p.y, MonitorDisplay::TSMinX, MonitorDisplay::TSMaxX, 0, tft.width());
-
-			/*Serial.print(F("x: ")); Serial.println(x);
-			Serial.print(F("y: ")); Serial.println(y);*/
 
 			if (this->humidityArea.Contains(x, y))
 			{
@@ -262,30 +260,30 @@ namespace Display {
 			// draw our centerline
 			tft.drawFastVLine(240, 30, 260, MonitorDisplay::LayoutLineColor);
 
-			// for temperature
-			char* temperatureLabel = "Fahrenheit";
-			tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, MonitorDisplay::LayoutLineColor);
-			tft.setFont(&FreeSansBold9pt7b);
+			// set font
+			tft.setFont(&FreeSansBold12pt7b);
 			tft.setTextColor(MonitorDisplay::LayoutTextColor);
 			tft.setTextSize(1);
+
+			// for temperature
+			char* temperatureLabel = "Fahrenheit";
+			//tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, MonitorDisplay::LayoutLineColor);
 			centeredTextXPosition = GetCenteredPosition(temperatureLabel, temperatureArea.x, temperatureArea.y, temperatureArea.width);
 			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
 			tft.println(temperatureLabel);
 
 			// for Humidity
 			char* humidityLabel = "% Humidity";
-			tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, MonitorDisplay::LayoutLineColor);
-			//tft.setFont(&FreeSansBold9pt7b);
-			//tft.setTextSize(1);
+			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, MonitorDisplay::LayoutLineColor);
 			centeredTextXPosition = GetCenteredPosition(humidityLabel, humidityArea.x, humidityArea.y, humidityArea.width);
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
 			tft.println(humidityLabel);
 
 			// draw the box for the settings screen
-			tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, MonitorDisplay::LayoutLineColor);
+			//tft.drawRect(settingsButton.x, settingsButton.y, settingsButton.width, settingsButton.height, MonitorDisplay::LayoutLineColor);
 
 			// draw the box for the home screen
-			tft.drawRect(homeButton.x, homeButton.y, homeButton.width, homeButton.height, MonitorDisplay::LayoutLineColor);
+			//tft.drawRect(homeButton.x, homeButton.y, homeButton.width, homeButton.height, MonitorDisplay::LayoutLineColor);
 
 			interrupts();
 		}
@@ -406,7 +404,7 @@ namespace Display {
 	void MonitorDisplay::PrintHumidity(BME280Data* data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(2);
+		tft.setTextSize(3);
 		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width);
 		tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 35);
@@ -417,7 +415,7 @@ namespace Display {
 	void MonitorDisplay::PrintTemperature(BME280Data* data, uint16_t color)
 	{
 		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(2);
+		tft.setTextSize(3);
 		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width);
 		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
