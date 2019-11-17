@@ -293,7 +293,14 @@ namespace Display {
 		if (this->regionChanged)
 		{
 			Serial.println(F("laying out humidity screen"));
-			tft.fillScreen(ILI9341_BLUE);
+
+			noInterrupts();
+
+			tft.fillScreen(ControllerDisplay::BackgroundColor);
+
+			tft.drawFastHLine(70, 123, 177, ControllerDisplay::LayoutLineColor);
+
+			interrupts();
 		}
 	}
 
@@ -302,7 +309,14 @@ namespace Display {
 		if (this->regionChanged)
 		{
 			Serial.println(F("laying out temperature screen"));
-			tft.fillScreen(ILI9341_RED);
+
+			noInterrupts();
+
+			tft.fillScreen(ControllerDisplay::BackgroundColor);
+
+			tft.drawFastHLine(70, 123, 177, ControllerDisplay::LayoutLineColor);
+
+			interrupts();
 		}
 	}
 
@@ -352,7 +366,9 @@ namespace Display {
 		this->LayoutHumidityScreen();
 
 		noInterrupts();
-		
+
+		this->PrintCommingSoon();
+
 		interrupts();
 	}
 
@@ -361,7 +377,9 @@ namespace Display {
 		this->LayoutTemperatureScreen();
 
 		noInterrupts();
-		
+
+		this->PrintCommingSoon();
+
 		interrupts();
 	}
 
@@ -430,6 +448,21 @@ namespace Display {
 		interrupts();
 
 		this->previousFreeMemory = freeMemory;
+	}
+
+	void ControllerDisplay::PrintCommingSoon()
+	{
+		// TESTING: ultimately this will need to move to a print method, but for now we are fine.
+		char* commingSoonLabel = "Comming Soon!";
+
+		tft.setFont(&FreeSansBold9pt7b);
+		tft.setTextSize(1);
+
+		// print the temporary message
+		int centeredLocation = GetCenteredPosition(commingSoonLabel, 0, 120, 320);
+		tft.setCursor(centeredLocation, 120);
+		tft.setTextColor(ControllerDisplay::ReadingsTextColor);
+		tft.print(commingSoonLabel);
 	}
 
 	bool ControllerDisplay::IntegerPartChanged(float first, float second)

@@ -94,6 +94,8 @@ namespace Display {
 		void DisplayTemperatureScreen();
 		void PrintTemperature(BME280Data* data, uint16_t color);
 
+		void PrintCommingSoon();
+
 		void LayoutSettingsScreen();
 		void DisplaySettingsScreen();
 
