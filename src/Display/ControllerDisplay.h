@@ -88,12 +88,20 @@ namespace Display {
 
 		// private functions
 		void LayoutHomeScreen();
-		void PrintFreeMemory(int freeMemory);
-		void PrintTemperature(BME280Data *data, uint16_t color);
-		void PrintHumidity(BME280Data *data, uint16_t color);
 		void DisplayHomeScreen();
+
+		void LayoutHumidityScreen();
 		void DisplayHumidityScreen();
+		void PrintHumidity(BME280Data* data, uint16_t color);
+
+		void LayoutTemperatureScreen();
 		void DisplayTemperatureScreen();
+		void PrintTemperature(BME280Data* data, uint16_t color);
+
+		void LayoutSettingsScreen();
+		void DisplaySettingsScreen();
+
+		void PrintFreeMemory(int freeMemory);
 
 		bool DisplayUpdatable();
 		void DisplayUpdated();

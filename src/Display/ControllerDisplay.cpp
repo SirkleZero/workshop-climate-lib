@@ -106,6 +106,7 @@ namespace Display {
 		// We also check that actual data was updated which requires a redraw of the screen.
 		this->selectedRegion = region;
 		this->regionChanged = this->selectedRegion != ScreenRegion::None && this->selectedRegion != this->activeRegion;
+		this->renderLayout = this->regionChanged; // TODO: render layout might be replaceable by region changed?
 		if (this->DisplayUpdatable())
 		{
 			// nothing was actually clicked on, stay on the view we are currently rendering
@@ -114,13 +115,8 @@ namespace Display {
 				this->activeRegion = this->selectedRegion;
 			}
 
-			// TODO: consolidate / clean up these case statements as needed
 			switch (this->activeRegion)
 			{
-				case ScreenRegion::BackToHome:
-					Serial.println(F("ScreenRegion::BackToHome"));
-					this->DisplayHomeScreen();
-					break;
 				case ScreenRegion::Home:
 					Serial.println(F("ScreenRegion::Home"));
 					this->DisplayHomeScreen();
@@ -131,6 +127,7 @@ namespace Display {
 					break;
 				case ScreenRegion::Settings:
 					Serial.println(F("ScreenRegion::Settings"));
+					this->DisplaySettingsScreen();
 					break;
 				case ScreenRegion::Temperature:
 					Serial.println(F("ScreenRegion::Temperature"));
@@ -182,7 +179,7 @@ namespace Display {
 			}
 			if (this->settingsButton.Contains(x, y))
 			{
-				return ScreenRegion::Settings;
+				return ScreenRegion::Home; // for testing only!
 			}
 			if (this->homeButton.Contains(x, y))
 			{
@@ -191,34 +188,6 @@ namespace Display {
 		}
 
 		return ScreenRegion::None;
-	}
-
-	/// <summary>Prints the amount of free memory in bytes to the screen.</summary>
-	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
-	void ControllerDisplay::PrintFreeMemory(int freeMemory)
-	{
-		noInterrupts();
-
-		tft.setFont(&FreeSansBold9pt7b);
-		tft.setTextSize(1);
-
-		char* memoryLabel = "Free SRAM: ";
-
-		// overwrite
-		tft.setCursor(156, 120);
-		tft.setTextColor(ControllerDisplay::BackgroundColor);
-		tft.print(memoryLabel);
-		tft.print(previousFreeMemory);
-
-		// print the value
-		tft.setCursor(156, 120);
-		tft.setTextColor(ControllerDisplay::ReadingsTextColor);
-		tft.print(memoryLabel);
-		tft.print(freeMemory);
-
-		this->previousFreeMemory = freeMemory;
-
-		interrupts();
 	}
 
 	/// <summary>Prints an error message to the display.</summary>
@@ -306,6 +275,36 @@ namespace Display {
 		}
 	}
 
+	void ControllerDisplay::LayoutHumidityScreen()
+	{
+		if (this->renderLayout)
+		{
+			tft.fillScreen(ILI9341_BLUE);
+
+			this->renderLayout = false;
+		}
+	}
+
+	void ControllerDisplay::LayoutTemperatureScreen()
+	{
+		if (this->renderLayout)
+		{
+			tft.fillScreen(ILI9341_RED);
+
+			this->renderLayout = false;
+		}
+	}
+
+	void ControllerDisplay::LayoutSettingsScreen()
+	{
+		if (this->renderLayout)
+		{
+			tft.fillScreen(ILI9341_GREEN);
+
+			this->renderLayout = false;
+		}
+	}
+
 	void ControllerDisplay::DisplayHomeScreen()
 	{
 		this->LayoutHomeScreen();
@@ -314,13 +313,13 @@ namespace Display {
 
 		// NOTE: each of the method calls here first over-write the previous value with the background, and 
 		// then the current value in the defined color for readings.
-		if (this->IntegerPartChanged(this->previousData.Temperature, this->currentData.Temperature))
+		if (this->IntegerPartChanged(this->previousData.Temperature, this->currentData.Temperature) || this->regionChanged)
 		{
 			this->PrintTemperature(&this->previousData, ControllerDisplay::BackgroundColor);
 			this->PrintTemperature(&this->currentData, ControllerDisplay::ReadingsTextColor);
 		}
 
-		if (this->IntegerPartChanged(this->previousData.Humidity, this->currentData.Humidity))
+		if (this->IntegerPartChanged(this->previousData.Humidity, this->currentData.Humidity) || this->regionChanged)
 		{
 			this->PrintHumidity(&this->previousData, ControllerDisplay::BackgroundColor);
 			this->PrintHumidity(&this->currentData, ControllerDisplay::ReadingsTextColor);
@@ -333,15 +332,28 @@ namespace Display {
 
 	void ControllerDisplay::DisplayHumidityScreen()
 	{
+		this->LayoutHumidityScreen();
+
 		noInterrupts();
-		tft.fillScreen(ILI9341_BLUE);
+		
 		interrupts();
 	}
 
 	void ControllerDisplay::DisplayTemperatureScreen()
 	{
+		this->LayoutTemperatureScreen();
+
 		noInterrupts();
-		tft.fillScreen(ILI9341_RED);
+		
+		interrupts();
+	}
+
+	void ControllerDisplay::DisplaySettingsScreen()
+	{
+		this->LayoutSettingsScreen();
+
+		noInterrupts();
+		
 		interrupts();
 	}
 
@@ -365,6 +377,34 @@ namespace Display {
 		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(temperature);
+	}
+
+	/// <summary>Prints the amount of free memory in bytes to the screen.</summary>
+	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
+	void ControllerDisplay::PrintFreeMemory(int freeMemory)
+	{
+		noInterrupts();
+
+		tft.setFont(&FreeSansBold9pt7b);
+		tft.setTextSize(1);
+
+		char* memoryLabel = "Free SRAM: ";
+
+		// overwrite
+		tft.setCursor(156, 120);
+		tft.setTextColor(ControllerDisplay::BackgroundColor);
+		tft.print(memoryLabel);
+		tft.print(previousFreeMemory);
+
+		// print the value
+		tft.setCursor(156, 120);
+		tft.setTextColor(ControllerDisplay::ReadingsTextColor);
+		tft.print(memoryLabel);
+		tft.print(freeMemory);
+
+		this->previousFreeMemory = freeMemory;
+
+		interrupts();
 	}
 
 	bool ControllerDisplay::IntegerPartChanged(float first, float second)
