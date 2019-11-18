@@ -54,8 +54,8 @@ namespace Display {
 	MonitorDisplay::MonitorDisplay() :
 		tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS),
-		humidityArea(240, 90, 240, 150, ScreenRegion::Home),
-		temperatureArea(0, 90, 240, 150, ScreenRegion::Home),
+		humidityArea(240, 85, 240, 170, ScreenRegion::Home),
+		temperatureArea(0, 85, 240, 170, ScreenRegion::Home),
 		settingsButton(435, 0, 45, 45, ScreenRegion::Home),
 		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature))
 	{}
@@ -261,7 +261,7 @@ namespace Display {
 			tft.drawFastVLine(240, 30, 260, MonitorDisplay::LayoutLineColor);
 
 			// set font
-			tft.setFont(&FreeSansBold12pt7b);
+			tft.setFont(&calibrib12pt7b);
 			tft.setTextColor(MonitorDisplay::LayoutTextColor);
 			tft.setTextSize(1);
 
@@ -299,7 +299,7 @@ namespace Display {
 
 			tft.fillScreen(MonitorDisplay::BackgroundColor);
 
-			tft.drawFastHLine(70, 123, 177, MonitorDisplay::LayoutLineColor);
+			tft.drawFastHLine(70, 165, 340, MonitorDisplay::LayoutLineColor);
 
 			interrupts();
 		}
@@ -315,7 +315,7 @@ namespace Display {
 
 			tft.fillScreen(MonitorDisplay::BackgroundColor);
 
-			tft.drawFastHLine(70, 123, 177, MonitorDisplay::LayoutLineColor);
+			tft.drawFastHLine(70, 165, 340, MonitorDisplay::LayoutLineColor);
 
 			interrupts();
 		}
@@ -331,7 +331,7 @@ namespace Display {
 
 			tft.fillScreen(MonitorDisplay::BackgroundColor);
 
-			tft.drawFastHLine(70, 123, 177, MonitorDisplay::LayoutLineColor);
+			tft.drawFastHLine(70, 165, 340, MonitorDisplay::LayoutLineColor);
 
 			interrupts();
 		}
@@ -403,10 +403,11 @@ namespace Display {
 
 	void MonitorDisplay::PrintHumidity(BME280Data* data, uint16_t color)
 	{
-		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(3);
+		int8_t horizontalOffset = 7;
+		tft.setFont(&bahnschrift90pt7b);
+		tft.setTextSize(1);
 		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
-		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width);
+		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width) - horizontalOffset;
 		tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(humidity);
@@ -414,10 +415,11 @@ namespace Display {
 
 	void MonitorDisplay::PrintTemperature(BME280Data* data, uint16_t color)
 	{
-		tft.setFont(&FreeSansBold24pt7b);
-		tft.setTextSize(3);
+		int8_t horizontalOffset = 7;
+		tft.setFont(&bahnschrift90pt7b);
+		tft.setTextSize(1);
 		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
-		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width);
+		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width) - horizontalOffset;
 		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
 		tft.print(temperature);
@@ -431,17 +433,17 @@ namespace Display {
 
 		noInterrupts();
 
-		tft.setFont(&FreeSansBold9pt7b);
+		tft.setFont(&calibrib12pt7b);
 		tft.setTextSize(1);
 
 		// overwrite
-		tft.setCursor(80, 120);
+		tft.setCursor(145, 160);
 		tft.setTextColor(MonitorDisplay::BackgroundColor);
 		tft.print(memoryLabel);
 		tft.print(previousFreeMemory);
 
 		// print the value
-		tft.setCursor(80, 120);
+		tft.setCursor(145, 160);
 		tft.setTextColor(MonitorDisplay::ReadingsTextColor);
 		tft.print(memoryLabel);
 		tft.print(freeMemory);
@@ -456,12 +458,12 @@ namespace Display {
 		// TESTING: ultimately this will need to move to a print method, but for now we are fine.
 		char* comingSoonLabel = "Coming Soon!";
 
-		tft.setFont(&FreeSansBold9pt7b);
+		tft.setFont(&calibrib12pt7b);
 		tft.setTextSize(1);
 
 		// print the temporary message
-		int centeredLocation = GetCenteredPosition(comingSoonLabel, 0, 120, 320);
-		tft.setCursor(centeredLocation, 120);
+		int centeredLocation = GetCenteredPosition(comingSoonLabel, 0, 160, 480);
+		tft.setCursor(centeredLocation, 160);
 		tft.setTextColor(MonitorDisplay::ReadingsTextColor);
 		tft.print(comingSoonLabel);
 	}

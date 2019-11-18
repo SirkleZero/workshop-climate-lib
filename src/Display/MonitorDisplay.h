@@ -12,10 +12,8 @@
 #include <MemoryFree.h>
 
 // include some fonts
-#include <Fonts\FreeSansBold24pt7b.h>
-#include <Fonts\FreeSansBold12pt7b.h>
-#include <Fonts\FreeSansBold9pt7b.h>
-#include <Fonts\FreeSans9pt7b.h>
+#include "Fonts\bahnschrift90pt7b.h"
+#include "Fonts\calibrib12pt7b.h"
 
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
