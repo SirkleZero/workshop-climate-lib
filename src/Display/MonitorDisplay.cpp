@@ -3,6 +3,8 @@
 using namespace Sensors;
 
 namespace Display {
+#pragma region constructor and initialization
+
 	/// <summary>Initializes a new instance of the <see cref="MonitorDisplay"/> class.</summary>
 	MonitorDisplay::MonitorDisplay() :
 		tft(TFT_CS, TFT_DC),
@@ -34,6 +36,8 @@ namespace Display {
 		result.IsSuccessful = true;
 		return result;
 	}
+
+#pragma endregion
 
 	/// <summary>Clears all displayed content from the screen by wiping it with a black background.</summary>
 	void MonitorDisplay::Clear()

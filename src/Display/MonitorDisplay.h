@@ -124,7 +124,7 @@ namespace Display {
 		ButtonRectangle homeButton;
 		Rectangle centeredMessageBox;
 
-		// private functions
+		// private functions for layout and screen presentation
 		void LayoutHomeScreen();
 		void DisplayHomeScreen();
 
