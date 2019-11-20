@@ -75,7 +75,6 @@ namespace Display {
 	public:
 		MonitorDisplay();
 		InitializationResult Initialize();
-		void LoadError(const __FlashStringHelper* message);
 		void LoadMessage(const __FlashStringHelper* message);
 		void LoadSensorData(BME280Data data);
 		void Display();
@@ -110,7 +109,6 @@ namespace Display {
 		const __FlashStringHelper* currentMessage;
 		const __FlashStringHelper* previousMessage;
 		int previousFreeMemory = 0;
-		char* previousError;
 
 		// constants and variables for the touchscreen
 		bool touchscreenExists = false;

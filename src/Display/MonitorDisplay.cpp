@@ -161,41 +161,6 @@ namespace Display {
 		return ScreenRegion::None;
 	}
 
-	/// <summary>Prints an error message to the display.</summary>
-	/// <param name="message">The message to display as an error.</param>
-	void MonitorDisplay::LoadError(const __FlashStringHelper* message)
-	{
-		noInterrupts();
-
-		tft.setFont();
-		tft.setTextSize(1);
-
-		char* errorLabel = "Error Happened!: ";
-
-		// print the label
-		tft.setCursor(156, 136);
-		tft.setTextColor(MonitorDisplay::LayoutTextColor);
-		tft.print(errorLabel);
-
-		// overwrite
-		tft.setCursor(156, 146);
-		tft.setTextColor(MonitorDisplay::BackgroundColor);
-		tft.print(previousError);
-
-		// print the value
-		tft.setCursor(156, 146);
-		tft.setTextColor(MonitorDisplay::ErrorTextColor);
-		tft.print(message);
-
-		// copy the F() string to put it on the previousError stack.
-		//this->previousError = strcpy_F(message);
-		// TODO: ok, this is currently fuckin fucked, so I have no idea how I want to solve this stupid problem of not being able to make copies of F() strings, because C++ is stupid. How the hell are you supposed to be able to make a temporary value to hold a goddamn F() string so I can wipe and re-write this area of the goddamn display?!?!
-
-		Serial.println(this->previousError);
-
-		interrupts();
-	}
-
 	void MonitorDisplay::LoadMessage(const __FlashStringHelper* message)
 	{
 		this->currentMessage = message;
@@ -350,6 +315,7 @@ namespace Display {
 
 		noInterrupts();
 
+		this->LoadMessage(F("Coming Soon!"));
 		this->PrintMessage();
 
 		interrupts();
@@ -361,6 +327,7 @@ namespace Display {
 
 		noInterrupts();
 
+		this->LoadMessage(F("Coming Soon!"));
 		this->PrintMessage();
 
 		interrupts();
@@ -371,7 +338,6 @@ namespace Display {
 		this->LayoutSettingsScreen();
 
 		int fm = freeMemory();
-		Serial.print(F("Free Memory:	")); Serial.println(fm);
 
 		noInterrupts();
 
@@ -451,17 +417,12 @@ namespace Display {
 		tft.setFont(&calibrib12pt7b);
 		tft.setTextSize(1);
 
-		//Serial.print(F("previousMessage: ")); Serial.println(this->previousMessage);
-		//Serial.print(F("currentMessage: ")); Serial.println(this->currentMessage);
-
 		int centeredLocation = GetCenteredPosition(this->previousMessage, 0, 160, 480);
-		//Serial.print(F("centeredLocation: ")); Serial.println(centeredLocation);
 		tft.setCursor(centeredLocation, 160);
 		tft.setTextColor(MonitorDisplay::BackgroundColor);
 		tft.print(this->previousMessage);
 
 		centeredLocation = GetCenteredPosition(this->currentMessage, 0, 160, 480);
-		//Serial.print(F("centeredLocation: ")); Serial.println(centeredLocation);
 		tft.setCursor(centeredLocation, 160);
 		tft.setTextColor(MonitorDisplay::ReadingsTextColor);
 		tft.print(this->currentMessage);
