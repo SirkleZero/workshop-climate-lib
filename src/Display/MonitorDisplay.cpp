@@ -3,8 +3,6 @@
 using namespace Sensors;
 
 namespace Display {
-	const char* MonitorDisplay::ExampleOfALabel = "My Label";
-
 	/// <summary>Initializes a new instance of the <see cref="MonitorDisplay"/> class.</summary>
 	MonitorDisplay::MonitorDisplay() :
 		tft(TFT_CS, TFT_DC),

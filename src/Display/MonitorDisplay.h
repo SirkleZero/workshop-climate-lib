@@ -92,9 +92,6 @@ namespace Display {
 		static const uint16_t LayoutLineColor = HX8357_WHITE;
 		static const uint16_t BackgroundColor = HX8357_BLACK;
 
-		// Interface label constants
-		static const char* ExampleOfALabel;
-
 		// Display unit variables
 		Adafruit_HX8357 tft;
 		Adafruit_STMPE610 ts;
