@@ -240,7 +240,7 @@ namespace Display {
 	/// <param name="data">The <see cref="BME280Data"> containing readings from the sensors.</param>
 	void MonitorDisplay::LoadData(BME280Data data)
 	{
-		this->currentData = data;
+		this->currentBME280Data = data;
 		this->dataChanged = true;
 	}
 
@@ -345,21 +345,21 @@ namespace Display {
 
 		// NOTE: each of the method calls here first over-write the previous value with the background, and 
 		// then the current value in the defined color for readings.
-		if (this->IntegerPartChanged(this->previousData.Temperature, this->currentData.Temperature) || this->regionChanged)
+		if (this->IntegerPartChanged(this->previousBME280Data.Temperature, this->currentBME280Data.Temperature) || this->regionChanged)
 		{
-			this->PrintTemperature(&this->previousData, MonitorDisplay::BackgroundColor);
-			this->PrintTemperature(&this->currentData, MonitorDisplay::ReadingsTextColor);
+			this->PrintTemperature(&this->previousBME280Data, MonitorDisplay::BackgroundColor);
+			this->PrintTemperature(&this->currentBME280Data, MonitorDisplay::ReadingsTextColor);
 		}
 
-		if (this->IntegerPartChanged(this->previousData.Humidity, this->currentData.Humidity) || this->regionChanged)
+		if (this->IntegerPartChanged(this->previousBME280Data.Humidity, this->currentBME280Data.Humidity) || this->regionChanged)
 		{
-			this->PrintHumidity(&this->previousData, MonitorDisplay::BackgroundColor);
-			this->PrintHumidity(&this->currentData, MonitorDisplay::ReadingsTextColor);
+			this->PrintHumidity(&this->previousBME280Data, MonitorDisplay::BackgroundColor);
+			this->PrintHumidity(&this->currentBME280Data, MonitorDisplay::ReadingsTextColor);
 		}
 
 		interrupts();
 
-		this->previousData = this->currentData;
+		this->previousBME280Data = this->currentBME280Data;
 	}
 
 	void MonitorDisplay::DisplayHumidityScreen()
