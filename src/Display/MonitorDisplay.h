@@ -1,6 +1,51 @@
 #ifndef MonitorDisplay_h
 #define MonitorDisplay_h
 
+#ifdef ESP8266
+#define STMPE_CS 16
+#define TFT_CS   0
+#define TFT_DC   15
+#define SD_CS    2
+#endif
+#ifdef ESP32
+#define STMPE_CS 32
+#define TFT_CS   15
+#define TFT_DC   33
+#define SD_CS    14
+#endif
+#ifdef TEENSYDUINO
+#define TFT_DC   10
+#define TFT_CS   4
+#define STMPE_CS 3
+#define SD_CS    8
+#endif
+#ifdef ARDUINO_STM32_FEATHER
+#define TFT_DC   PB4
+#define TFT_CS   PA15
+#define STMPE_CS PC7
+#define SD_CS    PC5
+#endif
+#ifdef ARDUINO_NRF52_FEATHER /* BSP 0.6.5 and higher! */
+#define TFT_DC   11
+#define TFT_CS   31
+#define STMPE_CS 30
+#define SD_CS    27
+#endif
+#if defined(ARDUINO_MAX32620FTHR) || defined(ARDUINO_MAX32630FTHR)
+#define TFT_DC   P5_4
+#define TFT_CS   P5_3
+#define STMPE_CS P3_3
+#define SD_CS    P3_2
+#endif
+
+// Anything else!
+#if defined (__AVR_ATmega32U4__) || defined(ARDUINO_SAMD_FEATHER_M0) || defined (__AVR_ATmega328P__) || defined(ARDUINO_SAMD_ZERO) || defined(__SAMD51__) || defined(__SAM3X8E__)
+#define STMPE_CS 6
+#define TFT_CS   9
+#define TFT_DC   10
+#define SD_CS    5
+#endif
+
 // external dependencies
 #include <Arduino.h>
 #include <math.h>
@@ -31,7 +76,8 @@ namespace Display {
 		MonitorDisplay();
 		InitializationResult Initialize();
 		void LoadError(const __FlashStringHelper* message);
-		void LoadData(BME280Data data);
+		void LoadMessage(const __FlashStringHelper* message);
+		void LoadSensorData(BME280Data data);
 		void Display();
 		void Display(ScreenRegion region);
 		void Clear();
@@ -61,6 +107,8 @@ namespace Display {
 		bool regionChanged = false;
 		BME280Data currentBME280Data;
 		BME280Data previousBME280Data;
+		const __FlashStringHelper* currentMessage;
+		const __FlashStringHelper* previousMessage;
 		int previousFreeMemory = 0;
 		char* previousError;
 
@@ -79,6 +127,7 @@ namespace Display {
 		ButtonRectangle temperatureArea;
 		ButtonRectangle settingsButton;
 		ButtonRectangle homeButton;
+		Rectangle centeredMessageBox;
 
 		// private functions
 		void LayoutHomeScreen();
@@ -92,7 +141,9 @@ namespace Display {
 		void DisplayTemperatureScreen();
 		void PrintTemperature(BME280Data* data, uint16_t color);
 
-		void PrintComingSoon();
+		void LayoutMessageScreen();
+		void DisplayMessageScreen();
+		void PrintMessage();
 
 		void LayoutSettingsScreen();
 		void DisplaySettingsScreen();
@@ -106,6 +157,7 @@ namespace Display {
 
 		int16_t GetCenteredPosition(char* text, int16_t x, int16_t y, int16_t areaWidth);
 		int16_t GetCenteredPosition(const char* text, int16_t x, int16_t y, int16_t areaWidth);
+		int16_t GetCenteredPosition(const __FlashStringHelper* text, int16_t x, int16_t y, int16_t areaWidth);
 	};
 }
 

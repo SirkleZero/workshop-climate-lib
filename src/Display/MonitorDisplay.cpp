@@ -2,51 +2,6 @@
 
 using namespace Sensors;
 
-#ifdef ESP8266
-#define STMPE_CS 16
-#define TFT_CS   0
-#define TFT_DC   15
-#define SD_CS    2
-#endif
-#ifdef ESP32
-#define STMPE_CS 32
-#define TFT_CS   15
-#define TFT_DC   33
-#define SD_CS    14
-#endif
-#ifdef TEENSYDUINO
-#define TFT_DC   10
-#define TFT_CS   4
-#define STMPE_CS 3
-#define SD_CS    8
-#endif
-#ifdef ARDUINO_STM32_FEATHER
-#define TFT_DC   PB4
-#define TFT_CS   PA15
-#define STMPE_CS PC7
-#define SD_CS    PC5
-#endif
-#ifdef ARDUINO_NRF52_FEATHER /* BSP 0.6.5 and higher! */
-#define TFT_DC   11
-#define TFT_CS   31
-#define STMPE_CS 30
-#define SD_CS    27
-#endif
-#if defined(ARDUINO_MAX32620FTHR) || defined(ARDUINO_MAX32630FTHR)
-#define TFT_DC   P5_4
-#define TFT_CS   P5_3
-#define STMPE_CS P3_3
-#define SD_CS    P3_2
-#endif
-
-// Anything else!
-#if defined (__AVR_ATmega32U4__) || defined(ARDUINO_SAMD_FEATHER_M0) || defined (__AVR_ATmega328P__) || defined(ARDUINO_SAMD_ZERO) || defined(__SAMD51__) || defined(__SAM3X8E__)
-#define STMPE_CS 6
-#define TFT_CS   9
-#define TFT_DC   10
-#define SD_CS    5
-#endif
-
 namespace Display {
 	const char* MonitorDisplay::ExampleOfALabel = "My Label";
 
@@ -57,7 +12,8 @@ namespace Display {
 		humidityArea(240, 85, 240, 170, ScreenRegion::Home),
 		temperatureArea(0, 85, 240, 170, ScreenRegion::Home),
 		settingsButton(435, 0, 45, 45, ScreenRegion::Home),
-		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature))
+		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature)),
+		centeredMessageBox(0, 160, 480, 10)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -127,6 +83,10 @@ namespace Display {
 				case ScreenRegion::Settings:
 					Serial.println(F("ScreenRegion::Settings"));
 					this->DisplaySettingsScreen();
+					break;
+				case ScreenRegion::StatusMessage:
+					Serial.println(F("ScreenRegion::StatusMessage"));
+					this->DisplayMessageScreen();
 					break;
 				case ScreenRegion::Temperature:
 					Serial.println(F("ScreenRegion::Temperature"));
@@ -236,9 +196,15 @@ namespace Display {
 		interrupts();
 	}
 
+	void MonitorDisplay::LoadMessage(const __FlashStringHelper* message)
+	{
+		this->currentMessage = message;
+		this->dataChanged = true;
+	}
+
 	/// <summary>Prints sensor information to the screen.</summary>
 	/// <param name="data">The <see cref="BME280Data"> containing readings from the sensors.</param>
-	void MonitorDisplay::LoadData(BME280Data data)
+	void MonitorDisplay::LoadSensorData(BME280Data data)
 	{
 		this->currentBME280Data = data;
 		this->dataChanged = true;
@@ -337,6 +303,22 @@ namespace Display {
 		}
 	}
 
+	void MonitorDisplay::LayoutMessageScreen()
+	{
+		if (this->regionChanged)
+		{
+			Serial.println(F("laying out message screen"));
+
+			noInterrupts();
+
+			tft.fillScreen(MonitorDisplay::BackgroundColor);
+
+			tft.drawFastHLine(70, 165, 340, MonitorDisplay::LayoutLineColor);
+
+			interrupts();
+		}
+	}
+
 	void MonitorDisplay::DisplayHomeScreen()
 	{
 		this->LayoutHomeScreen();
@@ -368,7 +350,7 @@ namespace Display {
 
 		noInterrupts();
 
-		this->PrintComingSoon();
+		this->PrintMessage();
 
 		interrupts();
 	}
@@ -379,7 +361,7 @@ namespace Display {
 
 		noInterrupts();
 
-		this->PrintComingSoon();
+		this->PrintMessage();
 
 		interrupts();
 	}
@@ -397,6 +379,17 @@ namespace Display {
 		{
 			this->PrintFreeMemory(fm);
 		}
+
+		interrupts();
+	}
+
+	void MonitorDisplay::DisplayMessageScreen()
+	{
+		this->LayoutMessageScreen();
+
+		noInterrupts();
+
+		this->PrintMessage();
 
 		interrupts();
 	}
@@ -453,19 +446,27 @@ namespace Display {
 		this->previousFreeMemory = freeMemory;
 	}
 
-	void MonitorDisplay::PrintComingSoon()
+	void MonitorDisplay::PrintMessage()
 	{
-		// TESTING: ultimately this will need to move to a print method, but for now we are fine.
-		char* comingSoonLabel = "Coming Soon!";
-
 		tft.setFont(&calibrib12pt7b);
 		tft.setTextSize(1);
 
-		// print the temporary message
-		int centeredLocation = GetCenteredPosition(comingSoonLabel, 0, 160, 480);
+		//Serial.print(F("previousMessage: ")); Serial.println(this->previousMessage);
+		//Serial.print(F("currentMessage: ")); Serial.println(this->currentMessage);
+
+		int centeredLocation = GetCenteredPosition(this->previousMessage, 0, 160, 480);
+		//Serial.print(F("centeredLocation: ")); Serial.println(centeredLocation);
+		tft.setCursor(centeredLocation, 160);
+		tft.setTextColor(MonitorDisplay::BackgroundColor);
+		tft.print(this->previousMessage);
+
+		centeredLocation = GetCenteredPosition(this->currentMessage, 0, 160, 480);
+		//Serial.print(F("centeredLocation: ")); Serial.println(centeredLocation);
 		tft.setCursor(centeredLocation, 160);
 		tft.setTextColor(MonitorDisplay::ReadingsTextColor);
-		tft.print(comingSoonLabel);
+		tft.print(this->currentMessage);
+
+		this->previousMessage = this->currentMessage;
 	}
 
 	bool MonitorDisplay::IntegerPartChanged(float first, float second)
@@ -497,7 +498,15 @@ namespace Display {
 		// values used for centering text in display areas (rectangles)
 		int16_t  x1, y1;
 		uint16_t textWidth, textHeight;
+		tft.getTextBounds(text, x, y, &x1, &y1, &textWidth, &textHeight);
+		return ((areaWidth - textWidth) / 2) + x;
+	}
 
+	int16_t MonitorDisplay::GetCenteredPosition(const __FlashStringHelper* text, int16_t x, int16_t y, int16_t areaWidth)
+	{
+		// values used for centering text in display areas (rectangles)
+		int16_t  x1, y1;
+		uint16_t textWidth, textHeight;
 		tft.getTextBounds(text, x, y, &x1, &y1, &textWidth, &textHeight);
 		return ((areaWidth - textWidth) / 2) + x;
 	}

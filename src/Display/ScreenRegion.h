@@ -14,7 +14,9 @@ namespace Display {
 		/// <summary>Represents that the Humidity region has been touched.</summary>
 		Humidity = 1u << 3,
 		/// <summary>Represents that the Temperature region has been touched.</summary>
-		Temperature = 1u << 4
+		Temperature = 1u << 4,
+		/// <summary>Represents that the screen should show a status message of some kind.</summary>
+		StatusMessage = 1u << 5
 	};
 }
 #endif
