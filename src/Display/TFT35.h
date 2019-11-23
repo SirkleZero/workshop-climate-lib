@@ -1,7 +1,6 @@
 #ifndef TFT35_h
 #define TFT35_h
 
-
 // external dependencies
 #include <Arduino.h>
 #include "TFTDisplay.h"

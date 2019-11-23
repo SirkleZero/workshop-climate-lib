@@ -81,7 +81,7 @@ namespace Display {
 		void Display(ScreenRegion region);
 		void Clear();
 		ScreenRegion Touched();
-	private:
+	protected:
 		// a constant that defines the rotational position of the display.
 		static const uint8_t ScreenOrientation = 1;
 

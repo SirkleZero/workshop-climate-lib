@@ -8,12 +8,7 @@ namespace Display {
 	/// <summary>Initializes a new instance of the <see cref="TFTDisplay"/> class.</summary>
 	TFTDisplay::TFTDisplay() :
 		tft(TFT_CS, TFT_DC),
-		ts(STMPE_CS),
-		humidityArea(240, 85, 240, 170, ScreenRegion::Home),
-		temperatureArea(0, 85, 240, 170, ScreenRegion::Home),
-		settingsButton(435, 0, 45, 45, ScreenRegion::Home),
-		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature)),
-		centeredMessageBox(0, 160, 480, 10)
+		ts(STMPE_CS)
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
