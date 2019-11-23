@@ -15,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\TFT35.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\TFTDisplay.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
@@ -44,7 +43,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\consolab50pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\consolab75pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\Orbitron_Bold_125.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\TFT35.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ScreenRegion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\AqiScaleRectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\TFTDisplay.h" />

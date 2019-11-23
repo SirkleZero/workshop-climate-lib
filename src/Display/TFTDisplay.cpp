@@ -8,7 +8,21 @@ namespace Display {
 	/// <summary>Initializes a new instance of the <see cref="TFTDisplay"/> class.</summary>
 	TFTDisplay::TFTDisplay() :
 		tft(TFT_CS, TFT_DC),
-		ts(STMPE_CS)
+		ts(STMPE_CS),
+#if defined(DISPLAY_35)
+		humidityArea(240, 85, 240, 170, ScreenRegion::Home),
+		temperatureArea(0, 85, 240, 170, ScreenRegion::Home),
+		settingsButton(435, 0, 45, 45, ScreenRegion::Home),
+		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature)),
+		centeredMessageBox(0, 160, 480, 10)
+#endif
+#if defined(DISPLAY_24)
+		humidityArea(160, 50, 160, 125, ScreenRegion::Home),
+		temperatureArea(0, 50, 160, 125, ScreenRegion::Home),
+		settingsButton(275, 0, 45, 45, ScreenRegion::Home),
+		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature)),
+		centeredMessageBox(0, 120, 320, 10)
+#endif
 	{}
 
 	/// <summary>Executes initialization logic for the object.</summary>
@@ -131,11 +145,17 @@ namespace Display {
 			// the display knows it's orientation, the touchscreen does not.
 			TS_Point p = this->ts.getPoint();
 
+#if defined(DISPLAY_35)
 			// NOTE: this 3.5" calculation is different than the one for the 2.4" display
 			// not entirely sure why the larger display version behaves differently than the
 			// smaller version.
 			int y = map(p.x, TFTDisplay::TSMaxY, TFTDisplay::TSMinY, 0, tft.height());
 			int x = map(p.y, TFTDisplay::TSMinX, TFTDisplay::TSMaxX, 0, tft.width());
+#endif
+#if defined(DISPLAY_24)
+			int y = map(p.x, ControllerDisplay::TSMinY, ControllerDisplay::TSMaxY, 0, tft.height());
+			int x = map(p.y, ControllerDisplay::TSMinX, ControllerDisplay::TSMaxX, 0, tft.width());
+#endif
 
 			if (this->humidityArea.Contains(x, y))
 			{

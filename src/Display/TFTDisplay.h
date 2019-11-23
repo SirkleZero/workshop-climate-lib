@@ -55,8 +55,14 @@
 #include <SPI.h>
 #include <Wire.h>      // this is needed even tho we aren't using it
 #include <Adafruit_GFX.h>
+
+#if defined(DISPLAY_35)
 #include <Adafruit_HX8357.h>
+#endif
+#if defined(DISPLAY_24)
 #include <Adafruit_ILI9341.h>
+#endif
+
 #include <Adafruit_STMPE610.h>
 #include <MemoryFree.h>
 
@@ -69,6 +75,7 @@
 #include "..\Rectangle.h"
 #include "ButtonRectangle.h"
 #include "ScreenRegion.h"
+#include "RGB565.h"
 
 using namespace Sensors;
 
@@ -90,11 +97,11 @@ namespace Display {
 		static const uint8_t ScreenOrientation = 1;
 
 		// Interface color constants
-		static const uint16_t ReadingsTextColor = 0x5DDF;
-		static const uint16_t LayoutTextColor = HX8357_WHITE;
-		static const uint16_t ErrorTextColor = HX8357_YELLOW;
-		static const uint16_t LayoutLineColor = HX8357_WHITE;
-		static const uint16_t BackgroundColor = HX8357_BLACK;
+		static const uint16_t ReadingsTextColor = 0x5DDF; // custom blue color
+		static const uint16_t LayoutTextColor = 0xFFFF; // white
+		static const uint16_t ErrorTextColor = 0xFFE0; // yellow
+		static const uint16_t LayoutLineColor = 0xFFFF; // white
+		static const uint16_t BackgroundColor = 0x0000; // black
 
 		// !!! NOTE / IMPORTANT !!! These defines are defined using the properties of the project in 
 		// visual micro. If compiling with the Arduino IDE these will not work properly!
