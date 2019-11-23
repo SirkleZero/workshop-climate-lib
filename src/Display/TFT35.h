@@ -1,5 +1,4 @@
-#ifndef TFT35_h
-#define TFT35_h
+#pragma once
 
 // external dependencies
 #include <Arduino.h>
@@ -18,5 +17,3 @@ namespace Display {
 	private:
 	};
 }
-
-#endif

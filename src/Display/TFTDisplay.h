@@ -1,5 +1,8 @@
-#ifndef TFTDisplay_h
-#define TFTDisplay_h
+#pragma once
+
+//#ifndef DISPLAY_35
+//#define DISPLAY_35
+//#endif
 
 #ifdef ESP8266
 #define STMPE_CS 16
@@ -52,8 +55,8 @@
 #include <SPI.h>
 #include <Wire.h>      // this is needed even tho we aren't using it
 #include <Adafruit_GFX.h>
-#include <Adafruit_SPITFT.h>
 #include <Adafruit_HX8357.h>
+#include <Adafruit_ILI9341.h>
 #include <Adafruit_STMPE610.h>
 #include <MemoryFree.h>
 
@@ -93,8 +96,16 @@ namespace Display {
 		static const uint16_t LayoutLineColor = HX8357_WHITE;
 		static const uint16_t BackgroundColor = HX8357_BLACK;
 
+		// !!! NOTE / IMPORTANT !!! These defines are defined using the properties of the project in 
+		// visual micro. If compiling with the Arduino IDE these will not work properly!
+#if defined(DISPLAY_35)
+		Adafruit_HX8357 tft;
+#endif
+#if defined(DISPLAY_24)
+		Adafruit_ILI9341 tft;
+#endif
+
 		// Display unit variables
-		Adafruit_SPITFT* tft;
 		Adafruit_STMPE610 ts;
 		uint16_t height;
 		uint16_t width;
@@ -156,5 +167,3 @@ namespace Display {
 		int16_t GetCenteredPosition(const __FlashStringHelper* text, int16_t x, int16_t y, int16_t areaWidth);
 	};
 }
-
-#endif
