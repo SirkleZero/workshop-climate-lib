@@ -1,5 +1,12 @@
 #include "TFTDisplay.h"
 
+#if defined(DISPLAY_35)
+
+#endif
+#if defined(DISPLAY_24)
+
+#endif
+
 using namespace Sensors;
 
 namespace Display {
@@ -153,8 +160,8 @@ namespace Display {
 			int x = map(p.y, TFTDisplay::TSMinX, TFTDisplay::TSMaxX, 0, tft.width());
 #endif
 #if defined(DISPLAY_24)
-			int y = map(p.x, ControllerDisplay::TSMinY, ControllerDisplay::TSMaxY, 0, tft.height());
-			int x = map(p.y, ControllerDisplay::TSMinX, ControllerDisplay::TSMaxX, 0, tft.width());
+			int y = map(p.x, TFTDisplay::TSMinY, TFTDisplay::TSMaxY, 0, tft.height());
+			int x = map(p.y, TFTDisplay::TSMinX, TFTDisplay::TSMaxX, 0, tft.width());
 #endif
 
 			if (this->humidityArea.Contains(x, y))
@@ -206,8 +213,14 @@ namespace Display {
 			int16_t centeredTextXPosition;
 
 			// draw our centerline
-			tft.drawFastVLine(240, 30, 260, TFTDisplay::LayoutLineColor);
+			
 
+#if defined(DISPLAY_35)
+			tft.drawFastVLine(240, 30, 260, TFTDisplay::LayoutLineColor);
+#endif
+#if defined(DISPLAY_24)
+			tft.drawFastVLine(160, 30, 180, TFTDisplay::LayoutLineColor);
+#endif
 			// set font
 			tft.setFont(&calibrib12pt7b);
 			tft.setTextColor(TFTDisplay::LayoutTextColor);
@@ -247,8 +260,13 @@ namespace Display {
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
 
+#if defined(DISPLAY_35)
 			tft.drawFastHLine(70, 165, 340, TFTDisplay::LayoutLineColor);
-
+#endif
+#if defined(DISPLAY_24)
+			tft.drawFastHLine(70, 123, 177, TFTDisplay::LayoutLineColor);
+#endif
+			
 			interrupts();
 		}
 	}
@@ -263,8 +281,13 @@ namespace Display {
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
 
+#if defined(DISPLAY_35)
 			tft.drawFastHLine(70, 165, 340, TFTDisplay::LayoutLineColor);
-
+#endif
+#if defined(DISPLAY_24)
+			tft.drawFastHLine(70, 123, 177, TFTDisplay::LayoutLineColor);
+#endif
+			
 			interrupts();
 		}
 	}
@@ -279,8 +302,13 @@ namespace Display {
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
 
+#if defined(DISPLAY_35)
 			tft.drawFastHLine(70, 165, 340, TFTDisplay::LayoutLineColor);
-
+#endif
+#if defined(DISPLAY_24)
+			tft.drawFastHLine(70, 123, 177, TFTDisplay::LayoutLineColor);
+#endif
+			
 			interrupts();
 		}
 	}
@@ -295,7 +323,12 @@ namespace Display {
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
 
+#if defined(DISPLAY_35)
 			tft.drawFastHLine(70, 165, 340, TFTDisplay::LayoutLineColor);
+#endif
+#if defined(DISPLAY_24)
+			tft.drawFastHLine(70, 123, 177, TFTDisplay::LayoutLineColor);
+#endif
 
 			interrupts();
 		}
@@ -380,7 +413,7 @@ namespace Display {
 	void TFTDisplay::PrintHumidity(BME280Data* data, uint16_t color)
 	{
 		int8_t horizontalOffset = 7;
-		tft.setFont(&bahnschrift90pt7b);
+		tft.setFont(&bahnschrift75pt7b);
 		tft.setTextSize(1);
 		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width) - horizontalOffset;
@@ -392,7 +425,7 @@ namespace Display {
 	void TFTDisplay::PrintTemperature(BME280Data* data, uint16_t color)
 	{
 		int8_t horizontalOffset = 7;
-		tft.setFont(&bahnschrift90pt7b);
+		tft.setFont(&bahnschrift75pt7b);
 		tft.setTextSize(1);
 		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width) - horizontalOffset;

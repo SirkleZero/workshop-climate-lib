@@ -68,6 +68,7 @@
 
 // include some fonts
 #include "Fonts\bahnschrift90pt7b.h"
+#include "Fonts\bahnschrift75pt7b.h"
 #include "Fonts\calibrib12pt7b.h"
 
 #include "..\InitializationResult.h"
