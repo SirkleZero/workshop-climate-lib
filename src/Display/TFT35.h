@@ -3,6 +3,8 @@
 
 // external dependencies
 #include <Arduino.h>
+#include <Adafruit_HX8357.h>
+
 #include "TFTDisplay.h"
 
 using namespace Sensors;

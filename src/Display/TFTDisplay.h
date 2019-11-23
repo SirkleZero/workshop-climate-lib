@@ -52,6 +52,7 @@
 #include <SPI.h>
 #include <Wire.h>      // this is needed even tho we aren't using it
 #include <Adafruit_GFX.h>
+#include <Adafruit_SPITFT.h>
 #include <Adafruit_HX8357.h>
 #include <Adafruit_STMPE610.h>
 #include <MemoryFree.h>
@@ -93,7 +94,7 @@ namespace Display {
 		static const uint16_t BackgroundColor = HX8357_BLACK;
 
 		// Display unit variables
-		Adafruit_HX8357 tft;
+		Adafruit_SPITFT* tft;
 		Adafruit_STMPE610 ts;
 		uint16_t height;
 		uint16_t width;

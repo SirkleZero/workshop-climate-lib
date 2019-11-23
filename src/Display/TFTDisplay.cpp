@@ -7,7 +7,7 @@ namespace Display {
 
 	/// <summary>Initializes a new instance of the <see cref="TFTDisplay"/> class.</summary>
 	TFTDisplay::TFTDisplay() :
-		tft(TFT_CS, TFT_DC),
+		//tft(TFT_CS, TFT_DC),
 		ts(STMPE_CS)
 	{}
 
