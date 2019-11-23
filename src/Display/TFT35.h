@@ -1,5 +1,5 @@
-#ifndef MonitorDisplay_h
-#define MonitorDisplay_h
+#ifndef TFT35_h
+#define TFT35_h
 
 
 // external dependencies
@@ -10,10 +10,10 @@ using namespace Sensors;
 
 namespace Display {
 	/// <summary>Defines a class that controls the display of the monitor unit.</summary>
-	class MonitorDisplay : public TFTDisplay
+	class TFT35 : public TFTDisplay
 	{
 	public:
-		MonitorDisplay();
+		TFT35();
 	private:
 	};
 }
