@@ -2,8 +2,7 @@
 https://io.adafruit.com/api/docs/
 
 */
-#ifndef AdafruitIOProxy_h
-#define AdafruitIOProxy_h
+#pragma once
 
 #define USE_AIRLIFT
 
@@ -60,4 +59,3 @@ namespace TX {
 		bool TouchAdafruitIO();
 	};
 }
-#endif

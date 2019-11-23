@@ -1,5 +1,4 @@
-#ifndef RGB_h
-#define RGB_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -51,4 +50,3 @@ namespace Display {
 		}
 	};
 }
-#endif

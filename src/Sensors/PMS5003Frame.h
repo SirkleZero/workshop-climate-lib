@@ -1,5 +1,4 @@
-#ifndef PMS5003Frame_h
-#define PMS5003Frame_h
+#pragma once
 
 #include <Arduino.h>
 #include "ParticleData.h"
@@ -21,4 +20,3 @@ namespace Sensors {
 		uint16_t Checksum;
 	};
 }
-#endif

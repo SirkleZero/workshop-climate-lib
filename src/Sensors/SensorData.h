@@ -1,5 +1,4 @@
-#ifndef SensorData_h
-#define SensorData_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -46,4 +45,3 @@ namespace Sensors {
 		}
 	};
 }
-#endif

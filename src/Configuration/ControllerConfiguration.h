@@ -1,5 +1,4 @@
-#ifndef ControllerConfiguration_h
-#define ControllerConfiguration_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -40,4 +39,3 @@ namespace Configuration {
 		}
 	};
 }
-#endif

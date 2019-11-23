@@ -1,5 +1,4 @@
-#ifndef ScreenRegion_h
-#define ScreenRegion_h
+#pragma once
 
 namespace Display {
 	/// <summary>Specifies the touch screen regions of the system.</summary>
@@ -19,4 +18,3 @@ namespace Display {
 		StatusMessage = 1u << 5
 	};
 }
-#endif

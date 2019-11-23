@@ -1,5 +1,4 @@
-#ifndef AqiScaleRectangle_h
-#define AqiScaleRectangle_h
+#pragma once
 
 #include <Arduino.h>
 #include "Rectangle.h"
@@ -49,4 +48,3 @@ struct AqiScaleRectangle : Rectangle
 		return ((aqiScore - MinIndex) / divisor) + x;
 	}
 };
-#endif

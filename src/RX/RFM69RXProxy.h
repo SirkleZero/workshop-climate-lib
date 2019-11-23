@@ -1,5 +1,4 @@
-#ifndef RFM69RXProxy_h
-#define RFM69RXProxy_h
+#pragma once
 
 #include <Arduino.h>
 #include <RH_RF69.h>
@@ -40,4 +39,3 @@ namespace RX {
 		uint8_t messageBuffer[RH_RF69_MAX_MESSAGE_LEN];
 	};
 }
-#endif

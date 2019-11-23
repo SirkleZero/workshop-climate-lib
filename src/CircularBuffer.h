@@ -1,9 +1,7 @@
 /*
 Inspired by: https://playground.arduino.cc/Main/RunningAverage/
 */
-
-#ifndef CircularBuffer_h
-#define CircularBuffer_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -90,5 +88,3 @@ void CircularBuffer<T>::Clear()
 		this->data[i] = 0;
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef ButtonRectangle_h
-#define ButtonRectangle_h
+#pragma once
 
 #include <Arduino.h>
 #include "Rectangle.h"
@@ -72,4 +71,3 @@ namespace Display {
 		ScreenRegion enabledScreens = ScreenRegion::None;
 	};
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef Secrets_h
-#define Secrets_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -47,4 +46,3 @@ namespace Configuration {
 		String hostname;
 	};
 }
-#endif

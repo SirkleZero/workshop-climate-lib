@@ -1,5 +1,4 @@
-#ifndef SDCardProxy_h
-#define SDCardProxy_h
+#pragma once
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
@@ -35,4 +34,3 @@ namespace Configuration {
 		const char *LogFileName = "log.txt";
 	};
 }
-#endif

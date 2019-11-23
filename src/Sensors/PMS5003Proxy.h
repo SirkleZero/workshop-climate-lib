@@ -1,5 +1,4 @@
-#ifndef PMS5003Proxy_h
-#define PMS5003Proxy_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -33,4 +32,3 @@ namespace Sensors {
 		PMS5003Frame thisFrame;
 	};
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef RFM69TXProxy_h
-#define RFM69TXProxy_h
+#pragma once
 
 #include <Arduino.h>
 #include <RH_RF69.h>
@@ -46,4 +45,3 @@ namespace TX {
 		void Blink(byte delay_ms, byte loops);
 	};
 }
-#endif

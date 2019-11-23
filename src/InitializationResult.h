@@ -1,5 +1,4 @@
-#ifndef InitializationResult_h
-#define InitializationResult_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -23,4 +22,3 @@ struct InitializationResult {
 		Serial.println();
 	}
 };
-#endif

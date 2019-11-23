@@ -1,5 +1,4 @@
-#ifndef Rectangle_h
-#define Rectangle_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -37,4 +36,3 @@ struct Rectangle
 		Serial.println();
 	}
 };
-#endif

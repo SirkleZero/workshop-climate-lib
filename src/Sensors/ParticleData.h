@@ -1,5 +1,4 @@
-#ifndef ParticleData_h
-#define ParticleData_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -56,4 +55,3 @@ namespace Sensors {
 		}
 	};
 }
-#endif

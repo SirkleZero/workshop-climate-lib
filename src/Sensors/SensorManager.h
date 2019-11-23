@@ -1,5 +1,4 @@
-#ifndef SensorManager_h
-#define SensorManager_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -46,4 +45,3 @@ namespace Sensors {
 		InitializationResult pmsInitializationResult;
 	};
 }
-#endif

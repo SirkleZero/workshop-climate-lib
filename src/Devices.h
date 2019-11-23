@@ -1,5 +1,4 @@
-#ifndef Devices_h
-#define Devices_h
+#pragma once
 
 ///<summary>Represents the various devices that can exist as part of the system.</summary>
 enum Devices : uint8_t
@@ -11,5 +10,3 @@ enum Devices : uint8_t
 	AllListeners = ClimateController | SystemMonitor,
 	AllTransmitters = ClimateSensorArray | ParticulateSensorArray
 };
-
-#endif

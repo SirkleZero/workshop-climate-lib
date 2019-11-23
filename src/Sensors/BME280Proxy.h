@@ -1,5 +1,4 @@
-#ifndef BME280Proxy_h
-#define BME280Proxy_h
+#pragma once
 
 #include <Arduino.h>
 #include <Adafruit_Sensor.h>
@@ -34,4 +33,3 @@ namespace Sensors {
 		bool isFirstIteration = true;
 	};
 }
-#endif

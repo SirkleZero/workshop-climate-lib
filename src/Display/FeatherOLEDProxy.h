@@ -1,5 +1,4 @@
-#ifndef FeatherOLEDProxy_h
-#define FeatherOLEDProxy_h
+#pragma once
 
 #include <SPI.h>
 #include <Wire.h>
@@ -45,5 +44,3 @@ namespace Display {
 		void PrintParticulates(SensorData *data, uint16_t color);
 	};
 }
-
-#endif

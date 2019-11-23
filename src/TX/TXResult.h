@@ -1,5 +1,4 @@
-#ifndef TXResult_h
-#define TXResult_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -25,4 +24,3 @@ namespace TX {
 		}
 	};
 }
-#endif

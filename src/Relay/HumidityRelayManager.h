@@ -1,5 +1,4 @@
-#ifndef HumidityRelayManager_h
-#define HumidityRelayManager_h
+#pragma once
 
 #include <Arduino.h>
 
@@ -78,4 +77,3 @@ namespace Relay {
 		float CalculateCompensatedTargetHumidity(HumidificationState state);
 	};
 }
-#endif

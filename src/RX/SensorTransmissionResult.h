@@ -1,5 +1,4 @@
-#ifndef SensorTransmissionResult_h
-#define SensorTransmissionResult_h
+#pragma once
 
 #include <Arduino.h>
 #include "Sensors\BME280Data.h"
@@ -31,4 +30,3 @@ namespace RX {
 		}
 	};
 }
-#endif

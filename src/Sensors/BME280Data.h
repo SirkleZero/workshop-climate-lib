@@ -1,5 +1,4 @@
-#ifndef BME280Data_h
-#define BME280Data_h
+#pragma once
 
 #include <Arduino.h>
 #include <avr/dtostrf.h>
@@ -63,4 +62,3 @@ namespace Sensors {
 		}
 	};
 }
-#endif

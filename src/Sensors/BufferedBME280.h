@@ -1,5 +1,4 @@
-#ifndef BufferedBME280_h
-#define BufferedBME280_h
+#pragma once
 
 #include <Arduino.h>
 #include "BME280Data.h"
@@ -38,4 +37,3 @@ namespace Sensors {
 		CircularBuffer<float> humidityBuffer;
 	};
 }
-#endif
