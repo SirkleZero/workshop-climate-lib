@@ -214,8 +214,6 @@ namespace Display {
 			int16_t centeredTextXPosition;
 
 			// draw our centerline
-			
-
 #if defined(DISPLAY_35)
 			tft.drawFastVLine(240, 30, 260, TFTDisplay::LayoutLineColor);
 #endif
