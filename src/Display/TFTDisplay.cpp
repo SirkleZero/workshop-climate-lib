@@ -11,7 +11,6 @@ using namespace Sensors;
 
 namespace Display {
 #pragma region constructor and initialization
-
 	/// <summary>Initializes a new instance of the <see cref="TFTDisplay"/> class.</summary>
 	TFTDisplay::TFTDisplay() :
 		tft(TFT_CS, TFT_DC),
@@ -28,7 +27,7 @@ namespace Display {
 		temperatureArea(0, 50, 160, 125, ScreenRegion::Home),
 		settingsButton(275, 0, 45, 45, ScreenRegion::Home),
 		homeButton(0, 0, 45, 45, ScreenRegion(ScreenRegion::Humidity | ScreenRegion::Settings | ScreenRegion::Temperature)),
-		centeredMessageBox(0, 120, 320, 10)
+		centeredMessageBox(0, 120, 360, 10)
 #endif
 	{}
 
@@ -46,6 +45,8 @@ namespace Display {
 
 		this->height = tft.height();
 		this->width = tft.width();
+		this->midHeight = this->height / 2;
+		this->midWidth = this->width / 2;
 
 		this->touchscreenExists = ts.begin();
 
@@ -222,7 +223,7 @@ namespace Display {
 			tft.drawFastVLine(160, 30, 180, TFTDisplay::LayoutLineColor);
 #endif
 			// set font
-			tft.setFont(&calibrib12pt7b);
+			tft.setFont(this->mainReadingsLabelFont);
 			tft.setTextColor(TFTDisplay::LayoutTextColor);
 			tft.setTextSize(1);
 
@@ -308,7 +309,6 @@ namespace Display {
 #if defined(DISPLAY_24)
 			tft.drawFastHLine(70, 123, 177, TFTDisplay::LayoutLineColor);
 #endif
-			
 			interrupts();
 		}
 	}
@@ -413,7 +413,7 @@ namespace Display {
 	void TFTDisplay::PrintHumidity(BME280Data* data, uint16_t color)
 	{
 		int8_t horizontalOffset = 7;
-		tft.setFont(&bahnschrift75pt7b);
+		tft.setFont(this->mainReadingsFont);
 		tft.setTextSize(1);
 		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width) - horizontalOffset;
@@ -425,7 +425,7 @@ namespace Display {
 	void TFTDisplay::PrintTemperature(BME280Data* data, uint16_t color)
 	{
 		int8_t horizontalOffset = 7;
-		tft.setFont(&bahnschrift75pt7b);
+		tft.setFont(this->mainReadingsFont);
 		tft.setTextSize(1);
 		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width) - horizontalOffset;
@@ -438,21 +438,21 @@ namespace Display {
 	/// <param name="freeMemory">The amount of free memory to display, in bytes.</param>
 	void TFTDisplay::PrintFreeMemory(int freeMemory)
 	{
-		char* memoryLabel = "Free SRAM: ";
-
 		noInterrupts();
 
-		tft.setFont(&calibrib12pt7b);
+		tft.setFont(this->statusMessageFont);
 		tft.setTextSize(1);
 
+		char* memoryLabel = "Free SRAM: ";
+
 		// overwrite
-		tft.setCursor(145, 160);
+		tft.setCursor(this->midWidth / 2, this->midHeight);
 		tft.setTextColor(TFTDisplay::BackgroundColor);
 		tft.print(memoryLabel);
 		tft.print(previousFreeMemory);
 
 		// print the value
-		tft.setCursor(145, 160);
+		tft.setCursor(this->midWidth / 2, this->midHeight);
 		tft.setTextColor(TFTDisplay::ReadingsTextColor);
 		tft.print(memoryLabel);
 		tft.print(freeMemory);
@@ -464,16 +464,16 @@ namespace Display {
 
 	void TFTDisplay::PrintMessage()
 	{
-		tft.setFont(&calibrib12pt7b);
+		tft.setFont(this->statusMessageFont);
 		tft.setTextSize(1);
 
-		int centeredLocation = GetCenteredPosition(this->previousMessage, 0, 160, 480);
-		tft.setCursor(centeredLocation, 160);
+		int centeredLocation = GetCenteredPosition(this->previousMessage, 0, this->midHeight, this->width);
+		tft.setCursor(centeredLocation, this->midHeight);
 		tft.setTextColor(TFTDisplay::BackgroundColor);
 		tft.print(this->previousMessage);
 
-		centeredLocation = GetCenteredPosition(this->currentMessage, 0, 160, 480);
-		tft.setCursor(centeredLocation, 160);
+		centeredLocation = GetCenteredPosition(this->currentMessage, 0, this->midHeight, this->width);
+		tft.setCursor(centeredLocation, this->midHeight);
 		tft.setTextColor(TFTDisplay::ReadingsTextColor);
 		tft.print(this->currentMessage);
 

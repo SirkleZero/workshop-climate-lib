@@ -58,18 +58,17 @@
 
 #if defined(DISPLAY_35)
 #include <Adafruit_HX8357.h>
+#include "Fonts\bahnschrift90pt7b.h"
+#include "Fonts\calibrib12pt7b.h"
 #endif
 #if defined(DISPLAY_24)
 #include <Adafruit_ILI9341.h>
+#include "Fonts\bahnschrift60pt7b.h"
+#include "Fonts\calibrib9pt7b.h"
 #endif
 
 #include <Adafruit_STMPE610.h>
 #include <MemoryFree.h>
-
-// include some fonts
-#include "Fonts\bahnschrift90pt7b.h"
-#include "Fonts\bahnschrift75pt7b.h"
-#include "Fonts\calibrib12pt7b.h"
 
 #include "..\InitializationResult.h"
 #include "..\Sensors\BME280Data.h"
@@ -108,15 +107,23 @@ namespace Display {
 		// visual micro. If compiling with the Arduino IDE these will not work properly!
 #if defined(DISPLAY_35)
 		Adafruit_HX8357 tft;
+		const GFXfont* mainReadingsFont = &bahnschrift90pt7b;
+		const GFXfont* mainReadingsLabelFont = &calibrib12pt7b;
+		const GFXfont* statusMessageFont = &calibrib12pt7b;
 #endif
 #if defined(DISPLAY_24)
 		Adafruit_ILI9341 tft;
+		const GFXfont* mainReadingsFont = &bahnschrift60pt7b;
+		const GFXfont* mainReadingsLabelFont = &calibrib9pt7b;
+		const GFXfont* statusMessageFont = &calibrib9pt7b;
 #endif
 
 		// Display unit variables
 		Adafruit_STMPE610 ts;
 		uint16_t height;
+		uint16_t midHeight;
 		uint16_t width;
+		uint16_t midWidth;
 
 		// variables used for display state management
 		bool dataChanged = false;

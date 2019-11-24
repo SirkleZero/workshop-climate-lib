@@ -34,10 +34,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Devices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ControllerDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\bahnschrift12pt7b.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\bahnschrift60pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\bahnschrift75pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\bahnschrift90pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\calibri12pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\calibrib12pt7b.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\calibrib9pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\consolab125pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\consolab12pt7b.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\Fonts\consolab50pt7b.h" />

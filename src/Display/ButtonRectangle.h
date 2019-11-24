@@ -15,7 +15,7 @@ namespace Display {
 		/// <param name = "y">The y coordinate of the rectangle.</param>
 		/// <param name = "width">The width of the rectangle.</param>
 		/// <param name = "height">The height of the rectangle.</param>
-		ButtonRectangle(int16_t x = 0, int16_t y = 0, int16_t width = 0, int16_t height = 0, ScreenRegion enabledScreens = ScreenRegion::None) :
+		ButtonRectangle(int16_t x, int16_t y, int16_t width, int16_t height, ScreenRegion enabledScreens = ScreenRegion::None) :
 			Rectangle(x, y, width, height), enabledScreens(enabledScreens)
 		{}
 
