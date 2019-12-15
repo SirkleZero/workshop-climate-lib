@@ -1,9 +1,5 @@
 #pragma once
 
-//#ifndef DISPLAY_35
-//#define DISPLAY_35
-//#endif
-
 #ifdef ESP8266
 #define STMPE_CS 16
 #define TFT_CS   0

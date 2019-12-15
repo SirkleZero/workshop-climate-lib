@@ -1,12 +1,5 @@
 #include "TFTDisplay.h"
 
-#if defined(DISPLAY_35)
-
-#endif
-#if defined(DISPLAY_24)
-
-#endif
-
 using namespace Sensors;
 
 namespace Display {
