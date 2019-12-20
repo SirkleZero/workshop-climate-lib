@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #include "InitializationResult.h"
-#include "..\Sensors\SensorData.h"
+#include "..\Sensors\BME280Data.h"
 #include "..\Configuration\ControllerConfiguration.h"
 #include "..\Display\RGB565.h"
 
@@ -28,7 +28,7 @@ namespace Relay {
 		HumidityRelayManager();
 
 		InitializationResult Initialize(ControllerConfiguration *configuration);
-		void AdjustClimate(SensorData data);
+		void AdjustClimate(BME280Data data);
 		void KeepAlive();
 		void EmergencyShutoff();
 		void ShutDownError();
