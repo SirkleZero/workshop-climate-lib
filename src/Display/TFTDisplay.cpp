@@ -85,27 +85,27 @@ namespace Display {
 			switch (this->activeRegion)
 			{
 				case ScreenRegion::Home:
-					Serial.println(F("ScreenRegion::Home"));
+					//Serial.println(F("ScreenRegion::Home"));
 					this->DisplayHomeScreen();
 					break;
 				case ScreenRegion::Humidity:
-					Serial.println(F("ScreenRegion::Humidity"));
+					//Serial.println(F("ScreenRegion::Humidity"));
 					this->DisplayHumidityScreen();
 					break;
 				case ScreenRegion::Settings:
-					Serial.println(F("ScreenRegion::Settings"));
+					//Serial.println(F("ScreenRegion::Settings"));
 					this->DisplaySettingsScreen();
 					break;
 				case ScreenRegion::StatusMessage:
-					Serial.println(F("ScreenRegion::StatusMessage"));
+					//Serial.println(F("ScreenRegion::StatusMessage"));
 					this->DisplayMessageScreen();
 					break;
 				case ScreenRegion::Temperature:
-					Serial.println(F("ScreenRegion::Temperature"));
+					//Serial.println(F("ScreenRegion::Temperature"));
 					this->DisplayTemperatureScreen();
 					break;
 				default:
-					Serial.println(F("default"));
+					//Serial.println(F("default"));
 					this->DisplayHomeScreen();
 					break;
 			}

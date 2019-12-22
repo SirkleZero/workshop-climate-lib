@@ -34,11 +34,11 @@ namespace Relay {
 		void ShutDownError();
 	private:
 		// pins used by the relay system
-		static const int RedPin = 15;
-		static const int GreenPin = 16;
-		static const int BluePin = 17;
-		static const int HumidifierControlPin = 18;
-		static const int DehumidifierControlPin = 19;
+		static const int RedPin = 16;
+		static const int GreenPin = 17;
+		static const int BluePin = 18;
+		static const int HumidifierControlPin = 14;
+		static const int DehumidifierControlPin = 15;
 
 		// if using a common anode LED, set this to true
 		static const bool CommonAnode = true;

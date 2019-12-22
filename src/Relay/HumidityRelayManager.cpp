@@ -26,6 +26,9 @@ namespace Relay {
 		pinMode(HumidityRelayManager::HumidifierControlPin, OUTPUT);
 		pinMode(HumidityRelayManager::DehumidifierControlPin, OUTPUT);
 
+		digitalWrite(HumidityRelayManager::HumidifierControlPin, LOW);
+		digitalWrite(HumidityRelayManager::DehumidifierControlPin, LOW);
+
 		// enable the LED indicator and set it's initial state color
 		this->EnableIndicator();
 		this->SetIndicatorColor(HumidityRelayManager::Orange);
