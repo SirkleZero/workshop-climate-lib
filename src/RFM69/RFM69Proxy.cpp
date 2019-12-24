@@ -1,11 +1,10 @@
 #include "RFM69Proxy.h"
 
 namespace RFM69 {
-	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class.
-	// dumb on me.
-	uint8_t data[] = "  OK";
 	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class. dumb on me.
-	uint8_t acknowledgeData[25] = "acknowledged from node 1";
+	//uint8_t data[] = "  OK";
+	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class. dumb on me.
+	//uint8_t acknowledgeData[25] = "acknowledged from node 1";
 
 	RFM69Proxy::RFM69Proxy(uint8_t address, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin) :
 		RFM69Proxy::RFM69Proxy(radioFrequency, address, csPin, irqPin, rstPin, 13)
@@ -112,10 +111,11 @@ namespace RFM69 {
 				result.RSSI = this->radio.lastRssi();
 				result.HasResult = true;
 
-				// Send a reply back to the originator client
+				// reply back to the originator sending client
+				uint8_t acknowledgeData[RH_RF69_MAX_MESSAGE_LEN] = "acknowledged";
 				if (!this->manager.sendtoWait(acknowledgeData, sizeof(acknowledgeData), from))
 				{
-					Serial.println(F("Sending failed (no ack)"));
+					Serial.println(F("Sending failed (no acknowledgement packet)"));
 				}
 			}
 		}
@@ -134,6 +134,8 @@ namespace RFM69 {
 		TXResult result;
 		result.TransmitSuccessful = false;
 
+		//uint8_t data[] = "  OK";
+
 		// copy the sensor data into a buffer that can be used to transmit the data to the server.
 		byte transmissionBuffer[sizeof(data)] = { 0 };
 		memcpy(transmissionBuffer, &data, sizeof(data));
@@ -147,7 +149,7 @@ namespace RFM69 {
 			uint8_t acknowledgementBufferLength = sizeof(this->acknowledgementBuffer);
 			uint8_t from;
 
-			if (this->manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, 2000, &from))
+			if (this->manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, RFM69Proxy::TransmissionTimeout, &from))
 			{
 				this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // make sure the string is null terminated.
 
@@ -164,7 +166,7 @@ namespace RFM69 {
 		}
 		else
 		{
-			Serial.println(F("Sending failed (no ack)"));
+			Serial.println(F("Sending failed (no acknowledgement packet)"));
 		}
 
 		this->Disable();
