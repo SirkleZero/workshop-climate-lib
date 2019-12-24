@@ -1,11 +1,6 @@
 #include "RFM69Proxy.h"
 
 namespace RFM69 {
-	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class. dumb on me.
-	//uint8_t data[] = "  OK";
-	// NOTE: for some reason, that I don't understand exactly, this needs to sit here rather than with the class. dumb on me.
-	//uint8_t acknowledgeData[25] = "acknowledged from node 1";
-
 	RFM69Proxy::RFM69Proxy(uint8_t address, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin) :
 		RFM69Proxy::RFM69Proxy(radioFrequency, address, csPin, irqPin, rstPin, 13)
 	{}
@@ -95,17 +90,19 @@ namespace RFM69 {
 
 		if (this->manager.available())
 		{
+			uint8_t messageBuffer[RH_RF69_MAX_MESSAGE_LEN];
+
 			// Wait for a message addressed to us from the sensor module
-			uint8_t messageBufferLength = sizeof(this->messageBuffer);
+			uint8_t messageBufferLength = sizeof(messageBuffer);
 			uint8_t from;
 
-			if (this->manager.recvfromAck(this->messageBuffer, &messageBufferLength, &from))
+			if (this->manager.recvfromAck(messageBuffer, &messageBufferLength, &from))
 			{
-				this->messageBuffer[messageBufferLength] = 0; // ensure that the string is null terminated.
+				messageBuffer[messageBufferLength] = 0; // ensure that the string is null terminated.
 
 				// deserialize the message sent into our common data structure
 				BME280Data messageData;
-				memcpy(&messageData, this->messageBuffer, sizeof(messageData));
+				memcpy(&messageData, messageBuffer, sizeof(messageData));
 				result.Data = messageData;
 				result.TransmissionSource = from;
 				result.RSSI = this->radio.lastRssi();
@@ -134,8 +131,6 @@ namespace RFM69 {
 		TXResult result;
 		result.TransmitSuccessful = false;
 
-		//uint8_t data[] = "  OK";
-
 		// copy the sensor data into a buffer that can be used to transmit the data to the server.
 		byte transmissionBuffer[sizeof(data)] = { 0 };
 		memcpy(transmissionBuffer, &data, sizeof(data));
@@ -145,13 +140,15 @@ namespace RFM69 {
 		// Send a message to the node designated as the server
 		if (this->manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, this->address))
 		{
+			uint8_t acknowledgementBuffer[RH_RF69_MAX_MESSAGE_LEN];
+
 			// Now wait for a reply from the server
-			uint8_t acknowledgementBufferLength = sizeof(this->acknowledgementBuffer);
+			uint8_t acknowledgementBufferLength = sizeof(acknowledgementBuffer);
 			uint8_t from;
 
-			if (this->manager.recvfromAckTimeout(this->acknowledgementBuffer, &acknowledgementBufferLength, RFM69Proxy::TransmissionTimeout, &from))
+			if (this->manager.recvfromAckTimeout(acknowledgementBuffer, &acknowledgementBufferLength, RFM69Proxy::TransmissionTimeout, &from))
 			{
-				this->acknowledgementBuffer[acknowledgementBufferLength] = 0; // make sure the string is null terminated.
+				acknowledgementBuffer[acknowledgementBufferLength] = 0; // make sure the string is null terminated.
 
 				FlashStatusLED(40, 3); //blink LED 3 times, 40ms between blinks
 

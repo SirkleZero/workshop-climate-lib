@@ -41,9 +41,6 @@ namespace RFM69 {
 		RH_RF69 radio;
 		RHReliableDatagram manager;
 
-		uint8_t acknowledgementBuffer[RH_RF69_MAX_MESSAGE_LEN];
-		uint8_t messageBuffer[RH_RF69_MAX_MESSAGE_LEN];
-
 		void FlashStatusLED(byte delay_ms, byte loops);
 	};
 }
