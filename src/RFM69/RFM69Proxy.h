@@ -20,9 +20,10 @@ namespace RFM69 {
 		/// <summary>The frequency at which the radio will operate.</summary>
 		static const int16_t RadioFrequency = 915.0;
 		static const int16_t TransmissionTimeout = 2000;
+		static const uint8_t DefaultLEDPin = 13;
 
 		RFM69Proxy(uint8_t address, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4);
-		RFM69Proxy(uint8_t address, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4, uint8_t statusLEDPin = 13);
+		RFM69Proxy(uint8_t address, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4, uint8_t statusLEDPin = RFM69Proxy::DefaultLEDPin);
 
 		InitializationResult Initialize();
 		TXResult Transmit(BME280Data data);
