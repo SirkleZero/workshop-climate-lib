@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Display\TFTDisplay.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\RFM69\RFM69Proxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\SDCardProxy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)src\Configuration\Secrets.cpp" />
@@ -45,6 +46,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\ScreenRegion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\AqiScaleRectangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Display\TFTDisplay.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RFM69\RFM69Proxy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RFM69\SensorTransmissionResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)src\RFM69\TXResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BME280Data.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\BufferedBME280.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)src\Sensors\SensorManager.h" />
