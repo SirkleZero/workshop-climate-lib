@@ -107,6 +107,8 @@ namespace RFM69 {
 				result.RSSI = this->radio.lastRssi();
 				result.HasResult = true;
 
+				this->FlashStatusLED(40, 3); //blink LED 3 times, 40ms between blinks
+
 				// reply back to the originator sending client
 				uint8_t acknowledgeData[RH_RF69_MAX_MESSAGE_LEN] = "acknowledged";
 				if (!this->manager.sendtoWait(acknowledgeData, sizeof(acknowledgeData), from))
@@ -149,7 +151,7 @@ namespace RFM69 {
 			{
 				acknowledgementBuffer[acknowledgementBufferLength] = 0; // make sure the string is null terminated.
 
-				FlashStatusLED(40, 3); //blink LED 3 times, 40ms between blinks
+				this->FlashStatusLED(40, 3); //blink LED 3 times, 40ms between blinks
 
 				result.From = from;
 				result.RSSI = this->radio.lastRssi();
