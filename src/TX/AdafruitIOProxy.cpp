@@ -81,8 +81,8 @@ namespace TX {
 		);
 
 		// set up the mqtt feeds we are publishing to
-		humidityFeed = io->feed("climate-testing.humidity");
-		temperatureFeed = io->feed("climate-testing.temperature");
+		humidityFeed = io->feed(this->secrets->HumidityFeed);
+		temperatureFeed = io->feed(this->secrets->TemperatureFeed);
 
 		// set the pins of our ESP32 Airlift
 		WiFi.setPins
@@ -238,7 +238,6 @@ namespace TX {
 		// send it once we are. For now, what we have here is good enough for
 		// us to reliably send data. The queue will make it just a bit more
 		// robust.
-		return humidityFeed->save(data.Humidity);
-		//&& temperatureFeed->save(data.Climate.Temperature);
+		return humidityFeed->save(data.Humidity) && temperatureFeed->save(data.Temperature);
 	}
 }

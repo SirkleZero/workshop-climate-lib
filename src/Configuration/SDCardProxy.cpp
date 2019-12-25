@@ -50,6 +50,8 @@ namespace Configuration {
 		secrets->SetAdafruitIOAccessKey(jsonBuffer["adafruitio_key"]);
 		secrets->SetWifiSSID(jsonBuffer["wifi_ssid"]);
 		secrets->SetWifiPassword(jsonBuffer["wifi_password"]);
+		secrets->SetHumidityFeed(jsonBuffer["humidityFeed"]);
+		secrets->SetTemperatureFeed(jsonBuffer["temperatureFeed"]);
 
 		// Close the file (File's destructor doesn't close the file)
 		file.close();

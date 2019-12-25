@@ -4,28 +4,35 @@
 
 namespace Configuration {
 	/// <summary>Class that represents secrets used by the system.</summary>
-	class Secrets {
+	class Secrets
+	{
 	public:
 		/// <summary>The encryption key used by the application to encrypt radio transmission.</summary>
 		static uint8_t RadioEncryptionKey[16];
 		/// <summary>The Adafruit IO username.</summary>
-		const char *AdafruitIOUsername;
+		const char* AdafruitIOUsername;
 		/// <summary>The access key for Adafruit IO service calls.</summary>
-		const char *AdafruitIOAccessKey;
+		const char* AdafruitIOAccessKey;
 		/// <summary>The WiFi network SSID to connect to for internet access.</summary>
-		const char *WiFiSSID;
+		const char* WiFiSSID;
 		/// <summary>The password for the WiFi network.</summary>
-		const char *WiFiPassword;
+		const char* WiFiPassword;
 		/// <summary>The network hostname to assign to the device.</summary>
-		const char *Hostname;
+		const char* Hostname;
+		/// <summary>The fully qualified path to the humidity feed.</summary>
+		const char* HumidityFeed;
+		/// <summary>The fully qualified path to the temperature feed.</summary>
+		const char* TemperatureFeed;
 
 		Secrets();
 
-		void SetAdafruitIOUsername(const char * adafruitIOUsername);
-		void SetAdafruitIOAccessKey(const char * adafruitIOAccessKey);
-		void SetWifiSSID(const char * wifiSSID);
-		void SetWifiPassword(const char * wifiPassword);
-		void SetHostname(const char * hostname);
+		void SetAdafruitIOUsername(const char* adafruitIOUsername);
+		void SetAdafruitIOAccessKey(const char* adafruitIOAccessKey);
+		void SetWifiSSID(const char* wifiSSID);
+		void SetWifiPassword(const char* wifiPassword);
+		void SetHostname(const char* hostname);
+		void SetHumidityFeed(const char* humidityFeed);
+		void SetTemperatureFeed(const char* temperatureFeed);
 		void PrintDebug();
 	private:
 		/*
@@ -44,5 +51,7 @@ namespace Configuration {
 		String wiFiSSID;
 		String wiFiPassword;
 		String hostname;
+		String humidityFeed;
+		String temperatureFeed;
 	};
 }

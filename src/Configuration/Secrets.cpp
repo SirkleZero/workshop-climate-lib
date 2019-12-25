@@ -47,6 +47,18 @@ namespace Configuration {
 		this->Hostname = this->hostname.c_str();
 	}
 
+	void Secrets::SetHumidityFeed(const char* humidityFeed)
+	{
+		this->humidityFeed = String(humidityFeed);
+		this->HumidityFeed = this->humidityFeed.c_str();
+	}
+
+	void Secrets::SetTemperatureFeed(const char* temperatureFeed)
+	{
+		this->temperatureFeed = String(temperatureFeed);
+		this->TemperatureFeed = this->temperatureFeed.c_str();
+	}
+
 	///<summary>Prints a debug statement to Serial output.</summary>
 	void Secrets::PrintDebug()
 	{
