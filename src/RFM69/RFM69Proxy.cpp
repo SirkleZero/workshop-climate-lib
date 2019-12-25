@@ -58,7 +58,7 @@ namespace RFM69 {
 
 	void RFM69Proxy::Disable()
 	{
-		// The CS Pin (#8) does not have a pullup resistor built in, so be sure to set this pin to HIGH when not using the 
+		// The CS Pin does not have a pullup resistor built in, so be sure to set this pin to HIGH when not using the 
 		// radio! Will cause problems with other devices if we don't do this. 
 		digitalWrite(this->csPin, HIGH);
 	}
@@ -76,8 +76,6 @@ namespace RFM69 {
 		delay(25);
 		digitalWrite(this->rstPin, LOW);
 		delay(25);
-
-		this->Disable();
 	}
 
 	SensorTransmissionResult RFM69Proxy::ListenForBME280()

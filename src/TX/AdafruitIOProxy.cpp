@@ -239,5 +239,6 @@ namespace TX {
 		// us to reliably send data. The queue will make it just a bit more
 		// robust.
 		return humidityFeed->save(data.Humidity) && temperatureFeed->save(data.Temperature);
+		//return true; // for testing purposes
 	}
 }
