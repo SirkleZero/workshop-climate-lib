@@ -1,15 +1,15 @@
 #include "RFM69Proxy.h"
 
 namespace RFM69 {
-	RFM69Proxy::RFM69Proxy(uint8_t address, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin) :
-		RFM69Proxy::RFM69Proxy(radioFrequency, address, csPin, irqPin, rstPin, 13)
+	RFM69Proxy::RFM69Proxy(Devices myAddress, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin) :
+		RFM69Proxy::RFM69Proxy(myAddress, radioFrequency, csPin, irqPin, rstPin, RFM69Proxy::DefaultLEDPin)
 	{}
 
-	RFM69Proxy::RFM69Proxy(uint8_t address, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin, uint8_t statusLEDPin) :
+	RFM69Proxy::RFM69Proxy(Devices myAddress, int16_t radioFrequency, uint8_t csPin, uint8_t irqPin, uint8_t rstPin, uint8_t statusLEDPin) :
 		radio(csPin, irqPin),
-		manager(this->radio, address)
+		manager(this->radio, myAddress)
 	{
-		this->address = address;
+		this->myAddress = myAddress;
 		this->csPin = csPin;
 		this->irqPin = irqPin;
 		this->rstPin = rstPin;
@@ -25,9 +25,8 @@ namespace RFM69 {
 		// led indicator pin mode configuration.
 		pinMode(this->statusLEDPin, OUTPUT);
 
-		// set up the pins for the radio.
+		// set up the reset pin for the radio. The chip select and interrupt are set on the radio object.
 		pinMode(this->rstPin, OUTPUT);
-		digitalWrite(this->rstPin, LOW);
 
 		// manual reset the radio.
 		this->Reset();
@@ -71,6 +70,8 @@ namespace RFM69 {
 
 	void RFM69Proxy::Reset()
 	{
+		digitalWrite(this->rstPin, LOW);
+		delay(25);
 		digitalWrite(this->rstPin, HIGH);
 		delay(25);
 		digitalWrite(this->rstPin, LOW);
@@ -79,9 +80,7 @@ namespace RFM69 {
 		this->Disable();
 	}
 
-	/// <summary>Listens for a transmission from the sensor module.</summary>
-	/// <remarks>This method should be run as frequently as possible.</remarks>
-	SensorTransmissionResult RFM69Proxy::Listen()
+	SensorTransmissionResult RFM69Proxy::ListenForBME280()
 	{
 		this->Enable();
 
@@ -124,7 +123,7 @@ namespace RFM69 {
 
 	/// <summary>Transmits the <see cref="BME280Data"/> data via the radio.</summary>
 	/// <param name="data">The <see cref="BME280Data"/> to send.</param>
-	TXResult RFM69Proxy::Transmit(BME280Data data)
+	TXResult RFM69Proxy::TransmitBME280(BME280Data data, uint8_t destinationAddress)
 	{
 		this->Enable();
 
@@ -138,7 +137,7 @@ namespace RFM69 {
 		byte dataSize = sizeof(data);
 
 		// Send a message to the node designated as the server
-		if (this->manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, this->address))
+		if (this->manager.sendtoWait((uint8_t *)transmissionBuffer, dataSize, destinationAddress))
 		{
 			uint8_t acknowledgementBuffer[RH_RF69_MAX_MESSAGE_LEN];
 

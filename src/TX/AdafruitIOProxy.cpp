@@ -188,10 +188,10 @@ namespace TX {
 	IoTUploadResult AdafruitIOProxy::Transmit(BME280Data data)
 	{
 		// print humidity and temperature:
-		Serial.print("Humidity: ");
+		/*Serial.print("Humidity: ");
 		Serial.println(data.Humidity);
 		Serial.print("Temperature: ");
-		Serial.println(data.Temperature);
+		Serial.println(data.Temperature);*/
 
 		IoTUploadResult result;
 

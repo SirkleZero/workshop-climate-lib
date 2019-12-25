@@ -9,19 +9,19 @@ namespace Configuration {
 
 	public:
 		/// <summary>Specifies the duration in milliseconds that we allow the system to run without data before we perform an emergency shut down.</summary>
-		unsigned long RunawayTimeLimit;
+		unsigned long RunawayTimeLimit = 0;
 		/// <summary>Specifies the minimum humidity allowed.</summary>
-		float MinimumHumidity;
+		float MinimumHumidity = 0;
 		/// <summary>Specifies the ideal humidity for the system.</summary>
-		float TargetHumidity;
+		float TargetHumidity = 0;
 		/// <summary>Specifies the maximum humidity allowed.</summary>
-		float MaximumHumidity;
+		float MaximumHumidity = 0;
 		/// <summary>Specifies the offset to be used to compensate for humidification over/under run.</summary>
-		float HumidifierOperationOffset;
+		float HumidifierOperationOffset = 0;
 		/// <summary>Specifies the offset to be used to compensate for de-humidification over/under run.</summary>
-		float DeHumidifierOperationOffset;
+		float DeHumidifierOperationOffset = 0;
 		/// <summary>Specifies how often in milliseconds the controller will poll its sensors for readings.</summary>
-		float PollIntervalMS;
+		float PollIntervalMS = 0;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()

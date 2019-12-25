@@ -25,11 +25,11 @@ struct AqiScaleRectangle : Rectangle
 	///<summary>The textual representation of this rectangles air quality index value.</summary>
 	const char* Label;
 	///<summary>The color to use when rendering this rectangle.</summary>
-	uint16_t Color;
+	uint16_t Color = 0;
 	///<summary>The minimum value of the air quality index represented by this rectangle (segment) of the AQI index.</summary>
-	int16_t MinIndex;
+	int16_t MinIndex = 0;
 	///<summary>The maximum value of the air quality index represented by this rectangle (segment) of the AQI index.</summary>
-	int16_t MaxIndex;
+	int16_t MaxIndex = 0;
 
 	///<summary>Determines if the rectangle is responsible for handling a specific AQI value based on the min and max values.</summary>
 	///<param name="aqiScore">The AQI score to test.</param>

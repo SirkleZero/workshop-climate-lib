@@ -9,14 +9,14 @@ namespace Sensors {
 		/// <summary>The header of the data frame.</summary>
 		uint8_t FrameHeader[2];
 		/// <summary>The length of the frame of data.</summary>
-		uint16_t FrameLength;
+		uint16_t FrameLength = 0;
 		/// <summary>The <see cref="ParticleData"/> that contains the actual sensor readings.</summary>
 		ParticleData Particulates;
 		/// <summary>The version, not entirely sure what this represents to be honest.</summary>
-		uint8_t Version;
+		uint8_t Version = 0;
 		/// <summary>Unused</summary>
-		uint8_t ErrorCode;
+		uint8_t ErrorCode = 0;
 		/// <summary>The checksum of the frame, used for error handling.</summary>
-		uint16_t Checksum;
+		uint16_t Checksum = 0;
 	};
 }

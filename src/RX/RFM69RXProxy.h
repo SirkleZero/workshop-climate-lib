@@ -18,7 +18,7 @@ namespace RX {
 		/// <summary>The frequency at which the radio will operate.</summary>
 		static const int16_t RadioFrequency = 915.0;
 		/// <summary>The address of the controller (server).</summary>
-		static const byte ServerAddress = 1;
+		static const byte ServerAddress = 8;
 
 		RFM69RXProxy();
 

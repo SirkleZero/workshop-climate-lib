@@ -4,6 +4,7 @@
 #include <RH_RF69.h>
 #include <RHReliableDatagram.h>
 
+#include "..\Devices.h"
 #include "..\Configuration\Secrets.h"
 #include "..\Sensors\BME280Data.h"
 #include "..\InitializationResult.h"
@@ -22,22 +23,24 @@ namespace RFM69 {
 		static const int16_t TransmissionTimeout = 2000;
 		static const uint8_t DefaultLEDPin = 13;
 
-		RFM69Proxy(uint8_t address, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4);
-		RFM69Proxy(uint8_t address, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4, uint8_t statusLEDPin = RFM69Proxy::DefaultLEDPin);
+		RFM69Proxy(Devices myAddress, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4);
+		RFM69Proxy(Devices myAddress, int16_t radioFrequency = RFM69Proxy::RadioFrequency, uint8_t csPin = 8, uint8_t irqPin = 3, uint8_t rstPin = 4, uint8_t statusLEDPin = RFM69Proxy::DefaultLEDPin);
 
 		InitializationResult Initialize();
-		TXResult Transmit(BME280Data data);
-		SensorTransmissionResult Listen();
+
+		TXResult TransmitBME280(BME280Data data, uint8_t destinationAddress);
+		SensorTransmissionResult ListenForBME280();
+
 		void Disable();
 		void Enable();
 		void Reset();
 	private:
-		int16_t radioFrequency;
-		uint8_t address;
-		uint8_t csPin;
-		uint8_t irqPin;
-		uint8_t rstPin;
-		uint8_t statusLEDPin;
+		int16_t radioFrequency = 0;
+		Devices myAddress = Devices::None;
+		uint8_t csPin = 0;
+		uint8_t irqPin = 0;
+		uint8_t rstPin = 0;
+		uint8_t statusLEDPin = 0;
 
 		RH_RF69 radio;
 		RHReliableDatagram manager;

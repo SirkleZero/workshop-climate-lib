@@ -16,13 +16,13 @@ namespace Sensors {
 	/// <summary>Represents data related to the climate.</summary>
 	struct BME280Data {
 		/// <summary>The temperature of the environment.</summary>
-		float Temperature;
+		float Temperature = 0;
 		/// <summary>The units that the temperature is represented in.</summary>
 		char Units;
 		/// <summary>The relative humidity as a percentage.</summary>
-		float Humidity;
+		float Humidity = 0;
 		/// <summary>The air pressure in pascals.</summary>
-		float Pressure;
+		float Pressure = 0;
 
 		/// <summary>Factory method to create a <see cref="BME280Data"/> that contains no data.</summary>
 		static BME280Data EmptyData()

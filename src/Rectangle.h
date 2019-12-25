@@ -16,13 +16,13 @@ struct Rectangle
 		x(x), y(y), width(width), height(height) {}
 
 	///<summary>The x coordinate of the rectangle.</summary>
-	int16_t x;
+	int16_t x = 0;
 	///<summary>The y coordinate of the rectangle.</summary>
-	int16_t y;
+	int16_t y = 0;
 	///<summary>The width of the rectangle.</summary>
-	int16_t width;
+	int16_t width = 0;
 	///<summary>The height of the rectangle.</summary>
-	int16_t height;
+	int16_t height = 0;
 
 	///<summary>Prints a debug statement to Serial output.</summary>
 	virtual void PrintDebug()

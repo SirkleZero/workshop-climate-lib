@@ -8,9 +8,9 @@ namespace TX {
 		/// <summary>true if the transmission was successful; otherwise false.</summary>
 		bool TransmitSuccessful = false;
 		/// <summary>The Source of the transmission.</summary>
-		uint8_t From;
+		uint8_t From = 0;
 		/// <summary>The signal strength of the transmission.</summary>
-		int16_t RSSI;
+		int16_t RSSI = 0;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()

@@ -13,9 +13,9 @@ namespace RX {
 		///<summary>A value that indicates if the transmission was successful.</summary>
 		bool HasResult = false;
 		///<summary>A value that indicates the source of the transmission.</summary>
-		uint8_t TransmissionSource;
+		uint8_t TransmissionSource = 0;
 		///<summary>A value that indicates the relative received signal strength of the transmission.</summary>
-		int16_t RSSI;
+		int16_t RSSI = 0;
 
 		///<summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()

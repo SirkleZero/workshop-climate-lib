@@ -116,10 +116,10 @@ namespace Display {
 
 		// Display unit variables
 		Adafruit_STMPE610 ts;
-		uint16_t height;
-		uint16_t midHeight;
-		uint16_t width;
-		uint16_t midWidth;
+		uint16_t height = 0;
+		uint16_t midHeight = 0;
+		uint16_t width = 0;
+		uint16_t midWidth = 0;
 
 		// variables used for display state management
 		bool dataChanged = false;

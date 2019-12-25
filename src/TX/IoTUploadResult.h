@@ -12,7 +12,7 @@ namespace TX {
 		/// <summary>The SSID of the WiFi connection we are connected to.</summary>
 		const char* SSID;
 		/// <summary>The signal strength of the WiFi connection.</summary>
-		int16_t RSSI;
+		int16_t RSSI = 0;
 		/// <summary>The local area network IP address assigned to the microcontroller.</summary>
 		IPAddress LocalIP;
 		/// <summary>The gateway IP address of the network the microcontroller is connected to.</summary>

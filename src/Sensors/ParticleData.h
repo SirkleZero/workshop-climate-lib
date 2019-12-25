@@ -6,29 +6,29 @@ namespace Sensors {
 	/// <summary>Represents data that describes airborn particulate matter.</summary>
 	struct ParticleData {
 		/// <summary>Indoor air quality indicator of particles 1.0 micron in size.</summary>
-		uint16_t pm10_standard;
+		uint16_t pm10_standard = 0;
 		/// <summary>Indoor air quality indicator of particles 2.5 micron in size.</summary>
-		uint16_t pm25_standard;
+		uint16_t pm25_standard = 0;
 		/// <summary>Indoor air quality indicator of particles 10.0 micron in size.</summary>
-		uint16_t pm100_standard;
+		uint16_t pm100_standard = 0;
 		/// <summary>Environmental air quality indicator of particles 1.0 micron in size.</summary>
-		uint16_t pm10_env;
+		uint16_t pm10_env = 0;
 		/// <summary>Environmental air quality indicator of particles 2.5 micron in size.</summary>
-		uint16_t pm25_env;
+		uint16_t pm25_env = 0;
 		/// <summary>Environmental air quality indicator of particles 10.0 micron in size.</summary>
-		uint16_t pm100_env;
+		uint16_t pm100_env = 0;
 		/// <summary>Measurement of .03 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_03um;
+		uint16_t particles_03um = 0;
 		/// <summary>Measurement of .05 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_05um;
+		uint16_t particles_05um = 0;
 		/// <summary>Measurement of 1.0 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_10um;
+		uint16_t particles_10um = 0;
 		/// <summary>Measurement of 2.5 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_25um;
+		uint16_t particles_25um = 0;
 		/// <summary>Measurement of 5.0 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_50um;
+		uint16_t particles_50um = 0;
 		/// <summary>Measurement of 10.0 micron sized particles per cubic meter of air.</summary>
-		uint16_t particles_100um;
+		uint16_t particles_100um = 0;
 
 		/// <summary>Prints a debug statement to Serial output.</summary>
 		void PrintDebug()
