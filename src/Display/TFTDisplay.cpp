@@ -219,14 +219,16 @@ namespace Display {
 			tft.setTextSize(1);
 
 			// for temperature
-			char* temperatureLabel = "Fahrenheit";
+			//char* temperatureLabel = "Fahrenheit";
+			const char* temperatureLabel = "Fahrenheit";
 			//tft.drawRect(temperatureArea.x, temperatureArea.y, temperatureArea.width, temperatureArea.height, TFTDisplay::LayoutLineColor);
 			centeredTextXPosition = GetCenteredPosition(temperatureLabel, temperatureArea.x, temperatureArea.y, temperatureArea.width);
 			tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 5);
 			tft.println(temperatureLabel);
 
 			// for Humidity
-			char* humidityLabel = "% Humidity";
+			//char* humidityLabel = "% Humidity";
+			const char* humidityLabel = "% Humidity";
 			//tft.drawRect(humidityArea.x, humidityArea.y, humidityArea.width, humidityArea.height, TFTDisplay::LayoutLineColor);
 			centeredTextXPosition = GetCenteredPosition(humidityLabel, humidityArea.x, humidityArea.y, humidityArea.width);
 			tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 5);
