@@ -40,11 +40,11 @@ namespace TX {
 		/// <summary>The number of milliseconds we should delay the reboot of the network chip.</summary>
 		static const unsigned long ResetChipDelayMS = 100;
 		/// <summary>The pin used for Chip Select.</summary>
-		static const uint8_t ChipSelectPin = 4;
+		static const uint8_t ChipSelectPin = 13;
 		/// <summary>The pin used to notify us that the hardware is busy.</summary>
-		static const uint8_t BusyPin = 1;
+		static const uint8_t BusyPin = 11;
 		/// <summary>The pin used for hardware reset.</summary>
-		static const uint8_t ResetPin = 0;
+		static const uint8_t ResetPin = 12;
 		/// <summary>The pin used for reading output data from the chip.</summary>
 		static const uint8_t GPIOPin = -1;
 
