@@ -14,8 +14,8 @@ namespace Sensors {
 		this->units = units;
 		this->updateInterval = updateInterval;
 
-		// initialize the BME280 sensor          
-		if (!bme.begin(&Wire))
+		// initialize the BME280 sensor
+		if(bme.begin(0x77, &Wire))
 		{
 			result.ErrorMessage = F("Could not find a valid BME280 sensor, check wiring!");
 			return result;
