@@ -198,7 +198,6 @@ namespace Display {
 	{
 		if (this->regionChanged)
 		{
-			Serial.println(F("laying out home screen"));
 			noInterrupts();
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
@@ -248,8 +247,6 @@ namespace Display {
 	{
 		if (this->regionChanged)
 		{
-			Serial.println(F("laying out humidity screen"));
-
 			noInterrupts();
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
@@ -269,8 +266,6 @@ namespace Display {
 	{
 		if (this->regionChanged)
 		{
-			Serial.println(F("laying out temperature screen"));
-
 			noInterrupts();
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
@@ -290,8 +285,6 @@ namespace Display {
 	{
 		if (this->regionChanged)
 		{
-			Serial.println(F("laying out settings screen"));
-
 			noInterrupts();
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
@@ -310,8 +303,6 @@ namespace Display {
 	{
 		if (this->regionChanged)
 		{
-			Serial.println(F("laying out message screen"));
-
 			noInterrupts();
 
 			tft.fillScreen(TFTDisplay::BackgroundColor);
@@ -408,7 +399,8 @@ namespace Display {
 		int8_t horizontalOffset = 7;
 		tft.setFont(this->mainReadingsFont);
 		tft.setTextSize(1);
-		char* humidity = BME280Data::ConvertFloatToString(data->Humidity, 2, 0);
+		static char humidity[15];
+		BME280Data::ConvertFloatToString(data->Humidity, 2, 0, humidity);
 		int16_t centeredTextXPosition = GetCenteredPosition(humidity, humidityArea.x, humidityArea.y, humidityArea.width) - horizontalOffset;
 		tft.setCursor(centeredTextXPosition, humidityArea.y + humidityArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
@@ -420,7 +412,8 @@ namespace Display {
 		int8_t horizontalOffset = 7;
 		tft.setFont(this->mainReadingsFont);
 		tft.setTextSize(1);
-		char* temperature = BME280Data::ConvertFloatToString(data->Temperature, 2, 0);
+		static char temperature[15];
+		BME280Data::ConvertFloatToString(data->Temperature, 2, 0, temperature);
 		int16_t centeredTextXPosition = GetCenteredPosition(temperature, temperatureArea.x, temperatureArea.y, temperatureArea.width) - horizontalOffset;
 		tft.setCursor(centeredTextXPosition, temperatureArea.y + temperatureArea.height - 35);
 		tft.setTextColor(color, this->BackgroundColor); // apparently this doesn't work with custom fonts?
@@ -475,14 +468,11 @@ namespace Display {
 
 	bool TFTDisplay::IntegerPartChanged(float first, float second)
 	{
-		/*double fractpart1, intpart1, fractpart2, intpart2;
+		static char f[15];
+		BME280Data::ConvertFloatToString(first, 2, 0, f);
 
-		fractpart1 = modf(first, &intpart1);
-		fractpart2 = modf(second, &intpart2);
-
-		return intpart1 != intpart2;*/
-		char* f = BME280Data::ConvertFloatToString(first, 2, 0);
-		char* s = BME280Data::ConvertFloatToString(second, 2, 0);
+		static char s[15];
+		BME280Data::ConvertFloatToString(second, 2, 0, s);
 
 		return strcmp(f, s) != 0;
 	}

@@ -53,12 +53,17 @@ namespace Sensors {
 		}
 
 		/// <summary>Converts a float value to a string.</summary>
-		/// <remarks>https://forum.arduino.cc/index.php?topic=368720.0</remarks>
-		static char* ConvertFloatToString(float f, signed char width, unsigned char precision)
+		/// <remarks>this is simplly a wrapper on top of the dtostrf function. I did it this way because there wasn't always a dtostrf method available on the SAMD21 platform, and I had to have a custom method to handle this functionality. Now that this function exists, I'm leaving this function in but using it as a wrapper than as custom code for backward compatibility.</remarks>
+		/// <example>
+		/// 	static char charBufferOutput[15];
+		///		BME280Data::ConvertFloatToString(12.32, 2, 0, charBufferOutput);
+		///		Serial.print("Our float, converted to a string: ");
+		///		Serial.println(charBufferOutput);
+		/// </example>
+		static char *ConvertFloatToString(float f, signed char width, unsigned char precision, char *sout)
 		{
-			char buff[10];
-			dtostrf(f, width, precision, buff);
-			return buff;
+			dtostrf(f, width, precision, sout);
+			return sout;
 		}
 	};
 }

@@ -162,7 +162,7 @@ namespace RFM69 {
 		}
 		else
 		{
-			Serial.println(F("Sending failed (no acknowledgement packet)"));
+			Serial.println(F("Radio transmission failed (no acknowledgement packet)"));
 		}
 
 		this->Disable();
