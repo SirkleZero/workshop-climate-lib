@@ -15,7 +15,9 @@ namespace Sensors {
 		this->updateInterval = updateInterval;
 
 		// initialize the BME280 sensor
-		if(bme.begin(0x77, &Wire))
+		// The default address for this BME280 sensor is 0x77, but a second address
+		// is available at 0x76 if you jumper SDO to GND on the board.
+		if(!bme.begin(0x77, &Wire))
 		{
 			result.ErrorMessage = F("Could not find a valid BME280 sensor, check wiring!");
 			return result;
